@@ -67,7 +67,8 @@ window.Navigation = {
             switch (tabName) {
                 case 'home':
                     container.innerHTML = this.getHomeContent();
-                    success = true;
+                    success = await this.loadFragment('booking-wizard-mount', 'customer_components/booking-wizard.html');
+                    if (success && window.initBookingWizard) window.initBookingWizard();
                     break;
 
                 case 'garage':
@@ -134,60 +135,9 @@ window.Navigation = {
 
     getHomeContent() {
         return `
-            <section class="home-welcome animate-fade-in-up">
-                <div class="welcome-text">
-                    <h1>Good evening, Alex 👋</h1>
-                    <p>Ready to give your ride the shine it deserves?</p>
-                </div>
-                <button class="btn-book-now" id="btn-book-now" onclick="window.Navigation && window.Navigation.goToTab('bookings')">
-                    <i class="fas fa-calendar-plus"></i> Book a Session
-                </button>
-            </section>
-
-            <section class="quick-status-banner animate-fade-in-up">
-                <div class="status-banner-inner">
-                    <div class="status-banner-icon">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                    <div class="status-banner-text">
-                        <span class="status-caption">Current Status</span>
-                        <h3>No Active Booking</h3>
-                    </div>
-                    <button class="btn-primary-sm" onclick="window.Navigation && window.Navigation.goToTab('bookings')">
-                        Book Now <i class="fas fa-arrow-right"></i>
-                    </button>
-                </div>
-            </section>
-
-            <section class="discovery-section animate-fade-in-up">
-                <h3 class="section-title">Recommended for You</h3>
-                <div class="discovery-grid">
-                    <div class="discovery-card" onclick="window.Navigation && window.Navigation.goToTab('bookings')">
-                        <div class="disc-icon" style="background: rgba(0,255,148,0.1); color: var(--neon-green);">
-                            <i class="fas fa-gem"></i>
-                        </div>
-                        <span class="disc-badge">Save 20%</span>
-                        <h4>Ceramic Coating</h4>
-                        <p>Long-lasting diamond shine protection</p>
-                    </div>
-                    <div class="discovery-card" onclick="window.Navigation && window.Navigation.goToTab('bookings')">
-                        <div class="disc-icon" style="background: rgba(0,163,255,0.1); color: var(--neon-blue);">
-                            <i class="fas fa-infinity"></i>
-                        </div>
-                        <span class="disc-badge">Best Value</span>
-                        <h4>Unlimited Plan</h4>
-                        <p>Wash every day for a fixed price</p>
-                    </div>
-                    <div class="discovery-card" onclick="window.Navigation && window.Navigation.goToTab('bookings')">
-                        <div class="disc-icon" style="background: rgba(255,200,0,0.1); color: #ffca28;">
-                            <i class="fas fa-broom"></i>
-                        </div>
-                        <span class="disc-badge">Trending</span>
-                        <h4>Interior Detail</h4>
-                        <p>Full cabin restoration & sanitization</p>
-                    </div>
-                </div>
-            </section>
+            <div class="wizard-page-wrapper animate-fade-in-up">
+                <div id="booking-wizard-mount"></div>
+            </div>
         `;
     }
 };
