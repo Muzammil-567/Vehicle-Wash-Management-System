@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="/frontend/css/auth.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+
 <body class="auth-body">
 
     <div class="auth-container">
@@ -26,11 +28,11 @@
         <form id="login-form" class="auth-form">
             <div class="form-group">
                 <label>Email</label>
-                <input type="email" class="form-control" placeholder="your@email.com" required>
+                <input type="email" id="login-email" class="form-control" placeholder="your@email.com" required>
             </div>
             <div class="form-group">
                 <label>Password</label>
-                <input type="password" class="form-control" placeholder="••••••••" required>
+                <input type="password" id="login-password" class="form-control" placeholder="••••••••" required>
             </div>
             <button type="submit" class="btn-primary btn-auth">Enter Portal</button>
         </form>
@@ -39,19 +41,19 @@
         <form id="signup-form" class="auth-form hidden">
             <div class="form-group">
                 <label>Full Name</label>
-                <input type="text" class="form-control" placeholder="John Doe" required>
+                <input type="text" id="signup-name" class="form-control" placeholder="John Doe" required>
             </div>
             <div class="form-group">
                 <label>Email</label>
-                <input type="email" class="form-control" placeholder="john@example.com" required>
+                <input type="email" id="signup-email" class="form-control" placeholder="john@example.com" required>
             </div>
             <div class="form-group">
                 <label>Phone Number</label>
-                <input type="tel" class="form-control" placeholder="+92 300 1234567" required>
+                <input type="tel" id="signup-phone" class="form-control" placeholder="+92 300 1234567" required>
             </div>
             <div class="form-group">
                 <label>Create Password</label>
-                <input type="password" class="form-control" placeholder="••••••••" required>
+                <input type="password" id="signup-password" class="form-control" placeholder="••••••••" required>
             </div>
             <button type="submit" class="btn-primary btn-auth">Create Account</button>
         </form>
@@ -81,15 +83,64 @@
             loginForm.classList.add('hidden');
         });
 
-        // Redirect Guard (Task 3)
-        const forms = [loginForm, signupForm];
-        forms.forEach(form => {
-            form.addEventListener('submit', (e) => {
-                e.preventDefault();
-                // Simulation of authentication
-                window.location.href = '/frontend/customer/index.html';
-            });
+        // Login Logic
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+
+            try {
+                const response = await fetch('http://localhost:5000/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('userId', data.user.id);
+                    localStorage.setItem('userRole', data.user.role);
+                    localStorage.setItem('userName', data.user.full_name);
+                    window.location.href = '/frontend/customer/index.html';
+                } else {
+                    alert(data.message || 'Invalid email or password');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                alert('An error occurred during login. Please try again.');
+            }
+        });
+
+        // Signup Logic
+        signupForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const full_name = document.getElementById('signup-name').value;
+            const email = document.getElementById('signup-email').value;
+            const phone = document.getElementById('signup-phone').value;
+            const password = document.getElementById('signup-password').value;
+
+            try {
+                const response = await fetch('http://localhost:5000/api/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ full_name, email, password, phone })
+                });
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    alert('Account Created!');
+                    loginToggle.click(); // Switch to login view
+                    signupForm.reset();
+                } else {
+                    alert(data.message || 'Registration failed');
+                }
+            } catch (error) {
+                console.error('Signup error:', error);
+                alert('An error occurred during registration. Please try again.');
+            }
         });
     </script>
 </body>
+
 </html>

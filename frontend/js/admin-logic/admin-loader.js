@@ -75,7 +75,9 @@ async function loadContent(componentName) {
  * Re-initializes logic for components based on their name
  */
 function reinitComponentLogic(name) {
-    if (name === 'user-management') {
+    if (name === 'dashboard-overview') {
+        initDashboardStats();
+    } else if (name === 'user-management') {
         if (typeof initManagementTabs === 'function') initManagementTabs();
         if (typeof initUserManagementLogic === 'function') initUserManagementLogic();
     } else if (name === 'service-management') {
@@ -150,4 +152,42 @@ function initSidebarToggle() {
             if (sidebar) sidebar.classList.toggle('open');
         }
     });
+}
+
+/**
+ * Fetch and display real-time dashboard stats
+ */
+async function initDashboardStats() {
+    const token = localStorage.getItem('token');
+    if (!token) return window.location.replace('/frontend/auth/login.html');
+
+    try {
+        const response = await fetch('http://localhost:5000/api/admin/stats', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (response.status === 401 || response.status === 403) {
+            localStorage.clear();
+            return window.location.replace('/frontend/auth/login.html');
+        }
+
+        const json = await response.json();
+        if (json.success) {
+            const data = json.data;
+            const revEl = document.getElementById('stat-revenue');
+            const bookEl = document.getElementById('stat-bookings');
+            const custEl = document.getElementById('stat-customers');
+            const pendEl = document.getElementById('stat-pending');
+
+            if (revEl) revEl.textContent = `RS. ${data.totalRevenue}`;
+            if (bookEl) bookEl.textContent = data.totalBookings;
+            if (custEl) custEl.textContent = data.totalCustomers;
+            if (pendEl) pendEl.textContent = data.totalPending;
+        }
+    } catch (err) {
+        console.error("Failed to load admin stats:", err);
+    }
 }

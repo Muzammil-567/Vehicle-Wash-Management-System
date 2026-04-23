@@ -11,35 +11,61 @@ function initBookingForm() {
     const bookingForm = document.getElementById('booking-form');
     if (!bookingForm) return;
 
-    bookingForm.addEventListener('submit', (e) => {
+    bookingForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        // Extract all form data into a neat JSON object
-        const bookingData = {
-            vehicleModel: document.getElementById('car-model').value,
-            plateNumber: document.getElementById('plate-number').value,
-            serviceType: document.getElementById('service-type').value,
-            bookingTime: document.getElementById('booking-time').value,
-            timestamp: new Date().toISOString()
-        };
+        const token = localStorage.getItem('token');
+        if (!token) {
+            alert("You must be logged in to book a service.");
+            return;
+        }
 
-        console.log('%c [GlossFlow] Booking JSON: ', 'background: #00FF94; color: #000; font-weight: bold;');
-        console.table(bookingData);
+        const make_model = document.getElementById('car-model').value;
+        const plate_number = document.getElementById('plate-number').value;
+        const service_type = document.getElementById('service-type').value;
+        const datetimeVal = document.getElementById('booking-time').value;
 
-        // Show professional Alert/Toast
-        alert("Booking Received! Wait for Admin confirmation.");
-        
-        // Reset form and go back to step 1
-        bookingForm.reset();
-        window.nextStep(1);
+        // Extract date and time from datetime-local input (YYYY-MM-DDTHH:MM)
+        const [booking_date, booking_time] = datetimeVal.split('T');
+
+        try {
+            const response = await fetch('http://localhost:5000/api/bookings', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    make_model,
+                    plate_number,
+
+                    service_type,
+                    booking_date,
+                    booking_time
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok && data.success) {
+                alert("Booking Confirmed!");
+                bookingForm.reset();
+                if (window.nextStep) window.nextStep(1);
+            } else {
+                alert(data.message || "Failed to submit booking.");
+            }
+        } catch (error) {
+            console.error("Booking submission error:", error);
+            alert("An error occurred. Please try again later.");
+        }
     });
 }
 
 // Global function to switch between wizard steps
-window.nextStep = function(step) {
+window.nextStep = function (step) {
     // Validation check before moving forward
     const currentActive = document.querySelector('.wizard-step.active');
-    
+
     // If moving forward, check validity
     if (currentActive && parseInt(currentActive.dataset.step) < step) {
         const inputs = currentActive.querySelectorAll('input, select');
@@ -55,12 +81,12 @@ window.nextStep = function(step) {
 
     // Hide all steps
     document.querySelectorAll('.wizard-step').forEach(s => s.classList.remove('active'));
-    
+
     // Show target step
     const nextStepEl = document.querySelector(`.wizard-step[data-step="${step}"]`);
-    if(nextStepEl) {
+    if (nextStepEl) {
         nextStepEl.classList.add('active');
-        
+
         // Animation trigger
         nextStepEl.style.opacity = '0';
         requestAnimationFrame(() => {
@@ -68,18 +94,18 @@ window.nextStep = function(step) {
             nextStepEl.style.opacity = '1';
         });
     }
-    
+
     // Update Header and Progress
     const titles = {
         1: 'Step 1: Vehicle Details',
         2: 'Step 2: Service Selection',
         3: 'Step 3: Schedule Time'
     };
-    
+
     const titleEl = document.getElementById('wizard-step-title');
-    if(titleEl) titleEl.textContent = titles[step];
-    
+    if (titleEl) titleEl.textContent = titles[step];
+
     const progressEl = document.getElementById('wizard-progress');
-    if(progressEl) progressEl.style.width = (step / 3 * 100) + '%';
+    if (progressEl) progressEl.style.width = (step / 3 * 100) + '%';
 };
 
