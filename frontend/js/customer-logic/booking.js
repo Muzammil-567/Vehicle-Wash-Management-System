@@ -1,15 +1,12 @@
 /**
- * GlossFlow Interactive Booking Wizard Logic
- * Handles step transitions and form data collection.
+ * GlossFlow Customer Booking Wizard Logic
+ * Handles step transitions, validation, and submission.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
     initBookingForm();
 });
 
-/**
- * Initialize the booking form listener
- */
 function initBookingForm() {
     const bookingForm = document.getElementById('booking-form');
     if (!bookingForm) return;
@@ -17,83 +14,72 @@ function initBookingForm() {
     bookingForm.addEventListener('submit', (e) => {
         e.preventDefault();
 
-        // Gather data into a JSON object
-        const formData = new FormData(bookingForm);
+        // Extract all form data into a neat JSON object
         const bookingData = {
-            vehicle: formData.get('car-make-model'),
-            plate: formData.get('plate-number'),
-            service: formData.get('service-type'),
-            schedule: formData.get('booking-datetime'),
+            vehicleModel: document.getElementById('car-model').value,
+            plateNumber: document.getElementById('plate-number').value,
+            serviceType: document.getElementById('service-type').value,
+            bookingTime: document.getElementById('booking-time').value,
             timestamp: new Date().toISOString()
         };
 
-        // Log to console as requested
-        console.log('%c [Booking Wizard] GATHERED DATA: ', 'background: #00FF94; color: #000; font-weight: bold;');
+        console.log('%c [GlossFlow] Booking JSON: ', 'background: #00FF94; color: #000; font-weight: bold;');
         console.table(bookingData);
 
-        // Show success state (visual feedback)
-        handleSuccessfulBooking(bookingData);
+        // Show professional Alert/Toast
+        alert("Booking Received! Wait for Admin confirmation.");
+        
+        // Reset form and go back to step 1
+        bookingForm.reset();
+        window.nextStep(1);
     });
 }
 
-/**
- * Global function to switch between wizard steps
- */
-window.showStep = function(stepNumber) {
-    // Basic validation before moving forward
-    if (stepNumber === 2) {
-        const make = document.getElementById('car-make-model').value;
-        const plate = document.getElementById('plate-number').value;
-        if (!make || !plate) {
-            alert('Please fill in vehicle details first.');
-            return;
-        }
-    }
-    if (stepNumber === 3) {
-        const service = document.getElementById('service-type').value;
-        if (!service) {
-            alert('Please select a service package.');
-            return;
-        }
+// Global function to switch between wizard steps
+window.nextStep = function(step) {
+    // Validation check before moving forward
+    const currentActive = document.querySelector('.wizard-step.active');
+    
+    // If moving forward, check validity
+    if (currentActive && parseInt(currentActive.dataset.step) < step) {
+        const inputs = currentActive.querySelectorAll('input, select');
+        let isValid = true;
+        inputs.forEach(input => {
+            if (!input.checkValidity()) {
+                input.reportValidity();
+                isValid = false;
+            }
+        });
+        if (!isValid) return;
     }
 
     // Hide all steps
-    document.querySelectorAll('.wizard-step').forEach(step => {
-        step.style.display = 'none';
-    });
-
+    document.querySelectorAll('.wizard-step').forEach(s => s.classList.remove('active'));
+    
     // Show target step
-    const targetStep = document.getElementById(`step-${stepNumber}`);
-    if (targetStep) {
-        targetStep.style.display = 'block';
+    const nextStepEl = document.querySelector(`.wizard-step[data-step="${step}"]`);
+    if(nextStepEl) {
+        nextStepEl.classList.add('active');
         
-        // Add fade-in animation
-        targetStep.classList.remove('animate-fade-in-up');
-        void targetStep.offsetWidth; // Trigger reflow
-        targetStep.classList.add('animate-fade-in-up');
+        // Animation trigger
+        nextStepEl.style.opacity = '0';
+        requestAnimationFrame(() => {
+            nextStepEl.style.transition = 'opacity 0.3s ease';
+            nextStepEl.style.opacity = '1';
+        });
     }
+    
+    // Update Header and Progress
+    const titles = {
+        1: 'Step 1: Vehicle Details',
+        2: 'Step 2: Service Selection',
+        3: 'Step 3: Schedule Time'
+    };
+    
+    const titleEl = document.getElementById('wizard-step-title');
+    if(titleEl) titleEl.textContent = titles[step];
+    
+    const progressEl = document.getElementById('wizard-progress');
+    if(progressEl) progressEl.style.width = (step / 3 * 100) + '%';
 };
 
-/**
- * Handle visual success feedback
- */
-function handleSuccessfulBooking(data) {
-    const wizardCard = document.querySelector('.booking-wizard-card');
-    if (wizardCard) {
-        wizardCard.innerHTML = `
-            <div class="success-view animate-fade-in-up" style="text-align: center; padding: 20px;">
-                <div class="success-icon" style="font-size: 4rem; color: var(--neon-green); margin-bottom: 20px;">
-                    <i class="fas fa-check-circle"></i>
-                </div>
-                <h2 style="color: var(--neon-green); margin-bottom: 10px;">Booking Confirmed!</h2>
-                <p style="color: var(--text-muted); margin-bottom: 30px;">Your car wash for <strong>${data.vehicle}</strong> is scheduled.</p>
-                <button class="btn-wizard-next" onclick="location.reload()">
-                    <i class="fas fa-home"></i> Back to Dashboard
-                </button>
-            </div>
-        `;
-    }
-}
-
-// Export for re-init when tab changes
-window.initBookingWizard = initBookingForm;

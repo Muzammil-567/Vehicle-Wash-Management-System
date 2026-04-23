@@ -15,9 +15,15 @@
     --bottom-nav-height: 70px;
 }
 
-/* Base Reset */
-* {
+/* Scoped Reset to prevent landing page conflicts */
+.customer-shell, 
+.customer-shell *, 
+.customer-shell *::before, 
+.customer-shell *::after {
     box-sizing: border-box;
+}
+
+.customer-shell {
     margin: 0;
     padding: 0;
 }

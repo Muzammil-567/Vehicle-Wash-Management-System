@@ -2,6 +2,9 @@
 <html lang="en">
 
 <head>
+    <script>
+        if(!localStorage.getItem('token')){ window.location.replace('/frontend/auth/login.html'); }
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>GlossFlow | Premium Car Care Dashboard</title>
@@ -64,7 +67,60 @@
 
             <!-- Unified Content Area -->
             <main id="main-content" class="content-area">
-                <!-- SPA Content or Booking Wizard loads here -->
+                <div class="booking-wizard animate-fade-in" id="booking-wizard">
+                    <div class="wizard-header" style="margin-bottom: 25px; text-align: center;">
+                        <h3 id="wizard-step-title" style="color: var(--neon-green); font-size: 1.5rem;">Step 1: Vehicle Details</h3>
+                        <div class="progress-bar" style="height: 6px; background: rgba(255,255,255,0.1); margin-top: 15px; border-radius: 3px; overflow: hidden;">
+                            <div id="wizard-progress" style="width: 33%; height: 100%; background: var(--neon-green); transition: width 0.4s ease; box-shadow: 0 0 10px var(--neon-green);"></div>
+                        </div>
+                    </div>
+
+                    <form id="booking-form">
+                        <!-- Step 1 -->
+                        <div class="wizard-step active" data-step="1">
+                            <div class="form-group">
+                                <label><i class="fas fa-car" style="margin-right: 8px; color: var(--neon-blue);"></i> Car Make & Model</label>
+                                <input type="text" id="car-model" placeholder="e.g. Honda Civic" required>
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-id-card" style="margin-right: 8px; color: var(--neon-blue);"></i> Plate Number</label>
+                                <input type="text" id="plate-number" placeholder="e.g. ABC-1234" required>
+                            </div>
+                            <div class="wizard-actions">
+                                <button type="button" class="btn-submit" onclick="nextStep(2)">Next Step <i class="fas fa-arrow-right" style="margin-left: 8px;"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- Step 2 -->
+                        <div class="wizard-step" data-step="2">
+                            <div class="form-group">
+                                <label><i class="fas fa-concierge-bell" style="margin-right: 8px; color: var(--neon-blue);"></i> Select Service</label>
+                                <select id="service-type" required>
+                                    <option value="" disabled selected>Choose a package...</option>
+                                    <option value="basic">Basic Wash - $15</option>
+                                    <option value="premium">Premium Shine - $30</option>
+                                    <option value="ceramic">Ceramic Coating - $100</option>
+                                </select>
+                            </div>
+                            <div class="wizard-actions dual-actions">
+                                <button type="button" class="btn-back" onclick="nextStep(1)"><i class="fas fa-chevron-left" style="margin-right: 8px;"></i> Back</button>
+                                <button type="button" class="btn-submit" onclick="nextStep(3)">Next Step <i class="fas fa-arrow-right" style="margin-left: 8px;"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- Step 3 -->
+                        <div class="wizard-step" data-step="3">
+                            <div class="form-group">
+                                <label><i class="fas fa-calendar-alt" style="margin-right: 8px; color: var(--neon-blue);"></i> Preferred Date & Time</label>
+                                <input type="datetime-local" id="booking-time" required>
+                            </div>
+                            <div class="wizard-actions dual-actions">
+                                <button type="button" class="btn-back" onclick="nextStep(2)"><i class="fas fa-chevron-left" style="margin-right: 8px;"></i> Back</button>
+                                <button type="submit" class="btn-submit btn-pulse-neon"><i class="fas fa-check-circle" style="margin-right: 8px;"></i> Book Wash Now</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </main>
 
             <!-- Bottom Navigation (Mobile Only) -->
@@ -86,7 +142,7 @@
     </div>
 
     <!-- Scripts -->
-    <script src="../js/customer-logic/app.js"></script>
+    <script src="../js/customer-logic/booking.js"></script>
 </body>
 
 </html>
