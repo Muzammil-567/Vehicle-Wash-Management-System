@@ -3,69 +3,48 @@
  */
 
 function initFeedbackLogic() {
-    console.log('Initializing Feedback & Support Logic...');
-    const container = document.getElementById('reports-feedback');
-    if (!container) return;
-
-    initFeedbackFilters();
-    initResolveActions();
+    console.log('Initializing Feedback Logic...');
+    fetchAdminFeedback();
 }
 
-/**
- * Filter Feedback Tickets
- */
-function initFeedbackFilters() {
-    const filters = document.querySelectorAll('[data-feedback-filter]');
-    const tickets = document.querySelectorAll('.feedback-ticket');
+async function fetchAdminFeedback() {
+    const container = document.getElementById('admin-feedback-list');
+    const token = localStorage.getItem('token');
+    if (!container || !token) return;
 
-    filters.forEach(btn => {
-        btn.onclick = () => {
-            // Toggle Active
-            filters.forEach(f => f.classList.remove('active'));
-            btn.classList.add('active');
+    try {
+        const response = await fetch('http://localhost:5000/api/admin/feedback', {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const json = await response.json();
 
-            const filter = btn.dataset.feedbackFilter;
-            
-            tickets.forEach(ticket => {
-                if (filter === 'all') {
-                    ticket.style.display = 'grid';
-                } else if (filter === 'high') {
-                    // Logic for high priority (e.g., 3 stars or less)
-                    const stars = ticket.querySelectorAll('.fa-star').length;
-                    ticket.style.display = (stars <= 3) ? 'grid' : 'none';
-                } else if (filter === 'pending') {
-                    const status = ticket.querySelector('.status-pill').textContent.toLowerCase();
-                    ticket.style.display = (status === 'pending') ? 'grid' : 'none';
-                }
-            });
-        };
-    });
-}
+        if (json.success) {
+            if (json.data.length === 0) {
+                container.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 50px; color: var(--text-dim);">No customer reviews found.</div>';
+                return;
+            }
 
-/**
- * Resolve Ticket Logic
- */
-function initResolveActions() {
-    document.addEventListener('click', (e) => {
-        const resolveBtn = e.target.closest('.btn-resolve');
-        if (resolveBtn) {
-            const ticket = resolveBtn.closest('.feedback-ticket');
-            const statusPill = ticket.querySelector('.status-pill');
-
-            // Visual feedback
-            resolveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-            
-            setTimeout(() => {
-                statusPill.textContent = 'Resolved';
-                statusPill.className = 'status-pill status-completed';
-                resolveBtn.remove(); // Remove resolve button after success
-                
-                if (typeof showSuccessToast === 'function') {
-                    showSuccessToast('Ticket marked as Resolved.');
-                }
-            }, 800);
+            container.innerHTML = json.data.map(review => {
+                const stars = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
+                return `
+                    <div class="feedback-card animate-fade-in">
+                        <div class="star-rating" style="font-size: 1.2rem; color: #ffc107;">${stars}</div>
+                        <p style="color: white; font-style: italic; margin-bottom: 15px; min-height: 50px;">"${review.comment || 'No comment provided.'}"</p>
+                        <div class="review-meta">
+                            <div>
+                                <strong style="color: var(--accent-green); display: block;">${review.customer_name}</strong>
+                                <span style="font-size: 0.75rem;">Service: ${review.service_type.replace('_', ' ')}</span>
+                            </div>
+                            <span style="font-size: 0.7rem;">${new Date(review.created_at).toLocaleDateString()}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
         }
-    });
+    } catch (err) {
+        console.error("Failed to load feedback:", err);
+        container.innerHTML = '<div style="color: red; text-align: center; grid-column: 1/-1;">Error connecting to server.</div>';
+    }
 }
 
 // Global Export

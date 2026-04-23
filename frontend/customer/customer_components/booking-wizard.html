@@ -1,219 +1,54 @@
-<div class="booking-wizard-card animate-fade-in-up">
-    <div class="wizard-header">
-        <h2><i class="fas fa-calendar-plus"></i> Schedule Your Shine</h2>
-        <p>Complete the details below to book your premium car wash.</p>
+<div class="booking-wizard animate-fade-in" id="booking-wizard">
+    <div class="wizard-header" style="margin-bottom: 25px; text-align: center;">
+        <h3 id="wizard-step-title" style="color: var(--neon-green); font-size: 1.5rem;">Step 1: Vehicle Details</h3>
+        <div class="progress-bar" style="height: 6px; background: rgba(255,255,255,0.1); margin-top: 15px; border-radius: 3px; overflow: hidden;">
+            <div id="wizard-progress" style="width: 33%; height: 100%; background: var(--neon-green); transition: width 0.4s ease; box-shadow: 0 0 10px var(--neon-green);"></div>
+        </div>
     </div>
 
-    <!-- The Booking Form -->
-    <form id="booking-form" class="booking-wizard-form">
-        
-        <!-- Step 1: Vehicle Details -->
-        <div class="wizard-step" id="step-1">
-            <div class="step-indicator">Step 1 of 3: Vehicle Details</div>
-            <div class="form-group-glass">
-                <label for="car-make-model">Car Make & Model</label>
-                <div class="input-with-icon">
-                    <i class="fas fa-car"></i>
-                    <input type="text" id="car-make-model" name="car-make-model" placeholder="e.g. Honda Civic" required>
-                </div>
+    <form id="booking-form">
+        <!-- Step 1 -->
+        <div class="wizard-step active" data-step="1">
+            <div class="form-group">
+                <label><i class="fas fa-car" style="margin-right: 8px; color: var(--neon-blue);"></i> Car Make & Model</label>
+                <input type="text" id="car-model" placeholder="e.g. Honda Civic" required>
             </div>
-            <div class="form-group-glass">
-                <label for="plate-number">Plate Number</label>
-                <div class="input-with-icon">
-                    <i class="fas fa-id-card"></i>
-                    <input type="text" id="plate-number" name="plate-number" placeholder="e.g. ABC-1234" required>
-                </div>
+            <div class="form-group">
+                <label><i class="fas fa-id-card" style="margin-right: 8px; color: var(--neon-blue);"></i> Plate Number</label>
+                <input type="text" id="plate-number" placeholder="e.g. ABC-1234" required>
             </div>
             <div class="wizard-actions">
-                <button type="button" class="btn-wizard-next" onclick="showStep(2)">Next: Select Service <i class="fas fa-arrow-right"></i></button>
+                <button type="button" class="btn-submit" onclick="nextStep(2)">Next Step <i class="fas fa-arrow-right" style="margin-left: 8px;"></i></button>
             </div>
         </div>
 
-        <!-- Step 2: Service Selection -->
-        <div class="wizard-step" id="step-2" style="display: none;">
-            <div class="step-indicator">Step 2 of 3: Service Selection</div>
-            <div class="form-group-glass">
-                <label for="service-type">Select Service Package</label>
-                <div class="input-with-icon">
-                    <i class="fas fa-concierge-bell"></i>
-                    <select id="service-type" name="service-type" required>
-                        <option value="" disabled selected>Choose a package...</option>
-                        <option value="basic">Basic Wash - $15</option>
-                        <option value="premium">Premium Shine - $30</option>
-                        <option value="ceramic">Ceramic Coating - $100</option>
-                    </select>
-                </div>
+        <!-- Step 2 -->
+        <div class="wizard-step" data-step="2">
+            <div class="form-group">
+                <label><i class="fas fa-concierge-bell" style="margin-right: 8px; color: var(--neon-blue);"></i> Select Service</label>
+                <select id="service-type" required>
+                    <option value="" disabled selected>Choose a package...</option>
+                    <option value="basic">Basic Wash - $15</option>
+                    <option value="premium">Premium Shine - $30</option>
+                    <option value="ceramic">Ceramic Coating - $100</option>
+                </select>
             </div>
-            <div class="wizard-actions">
-                <button type="button" class="btn-wizard-back" onclick="showStep(1)"><i class="fas fa-chevron-left"></i> Back</button>
-                <button type="button" class="btn-wizard-next" onclick="showStep(3)">Next: Choose Time <i class="fas fa-arrow-right"></i></button>
+            <div class="wizard-actions dual-actions">
+                <button type="button" class="btn-back" onclick="nextStep(1)"><i class="fas fa-chevron-left" style="margin-right: 8px;"></i> Back</button>
+                <button type="button" class="btn-submit" onclick="nextStep(3)">Next Step <i class="fas fa-arrow-right" style="margin-left: 8px;"></i></button>
             </div>
         </div>
 
-        <!-- Step 3: Date & Time Selection -->
-        <div class="wizard-step" id="step-3" style="display: none;">
-            <div class="step-indicator">Step 3 of 3: Date & Time</div>
-            <div class="form-group-glass">
-                <label for="booking-datetime">Preferred Date & Time</label>
-                <div class="input-with-icon">
-                    <i class="fas fa-calendar-alt"></i>
-                    <input type="datetime-local" id="booking-datetime" name="booking-datetime" required>
-                </div>
+        <!-- Step 3 -->
+        <div class="wizard-step" data-step="3">
+            <div class="form-group">
+                <label><i class="fas fa-calendar-alt" style="margin-right: 8px; color: var(--neon-blue);"></i> Preferred Date & Time</label>
+                <input type="datetime-local" id="booking-time" required>
             </div>
-            <div class="wizard-actions">
-                <button type="button" class="btn-wizard-back" onclick="showStep(2)"><i class="fas fa-chevron-left"></i> Back</button>
-                <button type="submit" class="btn-wizard-confirm btn-pulse-neon">
-                    <i class="fas fa-check-circle"></i> Confirm Booking
-                </button>
+            <div class="wizard-actions dual-actions">
+                <button type="button" class="btn-back" onclick="nextStep(2)"><i class="fas fa-chevron-left" style="margin-right: 8px;"></i> Back</button>
+                <button type="submit" class="btn-submit btn-pulse-neon"><i class="fas fa-check-circle" style="margin-right: 8px;"></i> Book Wash Now</button>
             </div>
         </div>
     </form>
 </div>
-
-<style>
-    .booking-wizard-card {
-        background: var(--glass-bg);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid var(--glass-border);
-        border-radius: 24px;
-        padding: 40px;
-        max-width: 600px;
-        margin: 0 auto;
-        box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-    }
-
-    .wizard-header {
-        margin-bottom: 30px;
-        text-align: center;
-    }
-
-    .wizard-header h2 {
-        font-size: 1.8rem;
-        color: var(--neon-green);
-        margin-bottom: 10px;
-    }
-
-    .wizard-header p {
-        color: var(--text-muted);
-    }
-
-    .step-indicator {
-        font-size: 0.8rem;
-        text-transform: uppercase;
-        letter-spacing: 1.5px;
-        color: var(--neon-blue);
-        margin-bottom: 25px;
-        font-weight: 700;
-    }
-
-    .form-group-glass {
-        margin-bottom: 25px;
-    }
-
-    .form-group-glass label {
-        display: block;
-        margin-bottom: 10px;
-        font-size: 0.9rem;
-        font-weight: 600;
-        color: var(--text-main);
-    }
-
-    .input-with-icon {
-        position: relative;
-    }
-
-    .input-with-icon i {
-        position: absolute;
-        left: 15px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: var(--neon-blue);
-        font-size: 1.1rem;
-    }
-
-    .input-with-icon input,
-    .input-with-icon select {
-        width: 100%;
-        background: rgba(255,255,255,0.03);
-        border: 1px solid var(--glass-border);
-        border-radius: 12px;
-        padding: 14px 14px 14px 45px;
-        color: white;
-        font-size: 1rem;
-        outline: none;
-        transition: all 0.3s ease;
-    }
-
-    .input-with-icon input:focus,
-    .input-with-icon select:focus {
-        border-color: var(--neon-green);
-        background: rgba(0, 255, 148, 0.05);
-        box-shadow: 0 0 15px rgba(0, 255, 148, 0.2);
-    }
-
-    .wizard-actions {
-        display: flex;
-        gap: 15px;
-        margin-top: 40px;
-    }
-
-    .btn-wizard-next,
-    .btn-wizard-confirm {
-        flex: 1;
-        background: var(--neon-green);
-        color: #000814;
-        border: none;
-        padding: 16px;
-        border-radius: 12px;
-        font-weight: 700;
-        font-size: 1rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        transition: all 0.3s ease;
-    }
-
-    .btn-wizard-back {
-        background: rgba(255,255,255,0.05);
-        color: white;
-        border: 1px solid var(--glass-border);
-        padding: 16px 25px;
-        border-radius: 12px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-    }
-
-    .btn-wizard-back:hover {
-        background: rgba(255,255,255,0.1);
-    }
-
-    .btn-wizard-next:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 20px rgba(0, 255, 148, 0.3);
-    }
-
-    /* Pulsing Neon Effect */
-    .btn-pulse-neon {
-        animation: pulse-neon 2s infinite;
-    }
-
-    @keyframes pulse-neon {
-        0% {
-            box-shadow: 0 0 0 0 rgba(0, 255, 148, 0.7);
-        }
-        70% {
-            box-shadow: 0 0 0 15px rgba(0, 255, 148, 0);
-        }
-        100% {
-            box-shadow: 0 0 0 0 rgba(0, 255, 148, 0);
-        }
-    }
-
-    /* Select Styling Fix */
-    select option {
-        background: #000814;
-        color: white;
-    }
-</style>

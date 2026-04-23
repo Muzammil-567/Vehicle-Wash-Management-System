@@ -9,10 +9,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     await loadComponent('admin-header-placeholder', 'admin_components/admin-header.html');
     await loadComponent('admin-modal-placeholder', 'admin_components/admin-modal.html');
 
-    // 2. Load Default Content (Dashboard Overview)
+    // 2. Fetch Employees for Global Use
+    await fetchEmployees();
+
+    // 3. Load Default Content (Dashboard Overview)
     await loadContent('dashboard-overview');
 
-    // 3. Initialize Shared Interactivity
+    // 4. Initialize Shared Interactivity
     initSidebarToggle();
     initGlobalListeners();
 });
@@ -77,9 +80,12 @@ async function loadContent(componentName) {
 function reinitComponentLogic(name) {
     if (name === 'dashboard-overview') {
         initDashboardStats();
+        initRecentBookings();
     } else if (name === 'user-management') {
         if (typeof initManagementTabs === 'function') initManagementTabs();
         if (typeof initUserManagementLogic === 'function') initUserManagementLogic();
+    } else if (name === 'staff-management') {
+        if (typeof initStaffManagement === 'function') initStaffManagement();
     } else if (name === 'service-management') {
         if (typeof initServiceManagementLogic === 'function') initServiceManagementLogic();
         if (typeof initModalLogic === 'function') initModalLogic();
@@ -178,12 +184,12 @@ async function initDashboardStats() {
         if (json.success) {
             const data = json.data;
             const revEl = document.getElementById('stat-revenue');
-            const bookEl = document.getElementById('stat-bookings');
+            const bookEl = document.getElementById('stat-bookings'); // Active Bookings
             const custEl = document.getElementById('stat-customers');
-            const pendEl = document.getElementById('stat-pending');
+            const pendEl = document.getElementById('stat-pending'); // Pending Tasks
 
-            if (revEl) revEl.textContent = `RS. ${data.totalRevenue}`;
-            if (bookEl) bookEl.textContent = data.totalBookings;
+            if (revEl) revEl.textContent = `Rs. ${data.totalRevenue.toLocaleString()}`;
+            if (bookEl) bookEl.textContent = data.totalPending; // Active/Pending are same in this context
             if (custEl) custEl.textContent = data.totalCustomers;
             if (pendEl) pendEl.textContent = data.totalPending;
         }
@@ -191,3 +197,160 @@ async function initDashboardStats() {
         console.error("Failed to load admin stats:", err);
     }
 }
+
+/**
+ * Fetch employees for task assignment
+ */
+async function fetchEmployees() {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+
+    try {
+        const response = await fetch('http://localhost:5000/api/admin/employees', {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const json = await response.json();
+        if (json.success) {
+            window.employeeList = json.data;
+        }
+    } catch (err) {
+        console.error("Failed to fetch employees:", err);
+    }
+}
+
+/**
+ * Fetch and display recent bookings table
+ */
+async function initRecentBookings() {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+
+    try {
+        const response = await fetch('http://localhost:5000/api/admin/bookings', {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const json = await response.json();
+        
+        if (json.success) {
+            const tbody = document.getElementById('recent-bookings-list');
+            if (!tbody) return;
+            
+            tbody.innerHTML = '';
+            
+            json.data.forEach(booking => {
+                let badgeStyle = "padding: 5px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; text-transform: uppercase;";
+                if (booking.status === 'pending') {
+                    badgeStyle += " background: rgba(255, 165, 0, 0.2); color: orange; border: 1px solid orange;";
+                } else if (booking.status === 'assigned') {
+                    badgeStyle += " background: rgba(0, 123, 255, 0.2); color: #007bff; border: 1px solid #007bff;";
+                } else if (booking.status === 'completed') {
+                    badgeStyle += " background: rgba(0, 255, 148, 0.2); color: #00ff94; border: 1px solid #00ff94;";
+                } else {
+                    badgeStyle += " background: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid rgba(255,255,255,0.3);";
+                }
+
+                // Action Column Content
+                let actionHtml = '';
+                if (booking.status === 'pending') {
+                    const options = (window.employeeList || []).map(emp => `<option value="${emp.id}">${emp.full_name}</option>`).join('');
+                    actionHtml = `
+                        <div style="display: flex; gap: 5px;">
+                            <select id="emp-select-${booking.id}" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 2px; border-radius: 5px; font-size: 0.8rem;">
+                                <option value="">Select Employee</option>
+                                ${options}
+                            </select>
+                            <button onclick="assignTask(${booking.id})" style="background: var(--accent-green); color: black; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 0.75rem; font-weight: bold;">Assign</button>
+                        </div>
+                    `;
+                } else {
+                    actionHtml = `<span style="color: var(--text-dim); font-size: 0.8rem;">${booking.status === 'assigned' ? 'Assigned' : 'Task Finished'}</span>`;
+                }
+
+                const tr = document.createElement('tr');
+                tr.style.borderBottom = "1px solid rgba(255,255,255,0.05)";
+                tr.innerHTML = `
+                    <td style="padding: 15px;">#BK-${booking.id}</td>
+                    <td style="padding: 15px;">${booking.customer_name}</td>
+                    <td style="padding: 15px;">${booking.make_model} (${booking.plate_number})</td>
+                    <td style="padding: 15px; text-transform: capitalize;">${booking.service_type.replace('_', ' ')}</td>
+                    <td style="padding: 15px;">${new Date(booking.booking_date).toLocaleDateString()} ${booking.booking_time}</td>
+                    <td style="padding: 15px;"><span style="${badgeStyle}">${booking.status}</span></td>
+                    <td style="padding: 15px;">${actionHtml}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+            
+            if (json.data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="padding: 15px; text-align: center; color: var(--text-dim);">No recent bookings found.</td></tr>';
+            }
+        }
+    } catch (err) {
+        console.error("Failed to load recent bookings:", err);
+    }
+}
+
+/**
+ * Assign task to an employee
+ */
+window.assignTask = async function(bookingId) {
+    const empSelect = document.getElementById(`emp-select-${bookingId}`);
+    const employeeId = empSelect.value;
+    const token = localStorage.getItem('token');
+
+    if (!employeeId) {
+        alert("Please select an employee first.");
+        return;
+    }
+
+    try {
+        const response = await fetch(`http://localhost:5000/api/admin/bookings/${bookingId}/assign`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ employee_id: employeeId })
+        });
+
+        const data = await response.json();
+        if (data.success) {
+            alert("Task Assigned Successfully!");
+            initRecentBookings(); // Reload table
+        } else {
+            alert(data.message || "Failed to assign task.");
+        }
+    } catch (err) {
+        console.error("Assignment error:", err);
+        alert("An error occurred during assignment.");
+    }
+}
+
+/**
+ * Securely downloads the financial CSV report
+ */
+window.downloadFinancialReport = async function() {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+
+    try {
+        const response = await fetch('http://localhost:5000/api/admin/export-report', {
+            method: 'GET',
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (!response.ok) throw new Error("Download failed");
+
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `GlossFlow_Financial_Report_${new Date().toLocaleDateString().replace(/\//g, '-')}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        a.remove();
+    } catch (err) {
+        console.error("Export Error:", err);
+        alert("Failed to generate report. Please try again.");
+    }
+};

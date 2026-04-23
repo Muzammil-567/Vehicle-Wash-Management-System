@@ -1,41 +1,10 @@
-<div class="booking-history-container animate-fade-in">
-    <!-- History Header -->
-    <div class="history-header">
-        <h2>Booking History</h2>
-        <button class="btn-new-booking" onclick="document.querySelector('[data-tab=bookings]').click()">
-            <i class="fas fa-plus"></i>
-            <span>New Booking</span>
-        </button>
-    </div>
-
-    <!-- Search & Filters -->
-    <div class="history-controls">
-        <div class="search-wrap">
-            <i class="fas fa-search"></i>
-            <input type="text" id="history-search" placeholder="Search by vehicle or service..." oninput="filterHistoryList()">
-        </div>
-    </div>
-
-    <!-- Sub-Tab Switcher -->
-    <div class="history-tabs">
-        <div class="h-tab active" data-htab="upcoming" onclick="toggleHistoryTab('upcoming')">
-            Upcoming
-            <div class="h-tab-indicator"></div>
-        </div>
-        <div class="h-tab" data-htab="past" onclick="toggleHistoryTab('past')">
-            Past Orders
-            <div class="h-tab-indicator"></div>
-        </div>
-    </div>
-
-    <!-- History List -->
-    <div class="history-list-wrapper">
-        <div id="history-items-container" class="history-list">
-            <!-- Injected by history-handler.js -->
-            <div class="loading-state">
-                <div class="spinner-small"></div>
-                <p>Loading your history...</p>
-            </div>
+<div class="history-view animate-fade-in">
+    <h2 style="color: var(--neon-green); margin-bottom: 25px;">Booking History</h2>
+    <div class="history-list" id="customer-history-list">
+        <!-- History items will be loaded here -->
+        <div style="background: var(--card-bg); padding: 40px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); text-align: center;">
+            <i class="fas fa-history" style="font-size: 3rem; color: var(--text-dim); margin-bottom: 20px; display: block;"></i>
+            <p style="color: var(--text-dim);">You have no previous bookings.</p>
         </div>
     </div>
 </div>

@@ -7,6 +7,19 @@ const db = require('../config/db');
 // Secret key for JWT (In production, use environment variables)
 const JWT_SECRET = process.env.JWT_SECRET || 'glossflow_super_secret_key_2026';
 
+// @route   GET /api/services
+// @desc    Get all active services for booking
+// @access  Public
+router.get('/services', async (req, res) => {
+    try {
+        const [services] = await db.execute("SELECT id, service_name, price, category FROM services WHERE is_active = TRUE");
+        res.json({ success: true, data: services });
+    } catch (err) {
+        console.error("🔥 GET PUBLIC SERVICES CRASH:", err);
+        res.status(500).json({ success: false, message: 'Server error' });
+    }
+});
+
 /**
  * @route   POST /api/auth/register
  * @desc    Register a new user (Customer)
@@ -31,10 +44,10 @@ router.post('/register', async (req, res) => {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        // Insert new user (default role is 'customer')
-        const role = 'customer';
-        const query = "INSERT INTO users (full_name, email, password_hash, phone, role) VALUES (?, ?, ?, ?, 'customer')";
-        const [result] = await db.execute(query, [full_name, email, hashedPassword, phone || null]);
+        // Insert new user (default role is 'customer' unless specified)
+        const role = req.body.role || 'customer';
+        const query = "INSERT INTO users (full_name, email, password_hash, phone, role) VALUES (?, ?, ?, ?, ?)";
+        const [result] = await db.execute(query, [full_name, email, hashedPassword, phone || null, role]);
 
         res.status(201).json({
             success: true,

@@ -5,7 +5,7 @@
 
 const StatusEngine = {
     // Valid status sequence
-    SEQUENCE: ['pending', 'in-progress', 'completed'],
+    SEQUENCE: ['pending', 'in_progress', 'completed'],
 
     /**
      * Attempts to transition a task to a new status
@@ -15,6 +15,7 @@ const StatusEngine = {
         if (!card) return;
 
         const currentStatus = card.dataset.status;
+        const token = localStorage.getItem('token');
         
         // 1. Validation Logic
         if (!this.isValidTransition(currentStatus, nextStatus)) {
@@ -22,14 +23,37 @@ const StatusEngine = {
             return;
         }
 
-        // 2. Visual Sync Feedback
-        await this.simulateAdminSync(taskId);
+        try {
+            // 2. Backend Synchronization
+            const response = await fetch(`http://localhost:5000/api/employee/tasks/${taskId}/status`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ status: nextStatus })
+            });
 
-        // 3. Apply Update
-        this.applyStatusUpdate(taskId, nextStatus);
+            const data = await response.json();
 
-        // 4. Notifications
-        this.triggerNotification(nextStatus);
+            if (data.success) {
+                // 3. Apply Update
+                this.applyStatusUpdate(taskId, nextStatus);
+
+                // 4. Notifications
+                this.triggerNotification(nextStatus);
+                
+                // Refresh list if completed to move to history
+                if (nextStatus === 'completed' && typeof fetchRealTasks === 'function') {
+                    setTimeout(() => fetchRealTasks(), 1500);
+                }
+            } else {
+                this.showToast('error', data.message || 'Failed to update status.');
+            }
+        } catch (err) {
+            console.error("Status update error:", err);
+            this.showToast('error', 'Server connection error.');
+        }
     },
 
     /**
@@ -68,13 +92,13 @@ const StatusEngine = {
 
         // Update card attributes
         card.dataset.status = newStatus;
-        card.classList.remove('pending', 'in-progress', 'completed');
+        card.classList.remove('pending', 'in_progress', 'completed');
         card.classList.add(newStatus);
 
         // Update Progress Bar
         const progressBar = card.querySelector('.progress-bar');
         if (progressBar) {
-            const progress = newStatus === 'pending' ? '0%' : (newStatus === 'in-progress' ? '50%' : '100%');
+            const progress = newStatus === 'pending' ? '0%' : (newStatus === 'in_progress' ? '50%' : '100%');
             progressBar.style.width = progress;
         }
 
@@ -116,7 +140,7 @@ const StatusEngine = {
      * Triggers Toasts based on status
      */
     triggerNotification(status) {
-        if (status === 'in-progress') {
+        if (status === 'in_progress') {
             this.showToast('info', 'Job Started: Time tracker active.');
         } else if (status === 'completed') {
             this.showToast('success', 'Job Completed: Notification sent to Admin & Customer.');

@@ -7,9 +7,15 @@ document.addEventListener('DOMContentLoaded', () => {
     initBookingForm();
 });
 
+// Export for SPA navigation
+window.initBookingWizard = initBookingForm;
+
 function initBookingForm() {
     const bookingForm = document.getElementById('booking-form');
     if (!bookingForm) return;
+
+    // Fetch and populate services dynamically
+    fetchActiveServices();
 
     bookingForm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -38,7 +44,6 @@ function initBookingForm() {
                 body: JSON.stringify({
                     make_model,
                     plate_number,
-
                     service_type,
                     booking_date,
                     booking_time
@@ -51,6 +56,7 @@ function initBookingForm() {
                 alert("Booking Confirmed!");
                 bookingForm.reset();
                 if (window.nextStep) window.nextStep(1);
+                if (typeof fetchMyBookings === 'function') fetchMyBookings();
             } else {
                 alert(data.message || "Failed to submit booking.");
             }
@@ -59,6 +65,31 @@ function initBookingForm() {
             alert("An error occurred. Please try again later.");
         }
     });
+}
+
+/**
+ * Fetch all active services from DB and populate the select dropdown
+ */
+async function fetchActiveServices() {
+    const select = document.getElementById('service-type');
+    if (!select) return;
+
+    try {
+        const response = await fetch('http://localhost:5000/api/services');
+        const json = await response.json();
+
+        if (json.success && json.data) {
+            select.innerHTML = '<option value="" disabled selected>Choose your wash package...</option>';
+            json.data.forEach(service => {
+                const option = document.createElement('option');
+                option.value = service.service_name;
+                option.textContent = `${service.service_name} (RS. ${service.price})`;
+                select.appendChild(option);
+            });
+        }
+    } catch (err) {
+        console.error("Failed to load services for wizard:", err);
+    }
 }
 
 // Global function to switch between wizard steps

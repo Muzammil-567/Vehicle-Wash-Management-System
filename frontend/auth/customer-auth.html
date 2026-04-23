@@ -102,7 +102,18 @@
                     localStorage.setItem('userId', data.user.id);
                     localStorage.setItem('userRole', data.user.role);
                     localStorage.setItem('userName', data.user.full_name);
-                    window.location.href = '/frontend/customer/index.html';
+                    
+                    const role = data.user.role || data.role;
+                    if (role === 'admin') {
+                        window.location.href = '/frontend/admin/index.html';
+                    } else if (role === 'employee') {
+                        window.location.href = '/frontend/employee/index.html';
+                    } else if (role === 'customer') {
+                        window.location.href = '/frontend/customer/index.html';
+                    } else {
+                        console.warn('Unknown role, redirecting to customer portal');
+                        window.location.href = '/frontend/customer/index.html';
+                    }
                 } else {
                     alert(data.message || 'Invalid email or password');
                 }

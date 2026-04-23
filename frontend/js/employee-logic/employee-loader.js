@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', async () => {
  */
 async function initDashboard() {
     await loadComponent('task-list-placeholder', 'employee_components/task-list.html');
-    loadMockTasks();
+    fetchRealTasks();
 }
 
 /**
@@ -70,24 +70,37 @@ function initDutyToggle() {
 }
 
 /**
- * Mock Task Data & Injection
+ * Fetches real tasks from the backend
  */
-function loadMockTasks() {
+async function fetchRealTasks() {
     const container = document.getElementById('active-tasks-container');
     if (!container) return;
 
-    const mockTasks = [
-        { id: '1', service: 'Hydro-Dynamic Exterior', vehicle: 'Honda Civic - Black', plate: 'ABC-1234', bay: '03', time: '02:30 PM', status: 'pending' },
-        { id: '2', service: 'Deep Interior Sanitization', vehicle: 'Tesla Model 3 - White', plate: 'EV-9921', bay: '01', time: '03:15 PM', status: 'in-progress' },
-        { id: '3', service: 'Ceramic Wax Application', vehicle: 'Toyota Camry - Blue', plate: 'CAM-552', bay: '05', time: '04:00 PM', status: 'pending' }
-    ];
+    const token = localStorage.getItem('token');
+    if (!token) return;
 
-    container.innerHTML = ''; // Clear loader
+    try {
+        const response = await fetch('http://localhost:5000/api/employee/tasks', {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const json = await response.json();
 
-    mockTasks.forEach(task => {
-        const card = createTaskCard(task);
-        container.appendChild(card);
-    });
+        if (json.success) {
+            container.innerHTML = ''; // Clear loader
+            if (json.data.length === 0) {
+                container.innerHTML = '<div style="text-align: center; color: var(--text-dim); padding: 40px;">No tasks assigned yet.</div>';
+                return;
+            }
+
+            json.data.forEach(task => {
+                const card = createTaskCard(task);
+                container.appendChild(card);
+            });
+        }
+    } catch (err) {
+        console.error("Failed to fetch tasks:", err);
+        container.innerHTML = '<div style="text-align: center; color: red; padding: 40px;">Error loading tasks.</div>';
+    }
 }
 
 /**
@@ -103,10 +116,10 @@ function createTaskCard(task) {
         <!-- Tier 1: Service & Time Slot -->
         <div class="task-tier tier-top">
             <div class="service-meta">
-                <h3 class="service-title">${task.service}</h3>
-                <span class="booking-id">#BK-${8000 + parseInt(task.id)}</span>
+                <h3 class="service-title" style="text-transform: capitalize;">${task.service_type.replace('_', ' ')}</h3>
+                <span class="booking-id">#BK-${task.id}</span>
             </div>
-            <span class="time-slot">${task.time}</span>
+            <span class="time-slot">${task.booking_time}</span>
         </div>
 
         <!-- Tier 2: Vehicle Core Info -->
@@ -115,10 +128,10 @@ function createTaskCard(task) {
                 <i class="fas fa-car-side"></i>
             </div>
             <div class="vehicle-details">
-                <h4>${task.vehicle}</h4>
+                <h4>${task.make_model}</h4>
                 <div class="vehicle-subtexts">
-                    <span>Plate: ${task.plate}</span>
-                    <span class="bay-tag">Bay ${task.bay}</span>
+                    <span>Plate: ${task.plate_number}</span>
+                    <span class="bay-tag">Bay 0${(task.id % 5) + 1}</span>
                 </div>
             </div>
         </div>
@@ -126,24 +139,30 @@ function createTaskCard(task) {
         <!-- Tier 3: Actions & Progress -->
         <div class="task-tier tier-bottom">
             <div class="task-actions">
-                <button class="task-btn btn-start" onclick="updateJobStatus('${task.id}', 'in-progress')">
-                    <i class="fas fa-play"></i> Start
-                </button>
-                <button class="task-btn btn-complete" onclick="updateJobStatus('${task.id}', 'completed')">
-                    <i class="fas fa-check"></i> Complete
-                </button>
+                ${task.status === 'assigned' ? `
+                    <button class="task-btn btn-start" onclick="updateJobStatus('${task.id}', 'in_progress')">
+                        <i class="fas fa-play"></i> Start Wash
+                    </button>
+                ` : ''}
+                ${task.status === 'in_progress' ? `
+                    <button class="task-btn btn-complete" onclick="updateJobStatus('${task.id}', 'completed')">
+                        <i class="fas fa-check"></i> Mark Completed
+                    </button>
+                ` : ''}
             </div>
             
-            <div class="completed-badge">
-                <i class="fas fa-check-circle"></i> JOB COMPLETED
-            </div>
-
+            ${task.status === 'completed' ? `
+                <div class="completed-badge" style="display: block;">
+                    <i class="fas fa-check-circle"></i> JOB COMPLETED
+                </div>
+            ` : ''}
+ 
             <div class="task-footer-actions">
                 <button class="issue-btn" onclick="openIssueModal('${task.id}')">
                     <i class="fas fa-exclamation-triangle"></i> Report Issue
                 </button>
                 <div class="task-progress-container">
-                    <div class="progress-bar" style="width: ${task.status === 'pending' ? '0%' : (task.status === 'in-progress' ? '50%' : '100%')}"></div>
+                    <div class="progress-bar" style="width: ${task.status === 'assigned' ? '0%' : (task.status === 'in_progress' ? '50%' : '100%')}"></div>
                 </div>
             </div>
         </div>

@@ -1,87 +1,42 @@
-<!-- Feedback & Complaint Management Section -->
+<!-- Feedback & Complaints Section -->
 <div class="content-view" id="reports-feedback">
-    <div class="action-bar">
-        <h2 style="font-size: 1.5rem; color: var(--accent-green);">Customer Feedback & Support</h2>
-        <div class="booking-filters" style="margin-bottom: 0;">
-            <button class="filter-btn active" data-feedback-filter="all">All Tickets</button>
-            <button class="filter-btn" data-feedback-filter="high">High Priority</button>
-            <button class="filter-btn" data-feedback-filter="pending">Pending</button>
-        </div>
+    <div style="margin-bottom: 30px;">
+        <h1 style="font-size: 2rem;">Customer Reviews & Feedback</h1>
+        <p style="color: var(--text-dim);">Monitor service quality and customer satisfaction levels.</p>
     </div>
 
-    <div class="feedback-list" id="active-feedback-list">
-            <!-- Feedback Ticket 1 -->
-            <div class="feedback-ticket">
-                <div class="customer-details">
-                    <h4 style="color: white;">Kashif Raza</h4>
-                    <p>Booking ID: #BW-9842</p>
-                </div>
-                <div class="star-rating">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                </div>
-                <div class="comment-preview">
-                    "Excellent service! The ceramic coating looks amazing. Highly recommended."
-                </div>
-                <div class="ticket-status-wrap">
-                    <span class="status-pill status-completed">Resolved</span>
-                    <div class="ticket-actions">
-                        <button class="btn-ticket-action">View</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Feedback Ticket 2 -->
-            <div class="feedback-ticket">
-                <div class="customer-details">
-                    <h4 style="color: white;">Saeed Anwar</h4>
-                    <p>Booking ID: #BW-9855</p>
-                </div>
-                <div class="star-rating">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="far fa-star"></i>
-                    <i class="far fa-star"></i>
-                </div>
-                <div class="comment-preview">
-                    "Water pressure was a bit low, and the interior cleaning missed the cup holders."
-                </div>
-                <div class="ticket-status-wrap">
-                    <span class="status-pill status-pending">Pending</span>
-                    <div class="ticket-actions">
-                        <button class="btn-ticket-action">Reply</button>
-                        <button class="btn-ticket-action btn-resolve">Mark Resolved</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Feedback Ticket 3 -->
-            <div class="feedback-ticket">
-                <div class="customer-details">
-                    <h4 style="color: white;">Fatima Sheikh</h4>
-                    <p>Booking ID: #BW-9860</p>
-                </div>
-                <div class="star-rating">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="far fa-star"></i>
-                </div>
-                <div class="comment-preview">
-                    "Great overall experience, but the appointment started 15 mins late."
-                </div>
-                <div class="ticket-status-wrap">
-                    <span class="status-pill status-approved" style="background: rgba(0, 123, 255, 0.1); color: #007bff;">Investigating</span>
-                    <div class="ticket-actions">
-                        <button class="btn-ticket-action">View Thread</button>
-                    </div>
-                </div>
-            </div>
+    <!-- Feedback List -->
+    <div id="admin-feedback-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+        <div style="grid-column: 1/-1; text-align: center; padding: 50px; color: var(--text-dim);">
+            <div class="spinner" style="margin: 0 auto 20px;"></div>
+            Loading feedback records...
         </div>
     </div>
 </div>
+
+<style>
+    .feedback-card {
+        background: var(--card-bg);
+        border-radius: 15px;
+        padding: 25px;
+        border: 1px solid rgba(255,255,255,0.05);
+        transition: transform 0.3s ease;
+    }
+    .feedback-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--accent-green);
+    }
+    .star-rating {
+        color: #ffc107;
+        margin-bottom: 10px;
+    }
+    .review-meta {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.8rem;
+        color: var(--text-dim);
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid rgba(255,255,255,0.05);
+    }
+</style>

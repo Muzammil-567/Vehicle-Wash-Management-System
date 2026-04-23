@@ -4,150 +4,155 @@
 
 function initServiceManagementLogic() {
     console.log('Initializing Service Management Logic...');
-    const serviceSection = document.getElementById('service-management');
-    if (!serviceSection) return;
-
-    // Remove existing listener to prevent duplicates
-    serviceSection.removeEventListener('click', handleServiceActions);
-    serviceSection.addEventListener('click', handleServiceActions);
-
-    // Floating Label Input Listener
-    initFloatingLabels();
+    fetchServices();
 }
 
-/**
- * Event Delegation for Edit/Delete on Service Cards
- */
-function handleServiceActions(e) {
-    const editBtn = e.target.closest('.btn-edit');
-    const deleteBtn = e.target.closest('.btn-delete');
+async function fetchServices() {
+    const container = document.getElementById('service-grid');
+    const token = localStorage.getItem('token');
+    if (!container || !token) return;
 
-    if (editBtn) {
-        handleServiceEdit(editBtn);
-    } else if (deleteBtn) {
-        handleServiceDelete(deleteBtn);
-    }
-}
+    try {
+        const response = await fetch('http://localhost:5000/api/admin/services', {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const json = await response.json();
 
-/**
- * Handle Service Deletion
- */
-function handleServiceDelete(btn) {
-    const card = btn.closest('.service-card');
-    const serviceName = card.querySelector('h3').textContent.replace('<br>', ' ');
-
-    // Danger Zone Confirmation
-    if (confirm(`DANGER ZONE: ARE YOU SURE?\n\nThis action will permanently remove "${serviceName}". Proceed?`)) {
-        
-        // Deleting animation (Red pulse)
-        card.classList.add('card-deleting');
-
-        setTimeout(() => {
-            card.remove();
-            if (typeof showSuccessToast === 'function') {
-                showSuccessToast(`${serviceName} has been removed from the system.`);
-            }
-        }, 1000); // Wait for animation
-    }
-}
-
-/**
- * Handle Service Edit - Data Binding and Modal Population
- */
-let currentEditingCard = null;
-
-function handleServiceEdit(btn) {
-    const card = btn.closest('.service-card');
-    currentEditingCard = card;
-
-    // Capture Data
-    const title = card.querySelector('h3').textContent.replace('<br>', ' ');
-    const price = card.querySelector('.price-tag').textContent;
-    const description = card.querySelector('.card-body p').textContent;
-    
-    // Populate Modal Fields
-    const modalTitle = document.getElementById('modal-title');
-    const nameInput = document.getElementById('service-name');
-    const priceInput = document.getElementById('service-price');
-    const descInput = document.getElementById('service-description');
-    const modalOverlay = document.getElementById('admin-modal-overlay');
-
-    if (modalTitle) modalTitle.textContent = `Modify Service: ${title}`;
-    if (nameInput) nameInput.value = title;
-    if (priceInput) priceInput.value = price;
-    if (descInput) descInput.value = description;
-
-    // Refresh floating label states
-    document.querySelectorAll('.form-group input, .form-group textarea').forEach(input => {
-        if (input.value) {
-            input.parentElement.classList.add('has-content');
-        } else {
-            input.parentElement.classList.remove('has-content');
+        if (json.success) {
+            renderServices(json.data);
         }
-    });
-
-    // Open Modal with Slide-over and Scale animation
-    if (modalOverlay) {
-        modalOverlay.classList.add('active', 'slide-over');
-        document.body.style.overflow = 'hidden';
+    } catch (err) {
+        console.error("Fetch services error:", err);
     }
+}
 
-    // Attach Submit Handler (One-time for this edit session)
+function renderServices(services) {
+    const container = document.getElementById('service-grid');
+    if (!container) return;
+
+    container.innerHTML = services.map(service => {
+        const features = JSON.parse(service.features || '[]');
+        return `
+            <div class="service-card animate-fade-in ${service.is_active ? '' : 'inactive-card'}" data-id="${service.id}">
+                <div class="card-header">
+                    <div class="status-toggle">
+                        <label class="switch">
+                            <input type="checkbox" ${service.is_active ? 'checked' : ''} onchange="toggleServiceStatus(${service.id}, this.checked)">
+                            <span class="slider round"></span>
+                        </label>
+                        <span class="status-label">${service.is_active ? 'Active' : 'Inactive'}</span>
+                    </div>
+                    <div class="action-btns">
+                        <button class="action-btn btn-edit" onclick="openEditServiceModal(${service.id})" title="Edit"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn btn-delete" onclick="deleteService(${service.id})" title="Delete"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h3>${service.service_name}</h3>
+                    <p>${service.description}</p>
+                    <div class="service-features">
+                        ${features.map(f => `<span class="feature-tag"><i class="fas fa-check"></i> ${f}</span>`).join('')}
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="price-box">
+                        <span class="currency">RS.</span>
+                        <span class="price-tag">${service.price}</span>
+                    </div>
+                    <span class="category-badge">${service.category}</span>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+window.toggleServiceStatus = async function(id, isActive) {
+    const token = localStorage.getItem('token');
+    try {
+        // Get existing service data first or just send partial update if backend supports it
+        // For simplicity, we'll fetch all services again after update
+        const response = await fetch(`http://localhost:5000/api/admin/services/${id}`, {
+            method: 'PUT',
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ is_active: isActive ? 1 : 0 })
+        });
+        
+        if (response.ok) {
+            fetchServices();
+        }
+    } catch (err) {
+        console.error("Toggle error:", err);
+    }
+};
+
+window.openEditServiceModal = async function(id) {
+    // Implementation for opening modal and populating fields
+    // Similar to handleServiceEdit but fetching from current data
+    const card = document.querySelector(`.service-card[data-id="${id}"]`);
+    if (!card) return;
+
+    window.currentEditingServiceId = id;
+    
+    document.getElementById('service-name').value = card.querySelector('h3').textContent;
+    document.getElementById('service-price').value = card.querySelector('.price-tag').textContent;
+    document.getElementById('service-description').value = card.querySelector('p').textContent;
+    
+    const modal = document.getElementById('admin-modal-overlay');
+    modal.classList.add('active');
+    
     const form = document.getElementById('service-form');
     form.onsubmit = (e) => {
         e.preventDefault();
         saveServiceChanges();
     };
-}
+};
 
-/**
- * Save Service Changes - Instant UI Update
- */
-function saveServiceChanges() {
-    if (!currentEditingCard) return;
+async function saveServiceChanges() {
+    const id = window.currentEditingServiceId;
+    const token = localStorage.getItem('token');
+    const data = {
+        service_name: document.getElementById('service-name').value,
+        price: document.getElementById('service-price').value,
+        description: document.getElementById('service-description').value,
+        category: 'Main Service', // Default for now
+        is_active: 1
+    };
 
-    // Get New Data from Form
-    const newTitle = document.getElementById('service-name').value;
-    const newPrice = document.getElementById('service-price').value;
-    const newDesc = document.getElementById('service-description').value;
+    try {
+        const response = await fetch(`http://localhost:5000/api/admin/services/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(data)
+        });
 
-    // Update Card DOM
-    currentEditingCard.querySelector('h3').textContent = newTitle;
-    currentEditingCard.querySelector('.price-tag').textContent = newPrice;
-    currentEditingCard.querySelector('.card-body p').textContent = newDesc;
-
-    // Flash Success Pulse
-    currentEditingCard.classList.add('success-pulse');
-    setTimeout(() => {
-        currentEditingCard.classList.remove('success-pulse');
-    }, 2000);
-
-    // Close Modal
-    const modalOverlay = document.getElementById('admin-modal-overlay');
-    modalOverlay.classList.remove('active');
-    document.body.style.overflow = '';
-
-    if (typeof showSuccessToast === 'function') {
-        showSuccessToast('Service updated successfully.');
+        if (response.ok) {
+            document.getElementById('admin-modal-overlay').classList.remove('active');
+            fetchServices();
+            showSuccessToast('Service updated successfully.');
+        }
+    } catch (err) {
+        console.error("Save error:", err);
     }
 }
 
-/**
- * Input Animation Helpers for Floating Labels
- */
-function initFloatingLabels() {
-    const inputs = document.querySelectorAll('.form-group input, .form-group textarea');
-    inputs.forEach(input => {
-        input.addEventListener('focus', () => {
-            input.parentElement.classList.add('has-content');
+window.deleteService = async function(id) {
+    if (!confirm("Are you sure?")) return;
+    const token = localStorage.getItem('token');
+    try {
+        const response = await fetch(`http://localhost:5000/api/admin/services/${id}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${token}` }
         });
-        input.addEventListener('blur', () => {
-            if (!input.value) {
-                input.parentElement.classList.remove('has-content');
-            }
-        });
-    });
-}
+        if (response.ok) fetchServices();
+    } catch (err) {
+        console.error("Delete error:", err);
+    }
+};
 
-// Global Export
 window.initServiceManagementLogic = initServiceManagementLogic;

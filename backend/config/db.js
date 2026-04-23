@@ -15,13 +15,12 @@ const pool = mysql.createPool({
 const promisePool = pool.promise();
 
 // Test the connection
-promisePool.getConnection()
-    .then(connection => {
+pool.query('SELECT 1', (err) => {
+    if (err) {
+        console.error("❌ DB CONNECTION FAILED:", err);
+    } else {
         console.log('✅ Connected to MySQL Database (glossflow_db) successfully!');
-        connection.release();
-    })
-    .catch(err => {
-        console.error('❌ Error connecting to MySQL Database:', err.message);
-    });
+    }
+});
 
 module.exports = promisePool;

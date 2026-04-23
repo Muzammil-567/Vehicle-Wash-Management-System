@@ -69,6 +69,7 @@ window.Navigation = {
                     container.innerHTML = this.getHomeContent();
                     success = await this.loadFragment('booking-wizard-mount', 'customer_components/booking-wizard.html');
                     if (success && window.initBookingWizard) window.initBookingWizard();
+                    if (typeof fetchMyBookings === 'function') fetchMyBookings();
                     break;
 
                 case 'garage':
@@ -135,6 +136,18 @@ window.Navigation = {
 
     getHomeContent() {
         return `
+            <!-- Live Tracking Section -->
+            <div id="live-tracker-container" class="animate-fade-in" style="margin-bottom: 40px;">
+                <h3 style="color: var(--neon-blue); margin-bottom: 20px; font-size: 1.5rem; display: flex; align-items: center;">
+                    <span class="pulse-dot" style="margin-right: 12px;"></span> Live Garage Tracker
+                </h3>
+                <div id="active-wash-list" class="active-wash-grid">
+                    <div style="background: var(--card-bg); padding: 30px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); text-align: center; color: var(--text-dim);">
+                        Checking active washes...
+                    </div>
+                </div>
+            </div>
+
             <div class="wizard-page-wrapper animate-fade-in-up">
                 <div id="booking-wizard-mount"></div>
             </div>

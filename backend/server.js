@@ -18,6 +18,8 @@ app.use('/frontend', express.static(frontendPath));
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/bookings', require('./routes/bookings'));
 app.use('/api/admin', require('./routes/admin'));
+app.use('/api/employee', require('./routes/employee'));
+app.use('/api/customer', require('./routes/customer'));
 
 // Root endpoint redirect or standard response
 app.get('/', (req, res) => {

@@ -11,18 +11,34 @@ document.addEventListener('DOMContentLoaded', () => {
             const email = loginForm.querySelector('input[type="email"]').value;
             const password = loginForm.querySelector('input[type="password"]').value;
 
-            // Mock Authentication Logic
-            // In production, this would be a fetch() call to /api/auth/login
-            console.log('Authenticating:', email);
+            fetch('http://localhost:5000/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    localStorage.setItem('token', data.token);
+                    
+                    const userRole = data.user.role || data.role; // Ensure we grab the role
+                    localStorage.setItem('userRole', userRole);   // Save it for route guards
 
-            // Redirect based on email domain/prefix (Simplified for demo)
-            if (email.startsWith('admin')) {
-                window.location.href = '../admin/index.html';
-            } else if (email.startsWith('employee')) {
-                window.location.href = '../employee/index.html';
-            } else {
-                window.location.href = '../customer/index.html';
-            }
+                    if (userRole === 'admin') {
+                        window.location.replace('/frontend/admin/index.html');
+                    } else if (userRole === 'employee') {
+                        window.location.replace('/frontend/employee/index.html');
+                    } else {
+                        window.location.replace('/frontend/customer/index.html');
+                    }
+                } else {
+                    alert(data.message || 'Login failed');
+                }
+            })
+            .catch(err => {
+                console.error('Login error:', err);
+                alert('An error occurred during login');
+            });
         });
     }
 });
