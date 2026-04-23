@@ -1,0 +1,104 @@
+<div class="loyalty-container animate-fade-in">
+    <!-- Points Overview Card -->
+    <div class="loyalty-card-main">
+        <div class="loyalty-card-content">
+            <div class="loyalty-icon-box">
+                <i class="fas fa-crown"></i>
+            </div>
+            <div class="points-info">
+                <span class="points-label">Your Balance</span>
+                <h1 id="loyalty-points-total">1,250</h1>
+                <span class="points-unit">Points</span>
+            </div>
+        </div>
+        <div class="loyalty-card-glow"></div>
+    </div>
+
+    <!-- Milestone Tracker -->
+    <div class="milestone-section">
+        <div class="milestone-header">
+            <h3>Next Achievement</h3>
+            <span id="milestone-remaining">250 pts to Free Wash</span>
+        </div>
+        <div class="milestone-progress-container">
+            <div class="milestone-track">
+                <div class="milestone-fill" id="milestone-fill" style="width: 75%;"></div>
+            </div>
+            <div class="milestone-markers">
+                <div class="marker reached"><i class="fas fa-check"></i></div>
+                <div class="marker reached"><i class="fas fa-check"></i></div>
+                <div class="marker active pulse-gold"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Redeemable Rewards Grid -->
+    <section class="rewards-grid-section">
+        <h3 class="section-title">Redeem Rewards</h3>
+        <div class="rewards-grid">
+            <!-- Reward Card 1 -->
+            <div class="reward-card unlocked">
+                <div class="reward-icon"><i class="fas fa-percentage"></i></div>
+                <div class="reward-body">
+                    <h4>10% Off Next Wash</h4>
+                    <p>Standard/Pro packages</p>
+                    <span class="reward-cost">500 Points</span>
+                </div>
+                <button class="btn-redeem" onclick="redeemReward('10% Off', 500)">Redeem</button>
+            </div>
+
+            <!-- Reward Card 2 -->
+            <div class="reward-card unlocked">
+                <div class="reward-icon"><i class="fas fa-sparkles"></i></div>
+                <div class="reward-body">
+                    <h4>Free Interior Polish</h4>
+                    <p>Added to any wash</p>
+                    <span class="reward-cost">800 Points</span>
+                </div>
+                <button class="btn-redeem" onclick="redeemReward('Interior Polish', 800)">Redeem</button>
+            </div>
+
+            <!-- Reward Card 3 (Locked) -->
+            <div class="reward-card locked">
+                <div class="reward-icon"><i class="fas fa-gem"></i></div>
+                <div class="reward-body">
+                    <h4>Elite Ceramic Coat</h4>
+                    <p>Premium finish treatment</p>
+                    <span class="reward-cost">2,500 Points</span>
+                </div>
+                <button class="btn-redeem disabled">Locked</button>
+                <div class="lock-overlay"><i class="fas fa-lock"></i></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Digital Coupons Section -->
+    <section class="coupons-section">
+        <h3 class="section-title">My Coupons</h3>
+        <div class="coupons-scroll">
+            <div class="coupon-ticket">
+                <div class="coupon-main">
+                    <span class="coupon-tag">VALID</span>
+                    <h2 class="coupon-val">15% OFF</h2>
+                    <p class="coupon-desc">Ramadan Special</p>
+                </div>
+                <div class="coupon-divider"></div>
+                <div class="coupon-action">
+                    <button onclick="applyCoupon('RAMADAN15')">APPLY</button>
+                </div>
+            </div>
+
+            <div class="coupon-ticket expired">
+                <div class="coupon-main">
+                    <span class="coupon-tag">USED</span>
+                    <h2 class="coupon-val">RS. 500</h2>
+                    <p class="coupon-desc">Signup Bonus</p>
+                </div>
+                <div class="coupon-divider"></div>
+                <div class="coupon-action">
+                    <button disabled>USED</button>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

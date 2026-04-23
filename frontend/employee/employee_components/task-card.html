@@ -1,0 +1,47 @@
+<!-- Template for Task Card (3-Tier Work Order Layout) -->
+<div class="task-card pending" data-status="pending" id="task-{{id}}">
+    <!-- Tier 1: Service & Time Slot -->
+    <div class="task-tier tier-top">
+        <div class="service-meta">
+            <h3 class="service-title">Hydro-Dynamic Exterior</h3>
+            <span class="booking-id">#BK-8842</span>
+        </div>
+        <span class="time-slot">02:30 PM</span>
+    </div>
+
+    <!-- Tier 2: Vehicle Core Info -->
+    <div class="task-tier tier-middle vehicle-info">
+        <div class="vehicle-icon-box">
+            <i class="fas fa-car-side"></i>
+        </div>
+        <div class="vehicle-details">
+            <h4>Honda Civic - Black</h4>
+            <div class="vehicle-subtexts">
+                <span>Plate: ABC-1234</span>
+                <span class="bay-tag">Bay 03</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tier 3: Action Buttons & Progress -->
+    <div class="task-tier tier-bottom">
+        <div class="task-actions">
+            <button class="task-btn btn-start" onclick="updateJobStatus('{{id}}', 'in-progress')">Start</button>
+            <button class="task-btn btn-complete" onclick="updateJobStatus('{{id}}', 'completed')">Complete</button>
+        </div>
+        
+        <div class="completed-badge">
+            <i class="fas fa-check-circle"></i> JOB COMPLETED
+        </div>
+
+        <!-- Extra Actions (Report Issue) -->
+        <button class="issue-btn" onclick="openIssueModal('{{id}}')">
+            <i class="fas fa-exclamation-triangle"></i> Report Issue
+        </button>
+
+        <!-- Progress Visualizer (Subtle bar) -->
+        <div class="task-progress-container">
+            <div class="progress-bar"></div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,142 @@
+<!-- User Management Section -->
+<div class="content-view" id="user-management">
+    <div class="management-tabs-container">
+        <div class="management-tabs">
+            <button class="tab-btn active" data-tab="customer-table">Customer List</button>
+            <button class="tab-btn" data-tab="employee-table">Employee List</button>
+        </div>
+        <button class="btn-add-user">
+            <i class="fas fa-plus"></i>
+            <span>Add New User</span>
+        </button>
+    </div>
+
+    <!-- Customer Table -->
+    <div class="admin-table-container active" id="customer-table">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Total Bookings</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>#CUST-1024</td>
+                    <td>Ahmad Hassan</td>
+                    <td>ahmad.h@example.com</td>
+                    <td>+92 300 1234567</td>
+                    <td>12</td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="action-btn btn-edit" title="Edit Customer"><i class="fas fa-edit"></i></button>
+                            <button class="action-btn btn-delete" title="Delete Customer"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>#CUST-1025</td>
+                    <td>Sara Khan</td>
+                    <td>sara.k@example.com</td>
+                    <td>+92 321 7654321</td>
+                    <td>5</td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="action-btn btn-edit" title="Edit Customer"><i class="fas fa-edit"></i></button>
+                            <button class="action-btn btn-delete" title="Delete Customer"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>#CUST-1026</td>
+                    <td>Bilal Ahmed</td>
+                    <td>bilal.a@example.com</td>
+                    <td>+92 333 9876543</td>
+                    <td>8</td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="action-btn btn-edit" title="Edit Customer"><i class="fas fa-edit"></i></button>
+                            <button class="action-btn btn-delete" title="Delete Customer"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Employee Table -->
+    <div class="admin-table-container" id="employee-table">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Skill Type</th>
+                    <th>Status</th>
+                    <th>Joined Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>#EMP-201</td>
+                    <td>Zubair Malik</td>
+                    <td>Detailing Expert</td>
+                    <td>
+                        <span class="status-badge status-available">
+                            <span class="badge-dot"></span>
+                            Available
+                        </span>
+                    </td>
+                    <td>15 Mar 2024</td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="action-btn btn-edit" title="Edit Employee"><i class="fas fa-edit"></i></button>
+                            <button class="action-btn btn-delete" title="Delete Employee"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>#EMP-202</td>
+                    <td>Usman Sheikh</td>
+                    <td>Ceramic Specialist</td>
+                    <td>
+                        <span class="status-badge status-on-job">
+                            <span class="badge-dot"></span>
+                            On Job
+                        </span>
+                    </td>
+                    <td>02 Jan 2024</td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="action-btn btn-edit" title="Edit Employee"><i class="fas fa-edit"></i></button>
+                            <button class="action-btn btn-delete" title="Delete Employee"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>#EMP-203</td>
+                    <td>Hamza Tariq</td>
+                    <td>Interior Cleaner</td>
+                    <td>
+                        <span class="status-badge status-off-duty">
+                            <span class="badge-dot"></span>
+                            Off-Duty
+                        </span>
+                    </td>
+                    <td>20 Feb 2024</td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="action-btn btn-edit" title="Edit Employee"><i class="fas fa-edit"></i></button>
+                            <button class="action-btn btn-delete" title="Delete Employee"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

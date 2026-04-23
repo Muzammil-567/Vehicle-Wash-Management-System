@@ -1,0 +1,60 @@
+<!-- Revenue Analytics Section -->
+<div class="content-view" id="revenue-reports">
+    <div class="action-bar">
+        <div style="display: flex; align-items: center; gap: 20px;">
+            <h2 style="font-size: 1.5rem; color: var(--accent-green);">Revenue Analytics</h2>
+            <div class="booking-filters" style="margin-bottom: 0;">
+                <button class="filter-btn active" data-range="daily">Daily</button>
+                <button class="filter-btn" data-range="weekly">Weekly</button>
+                <button class="filter-btn" data-range="monthly">Monthly</button>
+                <button class="filter-btn" data-range="yearly">Yearly</button>
+            </div>
+        </div>
+        <button class="export-btn" id="generate-report-btn">
+            <i class="fas fa-file-export"></i>
+            <span>Export Report</span>
+        </button>
+    </div>
+
+    <div class="analytics-container">
+        <!-- Main Revenue Chart -->
+        <div class="chart-viewport" id="revenue-chart-viewport">
+            <div id="chart-tooltip" class="chart-tooltip"></div>
+            <!-- Dynamic Bars Injected by JS -->
+        </div>
+
+        <!-- Service-wise Breakdown -->
+        <div class="breakdown-card">
+            <h3 style="color: white; font-size: 1.1rem; margin-bottom: 10px;">Service Breakdown</h3>
+            <div id="service-breakdown-list">
+                <!-- Dynamic Progress Bars Injected by JS -->
+            </div>
+        </div>
+    </div>
+
+    <div class="financial-stats">
+        <div class="fin-card">
+            <span class="fin-label">Total Profit</span>
+            <span class="fin-value" id="stat-total-profit">RS. 158,240</span>
+        </div>
+        <div class="fin-card">
+            <span class="fin-label">Tax/Deductions</span>
+            <span class="fin-value" id="stat-tax" style="color: #ff4b2b;">- RS. 12,450</span>
+        </div>
+        <div class="fin-card">
+            <span class="fin-label">Net Earnings</span>
+            <span class="fin-value" id="stat-net-earnings" style="color: #00f2ff;">RS. 145,790</span>
+        </div>
+    </div>
+
+    <!-- Export Loading State Overlay -->
+    <div class="export-status" id="export-modal">
+        <i class="fas fa-file-pdf" style="font-size: 3rem; color: var(--accent-green); margin-bottom: 20px;"></i>
+        <h2 style="color: white;">Generating PDF Report</h2>
+        <p style="color: var(--text-dim); margin-top: 10px;">Compiling financial data and charts...</p>
+        <div class="loader-bar-wrap">
+            <div class="loader-bar-fill"></div>
+        </div>
+        <span style="color: var(--accent-green); font-size: 0.8rem; font-weight: 700;">PROCESING... 84%</span>
+    </div>
+</div>

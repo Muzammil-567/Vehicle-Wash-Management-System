@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Details | GlossFlow</title>
+    <!-- Core & Global Styles -->
+    <link rel="stylesheet" href="../css/global.css">
+    <!-- Modular Section Styles -->
+    <link rel="stylesheet" href="../css/sections/details-page.css">
+    <link rel="stylesheet" href="../css/sections/contact-footer.css">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="details-main">
+
+    <!-- Navbar Component -->
+    <div id="navbar-placeholder"></div>
+
+    <main class="container">
+        <!-- Hero Deep Dive -->
+        <section class="details-hero">
+            <div class="details-image-container animate-on-scroll">
+                <img id="detail-image" src="https://images.unsplash.com/photo-1601362840469-51e4d8d59085?auto=format&fit=crop&q=80&w=800" alt="Service Detail">
+            </div>
+            
+            <div class="details-content animate-on-scroll">
+                <h1 id="detail-title">Loading Service...</h1>
+                <p id="detail-description" class="details-description">
+                    Fetching the ultimate detailing experience for your vehicle. Please wait while we load our professional service data.
+                </p>
+                
+                <!-- Price Card -->
+                <div class="price-summary-card">
+                    <div id="detail-price" class="price-tag">PKR 0</div>
+                    <button class="btn-primary" style="width: 100%;">Confirm Selection</button>
+                    <p style="color: var(--text-dim); font-size: 0.8rem; margin-top: 15px; text-align: center;">
+                        <i class="fas fa-info-circle"></i> Prices may vary based on vehicle size.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- What's Included -->
+        <section class="included-section">
+            <div class="section-header">
+                <h2>What's <span class="text-glow">Included</span></h2>
+            </div>
+            <div id="included-grid" class="included-grid animate-on-scroll">
+                <!-- Dynamically populated -->
+            </div>
+        </section>
+
+        <!-- Process Timeline -->
+        <section class="timeline-section">
+            <div class="section-header">
+                <h2>The <span class="text-glow">Process</span></h2>
+            </div>
+            <div id="timeline-container" class="timeline-container animate-on-scroll">
+                <!-- Dynamically populated -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Logic Scripts -->
+    <script src="../js/component-loader.js"></script>
+    <script src="../js/details-handler.js"></script>
+</body>
+</html>

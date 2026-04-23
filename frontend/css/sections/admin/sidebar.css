@@ -1,0 +1,68 @@
+/* Admin Sidebar Styles */
+.admin-sidebar {
+    width: var(--sidebar-width);
+    background-color: var(--sidebar-bg);
+    border-right: 1px solid rgba(0, 255, 148, 0.2);
+    display: flex;
+    flex-direction: column;
+    position: relative; /* Change from fixed to relative for flex flow */
+    height: 100vh;
+    overflow-y: auto;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1001;
+    flex-shrink: 0;
+}
+
+.sidebar-header {
+    padding: 30px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.sidebar-nav {
+    flex: 1;
+    padding: 20px 0;
+    overflow-y: auto;
+}
+
+.sidebar-nav ul {
+    list-style: none;
+}
+
+.sidebar-nav li {
+    margin-bottom: 5px;
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    padding: 15px 30px;
+    color: var(--text-dim);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    gap: 15px;
+}
+
+.sidebar-link i {
+    width: 20px;
+    color: var(--accent-green);
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+}
+
+.sidebar-link:hover {
+    background: rgba(0, 255, 148, 0.05);
+    color: var(--accent-green);
+    padding-left: 35px;
+    box-shadow: inset 3px 0 0 var(--accent-green);
+}
+
+.sidebar-link:hover i {
+    text-shadow: 0 0 10px var(--accent-green);
+}
+
+.sidebar-link.active {
+    background: rgba(0, 255, 148, 0.1);
+    color: var(--accent-green);
+    box-shadow: inset 3px 0 0 var(--accent-green);
+}

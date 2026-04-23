@@ -1,0 +1,87 @@
+<!-- Feedback & Complaint Management Section -->
+<div class="content-view" id="reports-feedback">
+    <div class="action-bar">
+        <h2 style="font-size: 1.5rem; color: var(--accent-green);">Customer Feedback & Support</h2>
+        <div class="booking-filters" style="margin-bottom: 0;">
+            <button class="filter-btn active" data-feedback-filter="all">All Tickets</button>
+            <button class="filter-btn" data-feedback-filter="high">High Priority</button>
+            <button class="filter-btn" data-feedback-filter="pending">Pending</button>
+        </div>
+    </div>
+
+    <div class="feedback-list" id="active-feedback-list">
+            <!-- Feedback Ticket 1 -->
+            <div class="feedback-ticket">
+                <div class="customer-details">
+                    <h4 style="color: white;">Kashif Raza</h4>
+                    <p>Booking ID: #BW-9842</p>
+                </div>
+                <div class="star-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+                <div class="comment-preview">
+                    "Excellent service! The ceramic coating looks amazing. Highly recommended."
+                </div>
+                <div class="ticket-status-wrap">
+                    <span class="status-pill status-completed">Resolved</span>
+                    <div class="ticket-actions">
+                        <button class="btn-ticket-action">View</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feedback Ticket 2 -->
+            <div class="feedback-ticket">
+                <div class="customer-details">
+                    <h4 style="color: white;">Saeed Anwar</h4>
+                    <p>Booking ID: #BW-9855</p>
+                </div>
+                <div class="star-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="far fa-star"></i>
+                    <i class="far fa-star"></i>
+                </div>
+                <div class="comment-preview">
+                    "Water pressure was a bit low, and the interior cleaning missed the cup holders."
+                </div>
+                <div class="ticket-status-wrap">
+                    <span class="status-pill status-pending">Pending</span>
+                    <div class="ticket-actions">
+                        <button class="btn-ticket-action">Reply</button>
+                        <button class="btn-ticket-action btn-resolve">Mark Resolved</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feedback Ticket 3 -->
+            <div class="feedback-ticket">
+                <div class="customer-details">
+                    <h4 style="color: white;">Fatima Sheikh</h4>
+                    <p>Booking ID: #BW-9860</p>
+                </div>
+                <div class="star-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="far fa-star"></i>
+                </div>
+                <div class="comment-preview">
+                    "Great overall experience, but the appointment started 15 mins late."
+                </div>
+                <div class="ticket-status-wrap">
+                    <span class="status-pill status-approved" style="background: rgba(0, 123, 255, 0.1); color: #007bff;">Investigating</span>
+                    <div class="ticket-actions">
+                        <button class="btn-ticket-action">View Thread</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

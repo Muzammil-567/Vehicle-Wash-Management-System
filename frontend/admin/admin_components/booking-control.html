@@ -1,0 +1,61 @@
+<!-- Booking Control Center -->
+<div class="content-view" id="booking-control">
+    <div class="booking-stream-header">
+        <div class="stream-title">
+            <div class="pulse-dot"></div>
+            <h2 style="font-size: 1.5rem;">Live Booking Stream</h2>
+        </div>
+        
+        <div class="view-toggle">
+            <button class="toggle-btn active" data-view="list">List View</button>
+            <button class="toggle-btn" data-view="calendar">Calendar View</button>
+        </div>
+    </div>
+
+    <div class="booking-filters-container">
+        <div class="booking-filters">
+            <button class="filter-btn active" data-status="all">All</button>
+            <button class="filter-btn" data-status="pending">Pending</button>
+            <button class="filter-btn" data-status="approved">Approved</button>
+            <button class="filter-btn" data-status="completed">Completed</button>
+        </div>
+    </div>
+
+    <!-- Booking List View -->
+    <div class="booking-list-container active" id="booking-list-view">
+        <div class="booking-list" id="active-booking-list">
+            <!-- Dynamic bookings will be re-rendered here -->
+            <div class="loader-container" style="display: flex; justify-content: center; padding: 40px;">
+                <div class="spinner" style="width: 30px; height: 30px; border: 3px solid rgba(0, 255, 148, 0.1); border-top-color: var(--accent-green); border-radius: 50%; animation: spin 0.8s linear infinite;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Calendar View Container -->
+    <div class="calendar-view-container" id="booking-calendar-view">
+        <div class="calendar-nav-header">
+            <h3 class="current-month-display" id="month-display">April 2024</h3>
+            <div class="calendar-nav-btns">
+                <button class="cal-nav-btn" id="prev-month" title="Previous Month">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="cal-nav-btn" id="next-month" title="Next Month">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="calendar-grid">
+            <div class="day-header">Mon</div>
+            <div class="day-header">Tue</div>
+            <div class="day-header">Wed</div>
+            <div class="day-header">Thu</div>
+            <div class="day-header">Fri</div>
+            <div class="day-header">Sat</div>
+            <div class="day-header">Sun</div>
+            
+            <!-- JavaScript will inject .calendar-day elements here -->
+            <div id="calendar-days-injected" style="display: contents;"></div>
+        </div>
+    </div>
+</div>

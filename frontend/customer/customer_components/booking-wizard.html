@@ -1,0 +1,316 @@
+<div class="booking-wizard-container animate-fade-in">
+    <!-- Task 1: Progress Stepper -->
+    <div class="booking-stepper">
+        <div class="step active" id="step-marker-1">
+            <div class="step-circle">1</div>
+            <span class="step-label">Vehicle</span>
+        </div>
+        <div class="stepper-line"></div>
+        <div class="step" id="step-marker-2">
+            <div class="step-circle">2</div>
+            <span class="step-label">Service</span>
+        </div>
+        <div class="stepper-line"></div>
+        <div class="step" id="step-marker-3">
+            <div class="step-circle">3</div>
+            <span class="step-label">Schedule</span>
+        </div>
+        <div class="stepper-line"></div>
+        <div class="step" id="step-marker-4">
+            <div class="step-circle">4</div>
+            <span class="step-label">Review</span>
+        </div>
+    </div>
+
+    <!-- Task 2: Selection Areas -->
+    <div class="wizard-step-content-container">
+        <!-- Step 1: Vehicle Selection -->
+        <div class="wizard-step-view active" id="wizard-step-1">
+            <div class="selection-header">
+                <h3>Select Your Vehicle</h3>
+                <p>Choosing the right vehicle ensures we bring the proper equipment.</p>
+            </div>
+
+            <!-- Vehicle Grid (Reusing Gallery Styling) -->
+            <div class="vehicle-selection-grid" id="booking-vehicle-grid">
+                <!-- These would normally be populated dynamically, but here's Step 1 structure -->
+                <div class="vehicle-card selectable" onclick="selectWizardVehicle(this, 'BK-SED-1')">
+                    <div class="selection-indicator">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="brand-vignette">
+                        <i class="fas fa-car-side"></i>
+                    </div>
+                    <div class="card-info">
+                        <h4 class="nickname">White City</h4>
+                        <span class="plate">ABC-1234</span>
+                    </div>
+                </div>
+
+                <div class="vehicle-card selectable" onclick="selectWizardVehicle(this, 'BK-SUV-2')">
+                    <div class="selection-indicator">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="brand-vignette">
+                        <i class="fas fa-truck-pickup"></i>
+                    </div>
+                    <div class="card-info">
+                        <h4 class="nickname">Desert Storm</h4>
+                        <span class="plate">KJH-882</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2: Service & Add-ons -->
+        <div class="wizard-step-view" id="wizard-step-2" style="display: none;">
+            <div class="selection-header">
+                <h3>Choose Service Package</h3>
+                <p>Select a base package tailored to your vehicle's needs.</p>
+            </div>
+
+            <!-- Service Packages Grid -->
+            <div class="service-packages-grid">
+                <div class="service-card" onclick="selectWizardPackage(this, 'starter', 1000)">
+                    <div class="service-meta">
+                        <h4>Starter</h4>
+                        <p class="service-price">RS. 1,000</p>
+                    </div>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check"></i> Exterior Wash</li>
+                        <li><i class="fas fa-check"></i> Tire Shine</li>
+                    </ul>
+                </div>
+
+                <div class="service-card recommended" onclick="selectWizardPackage(this, 'pro', 2500)">
+                    <div class="badge-recommended">RECOMMENDED</div>
+                    <div class="service-meta">
+                        <h4>Pro Wash</h4>
+                        <p class="service-price">RS. 2,500</p>
+                    </div>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check"></i> Deep Clean</li>
+                        <li><i class="fas fa-check"></i> Interior Vac</li>
+                        <li><i class="fas fa-check"></i> Wax Polish</li>
+                    </ul>
+                </div>
+
+                <div class="service-card" onclick="selectWizardPackage(this, 'elite', 4500)">
+                    <div class="service-meta">
+                        <h4>Elite Detail</h4>
+                        <p class="service-price">RS. 4,500</p>
+                    </div>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check"></i> Ceramic Coating</li>
+                        <li><i class="fas fa-check"></i> Engine Detail</li>
+                        <li><i class="fas fa-check"></i> Full Polish</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Add-ons Section -->
+            <div class="addons-section animate-fade-in-up">
+                <h4 class="section-subtitle">Enhance Your Wash</h4>
+                <div class="addons-list">
+                    <div class="addon-item">
+                        <div class="addon-info">
+                            <span>Engine Wash</span>
+                            <span class="addon-price">+Rs. 500</span>
+                        </div>
+                        <label class="neon-switch">
+                            <input type="checkbox" onchange="toggleWizardAddon('engine', 500, this)">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="addon-item">
+                        <div class="addon-info">
+                            <span>Odor Eliminator</span>
+                            <span class="addon-price">+Rs. 300</span>
+                        </div>
+                        <label class="neon-switch">
+                            <input type="checkbox" onchange="toggleWizardAddon('odor', 300, this)">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="addon-item">
+                        <div class="addon-info">
+                            <span>Rain Repellent</span>
+                            <span class="addon-price">+Rs. 400</span>
+                        </div>
+                        <label class="neon-switch">
+                            <input type="checkbox" onchange="toggleWizardAddon('rain', 400, this)">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 3: Scheduling & Confirmation -->
+        <div class="wizard-step-view" id="wizard-step-3" style="display: none;">
+            <div class="selection-header">
+                <h3>Select Schedule</h3>
+                <p>Choose your preferred date and time for the service.</p>
+            </div>
+
+            <!-- Date Selector (Horizontal Scroll) -->
+            <div class="date-selector-container">
+                <h4 class="section-subtitle">Pick a Date</h4>
+                <div class="date-strip" id="date-strip">
+                    <!-- Injected by JS -->
+                </div>
+            </div>
+
+            <!-- Time Slots Section -->
+            <div class="timeslot-section animate-fade-in-up">
+                <h4 class="section-subtitle">Available Slots</h4>
+                
+                <div class="slot-group">
+                    <h5>Morning</h5>
+                    <div class="slot-grid">
+                        <button class="slot-btn" onclick="selectWizardTime('09:00 AM', this)">09:00 AM</button>
+                        <button class="slot-btn full" disabled>
+                            <span>10:30 AM</span>
+                            <span class="full-badge">FULL</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="slot-group">
+                    <h5>Afternoon</h5>
+                    <div class="slot-grid">
+                        <button class="slot-btn" onclick="selectWizardTime('01:00 PM', this)">01:00 PM</button>
+                        <button class="slot-btn" onclick="selectWizardTime('03:30 PM', this)">03:30 PM</button>
+                    </div>
+                </div>
+
+                <div class="slot-group">
+                    <h5>Evening</h5>
+                    <div class="slot-grid">
+                        <button class="slot-btn" onclick="selectWizardTime('06:00 PM', this)">06:00 PM</button>
+                        <button class="slot-btn" onclick="selectWizardTime('07:30 PM', this)">07:30 PM</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Task 5: Final Summary Preview -->
+            <div id="scheduling-preview" class="scheduling-preview-text">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+
+        <!-- Step 4: Review & Final Confirmation -->
+        <div class="wizard-step-view" id="wizard-step-4" style="display: none;">
+            <div class="selection-header">
+                <h3>Review Your Booking</h3>
+                <p>Check your details before we lock in your time slot.</p>
+            </div>
+
+            <div class="review-summary-container">
+                <!-- Vehicle & Service Summary -->
+                <div class="review-card">
+                    <div class="review-row">
+                        <i class="fas fa-car-side"></i>
+                        <div class="review-text">
+                            <span class="label">Vehicle</span>
+                            <span class="val" id="review-vehicle-name">White City (ABC-1234)</span>
+                        </div>
+                    </div>
+                    <div class="review-row">
+                        <i class="fas fa-concierge-bell"></i>
+                        <div class="review-text">
+                            <span class="label">Service</span>
+                            <span class="val" id="review-service-name">Elite Detail</span>
+                        </div>
+                    </div>
+                    <div class="review-row">
+                        <i class="fas fa-calendar-alt"></i>
+                        <div class="review-text">
+                            <span class="label">Schedule</span>
+                            <span class="val" id="review-schedule-time">Mon, 20 Apr @ 03:30 PM</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Price Breakdown -->
+                <div class="price-breakdown-card">
+                    <h4 class="section-subtitle">Payment Details</h4>
+                    <div class="summary-row">
+                        <span>Package Subtotal</span>
+                        <span id="review-subtotal">RS. 4,500</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Add-ons Total</span>
+                        <span id="review-addons-total">RS. 500</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Tax (Estimated)</span>
+                        <span id="review-tax">RS. 150</span>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="summary-row total">
+                        <span>Grand Total</span>
+                        <span id="review-grand-total" class="neon-amount">RS. 5,150</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Final Success View -->
+        <div class="wizard-step-view" id="wizard-success" style="display: none;">
+            <div class="success-container animate-bounce-in">
+                <div class="success-checkmark-wrapper">
+                    <div class="success-check-circle">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="success-glow-ring"></div>
+                </div>
+                <h2>Booking Confirmed!</h2>
+                <p>Your car wash is scheduled. Get ready for that GlossFlow shine.</p>
+                
+                <div class="success-summary-mini">
+                    <div class="mini-row">
+                        <i class="fas fa-tint"></i>
+                        <span id="success-service-summary">Elite Detail</span>
+                    </div>
+                    <div class="mini-row">
+                        <i class="fas fa-clock"></i>
+                        <span id="success-time-summary">Mon, 20 Apr @ 03:30 PM</span>
+                    </div>
+                </div>
+
+                <div class="success-actions">
+                    <button class="btn-wizard-next ready-to-pulse" onclick="document.querySelector('[data-tab=home]').click()">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Track My Wash</span>
+                    </button>
+                    <button class="btn-link" onclick="location.reload()">Back to Dashboard</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Summary Widget (Persistent) -->
+    <div class="booking-summary-bar" id="summary-bar" style="display: none;">
+        <div class="summary-info">
+            <span id="summary-text">No Package Selected</span>
+            <div class="total-price-wrap">
+                <span class="currency">RS.</span>
+                <span id="summary-total">0</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Task 3: Persistent Footer -->
+    <div class="wizard-footer">
+        <button class="btn-wizard-back" id="btn-back-step" style="display: none;" onclick="goBackToStep1()">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="btn-wizard-next" id="btn-next-step" disabled>
+            <span>Next: Choose Service</span>
+            <i class="fas fa-arrow-right"></i>
+        </button>
+    </div>
+</div>

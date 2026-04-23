@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GlossFlow | Premium Car Care Dashboard</title>
+
+    <!-- SEO & Icons -->
+    <meta name="description"
+        content="Manage your vehicle care with GlossFlow. Book services, track progress, and manage your garage in one premium dashboard.">
+    <link rel="icon" type="image/png" href="../assets/images/logo/favicon.png">
+
+    <!-- External Fonts & Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- CSS Dependencies -->
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/sections/customer/dashboard.css">
+</head>
+
+<body class="customer-shell">
+
+    <!-- =============================================
+         DESKTOP LAYOUT SHELL (min-width: 1024px)
+         ============================================= -->
+    <div class="desktop-shell">
+
+        <!-- Left Sidebar: Fixed Navigation -->
+        <aside class="desktop-sidebar" id="desktop-sidebar">
+            <!-- Logo -->
+            <div class="sidebar-logo">
+                <i class="fas fa-soap"></i>
+                <span>Gloss<em>Flow</em></span>
+            </div>
+
+            <!-- Primary Navigation -->
+            <nav class="sidebar-nav">
+                <div class="nav-item active" data-tab="home">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-item" data-tab="bookings">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Reservations</span>
+                </div>
+                <div class="nav-item" data-tab="garage">
+                    <i class="fas fa-car"></i>
+                    <span>My Garage</span>
+                </div>
+                <div class="nav-item" data-tab="rewards">
+                    <i class="fas fa-trophy"></i>
+                    <span>Rewards Hub</span>
+                </div>
+                <div class="nav-item" data-tab="help">
+                    <i class="fas fa-question-circle"></i>
+                    <span>Help Center</span>
+                </div>
+                <div class="nav-item" data-tab="profile">
+                    <i class="fas fa-user"></i>
+                    <span>Profile</span>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area: 2-Column Viewport -->
+        <div class="desktop-main">
+
+            <!-- ── Desktop Top Header Bar ─────────────────── -->
+            <header class="desktop-topbar">
+                <div class="topbar-left">
+                    <h2 id="page-title">Dashboard</h2>
+                    <span class="topbar-date" id="topbar-date"></span>
+                </div>
+                <div class="topbar-center">
+                    <div class="desktop-search-bar">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="desktop-search-input" placeholder="Search services, bookings, vehicles…">
+                        <kbd class="search-shortcut">⌘K</kbd>
+                    </div>
+                </div>
+                <div class="topbar-right">
+                    <button class="topbar-icon-btn" id="btn-notifications" aria-label="Notifications">
+                        <i class="fas fa-bell"></i>
+                        <span class="notif-dot"></span>
+                    </button>
+                    <div class="topbar-avatar">
+                        <img src="../assets/images/placeholders/avatar-1.jpg" alt="Alex Bryant"
+                            onerror="this.src='https://ui-avatars.com/api/?name=Alex+Bryant&background=00FF94&color=000814'">
+                    </div>
+                </div>
+            </header>
+
+            <!-- ── 2-Column Dashboard Grid ────────────────── -->
+            <div class="dashboard-viewport-grid">
+
+                <!-- PRIMARY FEED ───────────────── -->
+                <div class="primary-feed" id="primary-feed">
+                    <!-- Live Tracking Card (inline, scrolls with content below) -->
+                    <div id="active-tracking-placeholder"></div>
+
+                    <!-- Dynamic SPA Content -->
+                    <main class="dashboard-content" id="main-content"></main>
+                </div>
+
+                <!-- SIDE PANEL ──────────────────── -->
+                <aside class="dashboard-side-panel">
+
+                    <!-- Member Status -->
+                    <div class="panel-section">
+                        <h3 class="panel-label"><i class="fas fa-id-badge"></i> Member Status</h3>
+                        <div class="status-card-premium">
+                            <div class="status-icon">
+                                <i class="fas fa-crown"></i>
+                            </div>
+                            <div class="status-meta">
+                                <h4>Elite Detailer</h4>
+                                <span class="member-since">Member since Jan 2024</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Stats -->
+                    <div class="panel-section">
+                        <h3 class="panel-label"><i class="fas fa-chart-bar"></i> Quick Stats</h3>
+                        <div class="stats-grid-vertical">
+                            <div class="stat-premium-box">
+                                <div class="stat-icon-box">
+                                    <i class="fas fa-soap"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <span class="label">Total Washes</span>
+                                    <span class="value">24</span>
+                                </div>
+                            </div>
+                            <div class="stat-premium-box">
+                                <div class="stat-icon-box star">
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <span class="label">Gloss Points</span>
+                                    <span class="value">1,250</span>
+                                </div>
+                            </div>
+                            <div class="stat-premium-box">
+                                <div class="stat-icon-box trophy">
+                                    <i class="fas fa-car"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <span class="label">Vehicles</span>
+                                    <span class="value">3</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rewards Progress -->
+                    <div class="panel-section">
+                        <h3 class="panel-label"><i class="fas fa-trophy"></i> Next Reward</h3>
+                        <div class="rewards-preview-card">
+                            <div class="rewards-ring-wrapper">
+                                <svg class="rewards-ring-svg" viewBox="0 0 60 60">
+                                    <circle cx="30" cy="30" r="24" class="ring-track" />
+                                    <circle cx="30" cy="30" r="24" class="ring-fill" stroke-dasharray="150.8"
+                                        stroke-dashoffset="37.7" />
+                                </svg>
+                                <span class="ring-percentage">75%</span>
+                            </div>
+                            <div class="rewards-text">
+                                <h4>Free Polish</h4>
+                                <p>250 pts away from your next perk</p>
+                                <div class="reward-progress-bar">
+                                    <div class="reward-progress-fill" style="width: 75%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Upcoming Booking -->
+                    <div class="panel-section">
+                        <h3 class="panel-label"><i class="fas fa-calendar-check"></i> Next Booking</h3>
+                        <div class="upcoming-booking-card">
+                            <div class="booking-date-badge">
+                                <span class="month">APR</span>
+                                <span class="day">22</span>
+                            </div>
+                            <div class="booking-details">
+                                <h4>Full Interior Detail</h4>
+                                <span><i class="fas fa-clock"></i> 02:30 PM</span>
+                                <span><i class="fas fa-map-marker-alt"></i> Bay 03</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </aside>
+            </div>
+        </div>
+    </div>
+
+    <!-- =============================================
+         MOBILE LAYOUT (below 1024px)
+         ============================================= -->
+    <div class="mobile-shell">
+        <!-- Mobile Header -->
+        <header class="mobile-header">
+            <div class="mobile-profile-section">
+                <div class="avatar-wrapper">
+                    <img src="../assets/images/defaults/avatar-placeholder.png" alt="User"
+                        onerror="this.src='https://ui-avatars.com/api/?name=Alex&background=00FF94&color=000814'">
+                </div>
+                <div class="user-greeting">
+                    <span>Welcome back,</span>
+                    <h2 id="customer-name">Alex Bryant</h2>
+                </div>
+            </div>
+            <div class="mobile-header-actions">
+                <button class="header-icon-btn" id="btn-global-search-mobile"><i class="fas fa-search"></i></button>
+                <button class="header-icon-btn" id="btn-notifications-mobile">
+                    <i class="fas fa-bell"></i>
+                    <span class="notif-dot"></span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Mobile Scrollable Content -->
+        <div class="mobile-content" id="mobile-content">
+            <!-- Active Tracking -->
+            <div id="active-tracking-placeholder-mobile"></div>
+            <!-- SPA Tab Content -->
+            <main id="main-content-mobile"></main>
+            <div style="height: 100px;"></div>
+        </div>
+
+        <!-- Mobile Bottom Navigation -->
+        <nav class="customer-navbar" id="customer-navbar-placeholder"></nav>
+    </div>
+
+    <!-- =============================================
+         SHARED OVERLAYS & MODALS
+         ============================================= -->
+    <div id="notification-drawer-placeholder"></div>
+    <div id="feedback-modal-placeholder"></div>
+    <div id="global-search-placeholder"></div>
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- =============================================
+         SCRIPTS
+         ============================================= -->
+    <script src="../js/customer-logic/status-updater.js"></script>
+    <script src="../js/customer-logic/garage-handler.js"></script>
+    <script src="../js/customer-logic/history-handler.js"></script>
+    <script src="../js/customer-logic/booking-wizard.js"></script>
+    <script src="../js/customer-logic/notification-handler.js"></script>
+    <script src="../js/customer-logic/profile-handler.js"></script>
+    <script src="../js/customer-logic/loyalty-handler.js"></script>
+    <script src="../js/customer-logic/feedback-handler.js"></script>
+    <script src="../js/customer-logic/support-handler.js"></script>
+    <script src="../js/customer-logic/navigation.js"></script>
+    <script src="../js/customer-logic/customer-loader.js"></script>
+
+    <script>
+        // Set topbar date
+        const el = document.getElementById('topbar-date');
+        if (el) {
+            const now = new Date();
+            el.textContent = now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+        }
+    </script>
+</body>
+
+</html>

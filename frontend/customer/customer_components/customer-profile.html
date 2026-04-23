@@ -1,0 +1,124 @@
+<div class="customer-profile-container animate-fade-in">
+    <!-- Profile Header -->
+    <div class="profile-header-section">
+        <div class="profile-avatar-giant">
+            <img src="https://ui-avatars.com/api/?name=Alex+Johnson&background=00FF94&color=000814&size=128" alt="Profile avatar">
+            <div class="avatar-glow-pulse"></div>
+            <button class="btn-avatar-edit" title="Change Avatar">
+                <i class="fas fa-camera"></i>
+            </button>
+        </div>
+        <div class="profile-title-info">
+            <h2 id="prof-name-display">Alex Johnson</h2>
+            <p>Member since 2024 • Elite Status</p>
+        </div>
+    </div>
+
+    <!-- Scrollable Settings -->
+    <div class="profile-settings-scroll">
+        
+        <!-- Account Info Card -->
+        <div class="profile-card">
+            <div class="card-header-flex">
+                <h3>Account Information</h3>
+                <button class="btn-icon-pulse" id="btn-edit-inf" onclick="toggleProfileEdit()">
+                    <i class="fas fa-pen-nib"></i>
+                </button>
+            </div>
+            
+            <div class="settings-group" id="account-fields">
+                <div class="setting-row">
+                    <label>Full Name</label>
+                    <div class="setting-val-wrap">
+                        <span class="val-text" data-field="name">Alex Johnson</span>
+                        <input type="text" class="val-input" value="Alex Johnson" style="display: none;">
+                    </div>
+                </div>
+                <div class="setting-row">
+                    <label>Email Address</label>
+                    <div class="setting-val-wrap">
+                        <span class="val-text" data-field="email">alex.j@glossflow.com</span>
+                        <input type="email" class="val-input" value="alex.j@glossflow.com" style="display: none;">
+                    </div>
+                </div>
+                <div class="setting-row">
+                    <label>Phone Number</label>
+                    <div class="setting-val-wrap">
+                        <span class="val-text" data-field="phone">+92 312 4567890</span>
+                        <input type="tel" class="val-input" value="+92 312 4567890" style="display: none;">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Preferences Card -->
+        <div class="profile-card">
+            <h3>App Preferences</h3>
+            <div class="settings-group">
+                <div class="setting-row-flex">
+                    <div class="setting-label-stack">
+                        <span>Push Notifications</span>
+                        <small>Alerts about your car's progress</small>
+                    </div>
+                    <label class="neon-switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="setting-row-flex">
+                    <div class="setting-label-stack">
+                        <span>Email Reports</span>
+                        <small>Monthly wash history & receipts</small>
+                    </div>
+                    <label class="neon-switch">
+                        <input type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="setting-row-flex">
+                    <div class="setting-label-stack">
+                        <span>Dark Mode</span>
+                        <small>Optimized for neon aesthetics</small>
+                    </div>
+                    <label class="neon-switch">
+                        <input type="checkbox" checked disabled>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- security Card -->
+        <div class="profile-card">
+            <h3>Privacy & Security</h3>
+            <div class="settings-group">
+                <button class="btn-outline-glass" onclick="showPasswordModal()">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Change Account Password</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="profile-actions-footer">
+            <button class="btn-logout-neon" onclick="handleLogout()">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout Session</span>
+            </button>
+            <p style="text-align: center; color: var(--text-muted); font-size: 0.7rem; margin-top: 15px;">App Version 1.2.0 • GlossFlow Premium</p>
+        </div>
+    </div>
+</div>
+
+<!-- Simple Confirmation Modal (Logout) -->
+<div class="modal-overlay" id="logout-modal" style="display: none;">
+    <div class="modal-content glass-morphism">
+        <i class="fas fa-exclamation-triangle" style="font-size: 2.5rem; color: #ff4b2b; margin-bottom: 20px;"></i>
+        <h3>Ready to Leave?</h3>
+        <p>You will need to sign in again to manage your garage.</p>
+        <div class="modal-btns">
+            <button class="btn-secondary" onclick="hideLogoutModal()">Stay</button>
+            <button class="btn-primary" style="background: #ff4b2b;" onclick="confirmLogout()">Confirm Logout</button>
+        </div>
+    </div>
+</div>

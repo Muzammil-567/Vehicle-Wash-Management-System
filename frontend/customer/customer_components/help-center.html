@@ -1,0 +1,110 @@
+<div class="help-center-container animate-fade-in">
+    <!-- Hero Search Section -->
+    <section class="help-hero">
+        <h2 class="section-title">How can we help?</h2>
+        <div class="search-wrap-glass">
+            <i class="fas fa-search"></i>
+            <input type="text" id="faq-search" placeholder="Search for questions, issues, or topics..." onkeyup="filterFAQs()">
+        </div>
+    </section>
+
+    <!-- FAQ Accordion -->
+    <section class="faq-section">
+        <h3 class="subsection-title">Frequently Asked Questions</h3>
+        <div class="faq-list">
+            <!-- FAQ Item 1 -->
+            <div class="faq-item" onclick="toggleFAQ(this)">
+                <div class="faq-question">
+                    <span>How do I cancel my booking?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>You can cancel your booking directly from the "Bookings" tab. Open the booking details and click "Cancel Booking" at the bottom. Please note that cancellations within 2 hours of the slot may incur a small convenience fee.</p>
+                </div>
+            </div>
+
+            <!-- FAQ Item 2 -->
+            <div class="faq-item" onclick="toggleFAQ(this)">
+                <div class="faq-question">
+                    <span>What is your refund policy?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Refunds are processed within 3-5 business days to your original payment method. If you used GlossFlow Credits, the refund is instantaneous. No-shows are not eligible for refunds.</p>
+                </div>
+            </div>
+
+            <!-- FAQ Item 3 -->
+            <div class="faq-item" onclick="toggleFAQ(this)">
+                <div class="faq-question">
+                    <span>How do I reschedule a wash?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Go to your "Bookings" tab, select the active appointment, and choose "Reschedule." You can pick a new date and time from the available slots without any extra charges if done 4 hours in advance.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recent Ticket History -->
+    <section class="ticket-history-section">
+        <h3 class="subsection-title">Recent Tickets</h3>
+        <div class="ticket-mini-card">
+            <div class="ticket-info">
+                <span class="ref-id">#REF-8821</span>
+                <p>Issue with Payment processing</p>
+            </div>
+            <span class="support-status-badge status-resolved">Resolved</span>
+        </div>
+        <div class="ticket-mini-card">
+            <div class="ticket-info">
+                <span class="ref-id">#REF-9055</span>
+                <p>Incorrect vehicle plate in garage</p>
+            </div>
+            <span class="support-status-badge status-open">Open</span>
+        </div>
+    </section>
+
+    <!-- Support Ticket Form -->
+    <section class="support-form-section">
+        <div class="support-card glass-morphism" id="support-ticket-container">
+            <h3 class="section-title">Still need help?</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px;">Send a message to our support team and we'll get back to you within 60 minutes.</p>
+            
+            <form id="support-ticket-form" onsubmit="handleSupportSubmit(event)">
+                <div class="form-group-glass">
+                    <label>Issue Type</label>
+                    <select id="ticket-type" required>
+                        <option value="" disabled selected>Select an issue category</option>
+                        <option value="booking">Booking Management</option>
+                        <option value="payment">Payment & Refunds</option>
+                        <option value="technical">App Technical Issue</option>
+                        <option value="other">Other Inquiry</option>
+                    </select>
+                </div>
+
+                <div class="form-group-glass">
+                    <label>How can we help?</label>
+                    <textarea id="ticket-details" placeholder="Please describe your issue in detail..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn-primary btn-support-send">
+                    <span>Send Message</span>
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </form>
+
+            <!-- Success State (Hidden) -->
+            <div id="ticket-success-view" style="display: none; text-align: center; padding: 20px 0;">
+                <div class="success-icon-pulse">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h3>Ticket Sent!</h3>
+                <p>Your reference ID is <strong id="ticket-ref-id" class="text-glow">REF-XXXX</strong></p>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 10px;">Our team is reviewing your request.</p>
+                <button class="btn-outline-glass" style="margin-top: 20px;" onclick="resetSupportForm()">Send Another</button>
+            </div>
+        </div>
+    </section>
+</div>

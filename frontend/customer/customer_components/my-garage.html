@@ -1,0 +1,70 @@
+<div class="garage-container animate-fade-in">
+    <!-- Section Title -->
+    <div class="section-header">
+        <h2 class="garage-title">
+            <i class="fas fa-car-side"></i> My Garage
+        </h2>
+        <span class="vehicle-count">3 Vehicles</span>
+    </div>
+
+    <!-- Vehicle Grid -->
+    <div class="vehicle-grid">
+        <!-- Vehicle Card 1: Default Selection -->
+        <div class="vehicle-card selected" onclick="selectVehicle(this)">
+            <div class="card-glow"></div>
+            <div class="brand-vignette">
+                <i class="fas fa-car"></i>
+            </div>
+            <div class="vehicle-main-info">
+                <h3 class="nickname">White City</h3>
+                <p class="model-plate">Honda Civic | <span class="plate">ABC-1234</span></p>
+            </div>
+            <div class="card-footer">
+                <span class="last-wash">Last Wash: 12 Apr 2026</span>
+            </div>
+        </div>
+
+        <!-- Vehicle Card 2 -->
+        <div class="vehicle-card" onclick="selectVehicle(this)">
+            <div class="card-glow"></div>
+            <div class="brand-vignette">
+                <i class="fas fa-truck-pickup"></i>
+            </div>
+            <div class="vehicle-main-info">
+                <h3 class="nickname">Desert Storm</h3>
+                <p class="model-plate">Toyota Hilux | <span class="plate">KJH-882</span></p>
+            </div>
+            <div class="card-footer">
+                <span class="last-wash">Last Wash: 05 Apr 2026</span>
+            </div>
+        </div>
+
+        <!-- Vehicle Card 3 -->
+        <div class="vehicle-card" onclick="selectVehicle(this)">
+            <div class="card-glow"></div>
+            <div class="brand-vignette">
+                <i class="fas fa-charging-station"></i>
+            </div>
+            <div class="vehicle-main-info">
+                <h3 class="nickname">Cyber Bolt</h3>
+                <p class="model-plate">Tesla Model 3 | <span class="plate">EV-990</span></p>
+            </div>
+            <div class="card-footer">
+                <span class="last-wash">Last Wash: Never</span>
+            </div>
+        </div>
+
+        <!-- Add Vehicle Card -->
+        <div class="add-vehicle-card">
+            <div class="add-marker-outer">
+                <div class="add-marker-inner">
+                    <i class="fas fa-plus"></i>
+                </div>
+            </div>
+            <div class="add-text-meta">
+                <span class="main-label">Add New Vehicle</span>
+                <span class="sub-label">Register your car for faster booking</span>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,62 @@
+<div class="modal-overlay" id="feedback-modal" style="display: none;">
+    <div class="modal-content glass-morphism feedback-modal-content animate-scale-up">
+        
+        <!-- Feedback Form View -->
+        <div id="feedback-form-view">
+            <div class="feedback-header">
+                <h2>Rate Your Experience</h2>
+                <p>How was your car's recent transformation?</p>
+            </div>
+
+            <!-- Star Rating -->
+            <div class="star-rating-container">
+                <div class="stars-row" id="stars-row">
+                    <i class="fas fa-star feedback-star" data-index="1"></i>
+                    <i class="fas fa-star feedback-star" data-index="2"></i>
+                    <i class="fas fa-star feedback-star" data-index="3"></i>
+                    <i class="fas fa-star feedback-star" data-index="4"></i>
+                    <i class="fas fa-star feedback-star" data-index="5"></i>
+                </div>
+                <span id="rating-text" class="rating-label">Tap to Rate</span>
+            </div>
+
+            <!-- Quick Choice Categories -->
+            <div class="feedback-categories">
+                <span class="category-title">What did we do well?</span>
+                <div class="chips-container">
+                    <button class="feedback-chip" onclick="toggleFeedbackChip(this)">Professional Staff</button>
+                    <button class="feedback-chip" onclick="toggleFeedbackChip(this)">Quick Service</button>
+                    <button class="feedback-chip" onclick="toggleFeedbackChip(this)">Perfect Shine</button>
+                    <button class="feedback-chip" onclick="toggleFeedbackChip(this)">Value for Money</button>
+                </div>
+            </div>
+
+            <!-- Comment Area -->
+            <div class="comment-section">
+                <textarea id="feedback-comment" placeholder="Any additional notes? We love hearing from you..."></textarea>
+            </div>
+
+            <div class="feedback-actions">
+                <button class="btn-primary btn-submit-feedback" onclick="submitFeedback()">
+                    Submit Feedback
+                </button>
+                <button class="btn-cancel-link" onclick="closeFeedbackModal()">Maybe Later</button>
+            </div>
+        </div>
+
+        <!-- Success/Thank You View -->
+        <div id="feedback-success-view" style="display: none;">
+            <div class="success-animation">
+                <div class="heart-pulse">
+                    <i class="fas fa-heart"></i>
+                </div>
+            </div>
+            <h3>Thank You!</h3>
+            <p>Your feedback helps us maintain the GlossFlow standard.</p>
+            <div style="margin-top: 25px;">
+                <span class="loyalty-bonus">+50 Loyalty Points Earned!</span>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,50 @@
+<!-- Admin Shared Modal -->
+<div class="modal-overlay" id="admin-modal-overlay">
+    <div class="admin-modal">
+        <div class="modal-header">
+            <div style="display: flex; align-items: center;">
+                <i class="fas fa-magic neon-pulse-icon" id="modal-icon"></i>
+                <h2 id="modal-title">Modify Service</h2>
+            </div>
+            <button class="close-modal" id="close-modal-btn">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <form class="admin-form" id="service-form">
+            <div class="modal-image-preview" id="image-preview-container">
+                <i class="fas fa-image" style="font-size: 2rem; opacity: 0.3;"></i>
+            </div>
+
+            <div class="form-group" id="group-service-name">
+                <input type="text" id="service-name" required>
+                <label for="service-name">Service Title</label>
+            </div>
+            
+            <div class="form-group" id="group-service-price">
+                <input type="text" id="service-price" required>
+                <label for="service-price">Price (e.g. RS. 1500)</label>
+            </div>
+            
+            <div class="form-group" id="group-service-category">
+                <select id="service-category">
+                    <option value="exterior">Exterior</option>
+                    <option value="interior">Interior</option>
+                    <option value="detailing">Detailing</option>
+                    <option value="package">Package</option>
+                </select>
+                <label for="service-category" style="top: 0; font-size: 0.8rem;">Category</label>
+            </div>
+            
+            <div class="form-group" id="group-service-description">
+                <textarea id="service-description" rows="4" required></textarea>
+                <label for="service-description">Service Description</label>
+            </div>
+            
+            <div class="form-actions">
+                <button type="button" class="btn-cancel" id="cancel-modal-btn">Discard Changes</button>
+                <button type="submit" class="btn-save">Update Service</button>
+            </div>
+        </form>
+    </div>
+</div>

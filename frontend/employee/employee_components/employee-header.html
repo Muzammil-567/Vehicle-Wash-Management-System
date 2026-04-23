@@ -1,0 +1,37 @@
+<header class="employee-top-bar">
+    <div class="employee-profile">
+        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=100" alt="Employee" class="profile-avatar">
+        <div class="profile-info">
+            <h3 style="font-size: 0.85rem; font-family: 'Inter', sans-serif;">Alex Rivera</h3>
+            <p style="font-size: 0.7rem; color: var(--text-dim);">Cleaning Professional</p>
+        </div>
+    </div>
+
+    <div class="top-bar-actions">
+        <!-- Duty Status Widget Placeholder -->
+        <div id="duty-status-placeholder"></div>
+
+        <div class="notification-bell" id="bell-icon" style="cursor: pointer;">
+            <i class="fas fa-bell"></i>
+            <span class="notification-badge" style="display: none;">0</span>
+        </div>
+    </div>
+</header>
+
+<!-- Notification History Drawer -->
+<div id="notif-drawer" class="notif-drawer">
+    <div class="drawer-header">
+        <h3>Notifications</h3>
+        <button id="close-drawer">&times;</button>
+    </div>
+    <div class="notif-content">
+        <div class="notif-item">
+            <p>Welcome back, Alex! System initialized.</p>
+            <span class="notif-time">Just now</span>
+        </div>
+        <div class="notif-item">
+            <p>Admin: Equipment check scheduled for tomorrow.</p>
+            <span class="notif-time">1 hour ago</span>
+        </div>
+    </div>
+</div>

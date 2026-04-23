@@ -1,0 +1,54 @@
+<div class="search-overlay" id="global-search-overlay" style="display: none;">
+    <div class="search-container animate-blur-in">
+        <!-- Close Button -->
+        <button class="btn-close-search" onclick="toggleSearchOverlay()">
+            <i class="fas fa-times"></i>
+            <span>Close (Esc)</span>
+        </button>
+
+        <!-- Search Input Section -->
+        <div class="search-input-box">
+            <i class="fas fa-search search-icon-main"></i>
+            <input type="text" id="global-search-input" placeholder="Search for anything..." autofocus onkeyup="performSearch()">
+            <div class="search-underline"></div>
+        </div>
+
+        <!-- Quick Suggestions (Default State) -->
+        <div id="search-suggestions" class="search-results-section">
+            <span class="results-title">Trending Discovery</span>
+            <div class="trending-grid">
+                <div class="trend-tag" onclick="fillSearch('Ceramic Coating')">Ceramic Coating</div>
+                <div class="trend-tag" onclick="fillSearch('Elite Detail')">Elite Detail</div>
+                <div class="trend-tag" onclick="fillSearch('Monthly Subscription')">Subscription</div>
+                <div class="trend-tag" onclick="fillSearch('Interior Deep Clean')">Interior Clean</div>
+            </div>
+        </div>
+
+        <!-- Dynamic Results Containers -->
+        <div id="search-results-container" style="display: none;">
+            <!-- Category: Services -->
+            <div class="results-group" id="results-services" style="display: none;">
+                <span class="group-label"><i class="fas fa-concierge-bell"></i> Services</span>
+                <div class="results-list"></div>
+            </div>
+
+            <!-- Category: Vehicles -->
+            <div class="results-group" id="results-vehicles" style="display: none;">
+                <span class="group-label"><i class="fas fa-car"></i> Your Garage</span>
+                <div class="results-list"></div>
+            </div>
+
+            <!-- Category: Help -->
+            <div class="results-group" id="results-help" style="display: none;">
+                <span class="group-label"><i class="fas fa-question-circle"></i> Help Articles</span>
+                <div class="results-list"></div>
+            </div>
+            
+            <!-- Empty State -->
+            <div id="search-not-found" style="display: none;" class="empty-results">
+                <i class="fas fa-ghost"></i>
+                <p>No matches found. Try searching for "Wash" or "Coating".</p>
+            </div>
+        </div>
+    </div>
+</div>

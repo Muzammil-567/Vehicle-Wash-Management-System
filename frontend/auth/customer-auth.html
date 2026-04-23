@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join GlossFlow | Premium Car Wash</title>
+    <link rel="stylesheet" href="/frontend/css/global.css">
+    <link rel="stylesheet" href="/frontend/css/auth.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="auth-body">
+
+    <div class="auth-container">
+        <div class="auth-header">
+            <a href="/frontend/website/index.html" class="logo">GLOSS<span>FLOW</span></a>
+            <h1 class="text-glow">Join GlossFlow</h1>
+            <p style="color: var(--text-dim);">Experience the pinnacle of car detailing.</p>
+        </div>
+
+        <div class="auth-toggle">
+            <button class="toggle-btn active" id="login-toggle">Login</button>
+            <button class="toggle-btn" id="signup-toggle">Register</button>
+        </div>
+
+        <!-- Login Form -->
+        <form id="login-form" class="auth-form">
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" class="form-control" placeholder="your@email.com" required>
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" class="form-control" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn-primary btn-auth">Enter Portal</button>
+        </form>
+
+        <!-- Signup Form (Hidden by default) -->
+        <form id="signup-form" class="auth-form hidden">
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" class="form-control" placeholder="John Doe" required>
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" class="form-control" placeholder="john@example.com" required>
+            </div>
+            <div class="form-group">
+                <label>Phone Number</label>
+                <input type="tel" class="form-control" placeholder="+92 300 1234567" required>
+            </div>
+            <div class="form-group">
+                <label>Create Password</label>
+                <input type="password" class="form-control" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn-primary btn-auth">Create Account</button>
+        </form>
+
+        <div class="auth-footer">
+            <p>By joining, you agree to our <a href="#">Terms of Service</a></p>
+        </div>
+    </div>
+
+    <script>
+        const loginToggle = document.getElementById('login-toggle');
+        const signupToggle = document.getElementById('signup-toggle');
+        const loginForm = document.getElementById('login-form');
+        const signupForm = document.getElementById('signup-form');
+
+        loginToggle.addEventListener('click', () => {
+            loginToggle.classList.add('active');
+            signupToggle.classList.remove('active');
+            loginForm.classList.remove('hidden');
+            signupForm.classList.add('hidden');
+        });
+
+        signupToggle.addEventListener('click', () => {
+            signupToggle.classList.add('active');
+            loginToggle.classList.remove('active');
+            signupForm.classList.remove('hidden');
+            loginForm.classList.add('hidden');
+        });
+
+        // Redirect Guard (Task 3)
+        const forms = [loginForm, signupForm];
+        forms.forEach(form => {
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                // Simulation of authentication
+                window.location.href = '/frontend/customer/index.html';
+            });
+        });
+    </script>
+</body>
+</html>
