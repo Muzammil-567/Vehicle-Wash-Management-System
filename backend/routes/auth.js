@@ -75,18 +75,25 @@ router.post('/login', async (req, res) => {
         }
 
         // Check for user
+        console.log(`[Auth] Login attempt for: ${email}`);
         const [users] = await db.execute('SELECT * FROM users WHERE email = ?', [email]);
+        
         if (users.length === 0) {
-            return res.status(401).json({ success: false, message: 'Invalid credentials.' });
+            console.log(`[Auth] User not found: ${email}`);
+            return res.status(401).json({ success: false, message: 'Invalid credentials. User not found.' });
         }
 
         const user = users[0];
+        console.log(`[Auth] User found: ${user.email} (Role: ${user.role})`);
 
         // Validate password
         const isMatch = await bcrypt.compare(password, user.password_hash);
         if (!isMatch) {
-            return res.status(401).json({ success: false, message: 'Invalid credentials.' });
+            console.log(`[Auth] Password mismatch for: ${email}`);
+            return res.status(401).json({ success: false, message: 'Invalid credentials. Incorrect password.' });
         }
+
+        console.log(`[Auth] Password verified for: ${email}`);
 
         // Create JWT payload
         const payload = {
@@ -96,30 +103,30 @@ router.post('/login', async (req, res) => {
             }
         };
 
-        // Sign token
-        jwt.sign(
-            payload,
-            JWT_SECRET,
-            { expiresIn: '24h' },
-            (err, token) => {
-                if (err) throw err;
-                res.json({
-                    success: true,
-                    message: 'Login successful!',
-                    token,
-                    user: {
-                        id: user.id,
-                        full_name: user.full_name,
-                        email: user.email,
-                        role: user.role
-                    }
-                });
-            }
-        );
+        // Sign token synchronously for cleaner error handling
+        try {
+            const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '24h' });
+            console.log(`[Auth] JWT generated for: ${email}`);
+            
+            res.json({
+                success: true,
+                message: 'Login successful!',
+                token,
+                user: {
+                    id: user.id,
+                    full_name: user.full_name,
+                    email: user.email,
+                    role: user.role
+                }
+            });
+        } catch (jwtErr) {
+            console.error('[Auth] JWT Signing Error:', jwtErr);
+            throw jwtErr;
+        }
 
     } catch (error) {
-        console.error('[Auth Error] Login failed:', error.message);
-        res.status(500).json({ success: false, message: 'Server error during login.' });
+        console.error('[Auth Error] Critical Failure:', error);
+        res.status(500).json({ success: false, message: 'Server error during login.', error: error.message });
     }
 });
 

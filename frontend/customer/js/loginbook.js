@@ -31,9 +31,12 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const email = document.getElementById('login-email').value;
             const password = document.getElementById('login-password').value;
+            
+            const hostname = window.location.hostname;
+            const API_URL = `http://${hostname}:5000/api/auth/login`;
 
             try {
-                const response = await fetch('http://localhost:5000/api/auth/login', {
+                const response = await fetch(API_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, password })

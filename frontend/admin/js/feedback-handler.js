@@ -1,5 +1,3 @@
-var API_URL = "http://localhost:5000/api";
-
 /**
  * Feedback & Complaints Handler - Ticket management and Support flow
  */
@@ -15,7 +13,7 @@ async function fetchAdminFeedback() {
     if (!container || !token) return;
 
     try {
-        const response = await fetch(API_URL + "/admin/feedback", {
+        const response = await fetch(window.API_URL + "/admin/feedback", {
             headers: { 'Authorization': `Bearer ${token}` }
         });
         const json = await response.json();
@@ -28,6 +26,8 @@ async function fetchAdminFeedback() {
 
             container.innerHTML = json.data.map(review => {
                 const stars = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
+                const service = review.service_type ? review.service_type.replace(/_/g, ' ').toUpperCase() : 'General Support';
+                
                 return `
                     <div class="feedback-card animate-fade-in">
                         <div class="star-rating" style="font-size: 1.2rem; color: #ffc107;">${stars}</div>
@@ -35,7 +35,7 @@ async function fetchAdminFeedback() {
                         <div class="review-meta">
                             <div>
                                 <strong style="color: var(--accent-green); display: block;">${review.customer_name}</strong>
-                                <span style="font-size: 0.75rem;">Service: ${review.service_type.replace('_', ' ')}</span>
+                                <span style="font-size: 0.75rem;">Service: ${service}</span>
                             </div>
                             <span style="font-size: 0.7rem;">${new Date(review.created_at).toLocaleDateString()}</span>
                         </div>
@@ -44,11 +44,10 @@ async function fetchAdminFeedback() {
             }).join('');
         }
     } catch (err) {
-        console.error("Failed to load feedback:", err);
-        container.innerHTML = '<div style="color: red; text-align: center; grid-column: 1/-1;">Error connecting to server.</div>';
+        console.error("🔥 [FeedbackHandler] Failed to load feedback:", err);
+        container.innerHTML = '<div style="color: #ff4757; text-align: center; grid-column: 1/-1; padding: 30px;">Failed to connect to feedback server.</div>';
     }
 }
 
 // Global Export
 window.initFeedbackLogic = initFeedbackLogic;
-

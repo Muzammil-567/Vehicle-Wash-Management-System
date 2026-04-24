@@ -2,45 +2,54 @@
  * Revenue Analytics Handler - Custom Data Visualization Engine
  */
 
-const revenueData = {
-    monthly: [
-        { label: 'Jan', value: 45000 },
-        { label: 'Feb', value: 52000 },
-        { label: 'Mar', value: 48000 },
-        { label: 'Apr', value: 61000 },
-        { label: 'May', value: 55000 },
-        { label: 'Jun', value: 67000 }
-    ],
-    weekly: [
-        { label: 'W1', value: 12000 },
-        { label: 'W2', value: 15000 },
-        { label: 'W3', value: 11000 },
-        { label: 'W4', value: 18000 }
-    ],
-    daily: [
-        { label: 'Mon', value: 5000 },
-        { label: 'Tue', value: 7200 },
-        { label: 'Wed', value: 6800 },
-        { label: 'Thu', value: 8500 },
-        { label: 'Fri', value: 9200 },
-        { label: 'Sat', value: 11000 },
-        { label: 'Sun', value: 9800 }
-    ],
-    breakdown: [
-        { name: 'Interior Detailing', percent: 45, color: 'fill-green' },
-        { name: 'Exterior Wash', percent: 35, color: 'fill-blue' },
-        { name: 'Ceramic Coating', percent: 20, color: 'fill-cyan' }
-    ]
-};
+let currentRevenueData = null; // Local cache for analytics
 
-function initRevenueDashboard() {
+async function initRevenueDashboard() {
     console.log('Initializing Revenue Analytics...');
     const container = document.getElementById('revenue-reports');
     if (!container) return;
 
-    renderMainChart('monthly');
-    renderServiceBreakdown();
+    await fetchRevenueAnalytics();
+    
+    // Initial Render
+    if (currentRevenueData) {
+        renderMainChart('daily');
+        renderServiceBreakdown();
+        updateSummaryCards();
+    }
+    
     initAnalyticsListeners();
+}
+
+/**
+ * Fetch detailed analytics from the backend
+ */
+async function fetchRevenueAnalytics() {
+    const token = localStorage.getItem('token');
+    try {
+        console.log("📡 Fetching real-time revenue analytics...");
+        const response = await fetch(`${window.API_URL}/admin/revenue-analytics`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const json = await response.json();
+        if (json.success) {
+            currentRevenueData = json.data;
+            console.log("✅ Revenue data synchronized.");
+        }
+    } catch (err) {
+        console.error("🔥 Analytics Fetch Failed:", err);
+    }
+}
+
+function updateSummaryCards() {
+    if (!currentRevenueData) return;
+    const profit = currentRevenueData.summary.totalProfit;
+    const tax = Math.round(profit * 0.08); // Estimate 8% tax
+    const net = profit - tax;
+
+    document.getElementById('stat-total-profit').textContent = `RS. ${profit.toLocaleString()}`;
+    document.getElementById('stat-tax').textContent = `- RS. ${tax.toLocaleString()}`;
+    document.getElementById('stat-net-earnings').textContent = `RS. ${net.toLocaleString()}`;
 }
 
 /**
@@ -48,25 +57,29 @@ function initRevenueDashboard() {
  */
 function renderMainChart(range) {
     const viewport = document.getElementById('revenue-chart-viewport');
-    if (!viewport) return;
+    if (!viewport || !currentRevenueData) return;
 
-    const data = revenueData[range];
-    const maxValue = Math.max(...data.map(d => d.value));
+    const data = currentRevenueData[range];
+    if (!data || data.length === 0) {
+        viewport.innerHTML = '<div style="text-align:center; width:100%; color:var(--text-dim);">No data for this range.</div>';
+        return;
+    }
 
-    // Clear existing bars (except tooltip)
-    const tooltip = document.getElementById('chart-tooltip');
-    viewport.innerHTML = '';
-    viewport.appendChild(tooltip);
+    const maxValue = Math.max(...data.map(d => parseFloat(d.value) || 1));
+
+    // Clear existing bars
+    viewport.innerHTML = '<div id="chart-tooltip" class="chart-tooltip"></div>';
 
     data.forEach(item => {
-        const heightPercent = (item.value / maxValue) * 80; // Scale to 80% container height
+        const val = parseFloat(item.value) || 0;
+        const heightPercent = (val / maxValue) * 80;
         
         const barWrapper = document.createElement('div');
         barWrapper.className = 'revenue-bar-wrapper';
         
         const bar = document.createElement('div');
         bar.className = 'revenue-bar';
-        bar.style.height = '0%'; // Start at 0 for animation
+        bar.style.height = '0%';
         
         const label = document.createElement('span');
         label.className = 'bar-label';
@@ -76,13 +89,11 @@ function renderMainChart(range) {
         barWrapper.appendChild(label);
         viewport.appendChild(barWrapper);
 
-        // Animate Growth
         setTimeout(() => {
             bar.style.height = `${heightPercent}%`;
         }, 100);
 
-        // Tooltip Interaction
-        bar.onmouseenter = (e) => showTooltip(e, `RS. ${item.value.toLocaleString()}`);
+        bar.onmouseenter = (e) => showTooltip(e, `RS. ${val.toLocaleString()}`);
         bar.onmouseleave = hideTooltip;
     });
 }
@@ -92,9 +103,11 @@ function renderMainChart(range) {
  */
 function renderServiceBreakdown() {
     const list = document.getElementById('service-breakdown-list');
-    if (!list) return;
+    if (!list || !currentRevenueData) return;
 
-    list.innerHTML = revenueData.breakdown.map(item => `
+    const breakdown = currentRevenueData.breakdown;
+
+    list.innerHTML = breakdown.map(item => `
         <div class="service-stat-item">
             <div class="item-info">
                 <span>${item.name}</span>
@@ -106,10 +119,9 @@ function renderServiceBreakdown() {
         </div>
     `).join('');
 
-    // Animate Progress Bars
     setTimeout(() => {
         document.querySelectorAll('.progress-fill').forEach((el, index) => {
-            el.style.width = `${revenueData.breakdown[index].percent}%`;
+            if (breakdown[index]) el.style.width = `${breakdown[index].percent}%`;
         });
     }, 500);
 }
@@ -125,7 +137,7 @@ function showTooltip(e, text) {
     tooltip.style.opacity = '1';
     tooltip.style.left = `${e.clientX - 50}px`;
     tooltip.style.top = `${e.clientY - 40}px`;
-    tooltip.style.position = 'fixed'; // Use fixed to avoid alignment issues in glass containers
+    tooltip.style.position = 'fixed';
 }
 
 function hideTooltip() {
@@ -137,7 +149,6 @@ function hideTooltip() {
  * Listeners for Filters and Export
  */
 function initAnalyticsListeners() {
-    // Range Filters
     document.querySelectorAll('[data-range]').forEach(btn => {
         btn.onclick = () => {
             document.querySelectorAll('[data-range]').forEach(b => b.classList.remove('active'));
@@ -146,7 +157,6 @@ function initAnalyticsListeners() {
         };
     });
 
-    // Export Animation
     const exportBtn = document.getElementById('generate-report-btn');
     if (exportBtn) {
         exportBtn.onclick = () => {
@@ -158,11 +168,10 @@ function initAnalyticsListeners() {
                     if (typeof showSuccessToast === 'function') {
                         showSuccessToast('Financial Report Exported Successfully (PDF).');
                     }
-                }, 3000); // Animation duration
+                }, 3000);
             }
         };
     }
 }
 
-// Global Export
 window.initRevenueDashboard = initRevenueDashboard;

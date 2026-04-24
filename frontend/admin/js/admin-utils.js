@@ -1,9 +1,8 @@
 /**
- * Admin Dashboard Utilities - Shared helper functions and global state
+ * Admin Shared Utilities & Constants
  */
-
-// Global API Configuration
-window.API_URL = "http://localhost:5000/api";
+const hostname = window.location.hostname;
+window.API_URL = `http://${hostname}:5000/api`;
 
 /**
  * Professional Neon Success Toast

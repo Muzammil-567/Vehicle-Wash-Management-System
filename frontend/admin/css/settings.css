@@ -94,12 +94,37 @@
     outline: none;
 }
 
+.form-group {
+    position: relative;
+    margin-bottom: 25px;
+}
+
 .settings-label {
-    display: block;
-    margin-bottom: 10px;
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
     color: var(--text-dim);
     font-size: 0.9rem;
-    font-weight: 600;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    pointer-events: none;
+    background: #000F28;
+    padding: 0 5px;
+}
+
+/* Floating logic using sibling selector */
+.settings-input:focus + .settings-label,
+.settings-input:not(:placeholder-shown) + .settings-label,
+.form-group.has-content .settings-label {
+    top: 0;
+    font-size: 0.75rem;
+    color: var(--accent-green);
+    text-shadow: 0 0 10px rgba(0, 255, 148, 0.4);
+}
+
+.settings-input::placeholder {
+    color: transparent;
 }
 
 /* Image Uploader Component */

@@ -4,24 +4,43 @@
 
 let currentMonth = new Date().getMonth();
 let currentYear = new Date().getFullYear();
+let windowBookingData = []; // Local cache of database bookings
 
-const bookingData = [
-    { id: 1, customer: "Arsalan Javed", vehicle: "Honda Civic (White)", service: "Elite Detailing", date: "2024-04-19", time: "10:00 AM", status: "pending" },
-    { id: 2, customer: "Mehak Ali", vehicle: "Toyota Fortuner (Black)", service: "Ceramic Coating", date: "2024-04-19", time: "02:00 PM", status: "approved" },
-    { id: 3, customer: "Zainab Bibi", vehicle: "Audi A4 (Blue)", service: "Interior Steam", date: "2024-04-21", time: "11:00 AM", status: "completed" },
-    { id: 4, customer: "Omar Khan", vehicle: "Suzuki Swift (Red)", service: "Hydro Wash", date: "2024-04-25", time: "09:00 AM", status: "approved" }
-];
-
-function initBookingControl() {
+async function initBookingControl() {
     console.log('Initializing Booking Control...');
     const container = document.getElementById('booking-control');
     if (!container) return;
 
+    await fetchBookings();
+    
+    // Initial Render
     renderBookingList('all');
     renderCalendar(currentMonth, currentYear);
+    
+    // Setup UI Interactions
     initFilters();
     initCalendarNav();
     initViewToggle();
+}
+
+/**
+ * Fetch all bookings from the backend
+ */
+async function fetchBookings() {
+    const token = localStorage.getItem('token');
+    try {
+        console.log("📡 Fetching real-time bookings...");
+        const response = await fetch(`${window.API_URL}/admin/bookings`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const json = await response.json();
+        if (json.success) {
+            windowBookingData = json.data;
+            console.log(`✅ Loaded ${windowBookingData.length} bookings.`);
+        }
+    } catch (err) {
+        console.error("🔥 Fetch Bookings Failed:", err);
+    }
 }
 
 /**
@@ -31,29 +50,47 @@ function renderBookingList(status) {
     const listContainer = document.getElementById('active-booking-list');
     if (!listContainer) return;
 
-    const filtered = status === 'all' ? bookingData : bookingData.filter(b => b.status === status);
+    const filtered = status === 'all' ? windowBookingData : windowBookingData.filter(b => b.status === status);
 
-    listContainer.innerHTML = filtered.map(booking => `
-        <div class="booking-list-item ${booking.status}">
-            <div class="customer-info">
-                <h4>${booking.customer}</h4>
-                <p><i class="fas fa-car"></i> ${booking.vehicle}</p>
+    if (filtered.length === 0) {
+        listContainer.innerHTML = `<div style="text-align:center; padding: 40px; color: var(--text-dim);">No ${status} bookings found.</div>`;
+        return;
+    }
+
+    listContainer.innerHTML = filtered.map(booking => {
+        // Handle date formatting
+        const dateObj = new Date(booking.booking_date);
+        const formattedDate = dateObj.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+        
+        return `
+            <div class="booking-list-item ${booking.status}" data-id="${booking.id}">
+                <div class="customer-info">
+                    <h4>${booking.customer_name}</h4>
+                    <p><i class="fas fa-car"></i> ${booking.make_model} (${booking.plate_number})</p>
+                </div>
+                <div class="booking-service">
+                    <span class="service-tag">${booking.service_type.toUpperCase()}</span>
+                </div>
+                <div class="booking-time">
+                    <p>${formattedDate}</p>
+                    <span>${booking.booking_time}</span>
+                </div>
+                <div class="booking-actions">
+                    <span class="status-pill status-${booking.status}">${booking.status.toUpperCase()}</span>
+                    ${booking.status === 'pending' ? `
+                        <button class="action-circle-btn btn-approve" onclick="updateBookingStatus(${booking.id}, 'approved')" title="Approve">
+                            <i class="fas fa-check"></i>
+                        </button>
+                    ` : ''}
+                    ${booking.status === 'approved' ? `
+                        <button class="action-circle-btn btn-complete" onclick="updateBookingStatus(${booking.id}, 'completed')" title="Mark Completed" style="background: var(--accent-green); color: black;">
+                            <i class="fas fa-flag-checkered"></i>
+                        </button>
+                    ` : ''}
+                </div>
             </div>
-            <div class="booking-service">
-                <span class="service-tag">${booking.service}</span>
-            </div>
-            <div class="booking-time">
-                <p>${booking.date}</p>
-                <span>${booking.time}</span>
-            </div>
-            <div class="booking-actions">
-                <span class="status-pill status-${booking.status}">${booking.status.toUpperCase()}</span>
-                ${booking.status === 'pending' ? `
-                    <button class="action-circle-btn btn-approve" onclick="updateBookingStatus(${booking.id}, 'approved')" title="Approve"><i class="fas fa-check"></i></button>
-                ` : ''}
-            </div>
-        </div>
-    `).join('');
+        `;
+    }).join('');
 }
 
 /**
@@ -83,7 +120,12 @@ function renderCalendar(month, year) {
     for (let day = 1; day <= daysInMonth; day++) {
         const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
         const isToday = new Date().toISOString().split('T')[0] === dateStr;
-        const bookingsForDay = bookingData.filter(b => b.date === dateStr);
+        
+        // Match with database date (ensuring local date string match)
+        const bookingsForDay = windowBookingData.filter(b => {
+            const bDate = new Date(b.booking_date).toISOString().split('T')[0];
+            return bDate === dateStr;
+        });
 
         html += `
             <div class="calendar-day ${isToday ? 'today' : ''}" id="cal-day-${dateStr}">
@@ -94,7 +136,7 @@ function renderCalendar(month, year) {
                 ${bookingsForDay.length > 0 ? `
                     <div class="day-tooltip">
                         <strong>${bookingsForDay.length} Bookings</strong>
-                        ${bookingsForDay.map(b => `<div style="margin-top:5px; font-size: 0.7rem;">• ${b.customer} (${b.time})</div>`).join('')}
+                        ${bookingsForDay.map(b => `<div style="margin-top:5px; font-size: 0.7rem;">• ${b.customer_name} (${b.booking_time})</div>`).join('')}
                     </div>
                 ` : ''}
             </div>
@@ -148,22 +190,37 @@ function initViewToggle() {
 }
 
 /**
- * Synchronization Action
+ * Synchronization Action (Backend Integrated)
  */
-window.updateBookingStatus = (id, newStatus) => {
-    const booking = bookingData.find(b => b.id === id);
-    if (!booking) return;
+window.updateBookingStatus = async (id, newStatus) => {
+    const token = localStorage.getItem('token');
+    try {
+        const response = await fetch(`${window.API_URL}/admin/bookings/${id}`, {
+            method: 'PATCH',
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}` 
+            },
+            body: JSON.stringify({ status: newStatus })
+        });
 
-    booking.status = newStatus;
-    renderBookingList(document.querySelector('.filter-btn.active').dataset.status);
-    renderCalendar(currentMonth, currentYear);
-
-    // Flash Sync Visual
-    const dayEl = document.getElementById(`cal-day-${booking.date}`);
-    if (dayEl) {
-        dayEl.classList.add('flash-sync');
-        setTimeout(() => dayEl.classList.remove('flash-sync'), 1000);
+        if (response.ok) {
+            window.showSuccessToast(`Booking marked as ${newStatus}!`);
+            await fetchBookings(); // Refresh cache
+            
+            // Re-render current active filter
+            const activeFilter = document.querySelector('.filter-btn.active')?.dataset.status || 'all';
+            renderBookingList(activeFilter);
+            renderCalendar(currentMonth, currentYear);
+        } else {
+            const err = await response.json();
+            alert("Update Failed: " + err.message);
+        }
+    } catch (err) {
+        console.error("🔥 Status Update Error:", err);
     }
 };
+
+window.initBookingControl = initBookingControl;
 
 window.initBookingControl = initBookingControl;

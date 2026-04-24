@@ -6,7 +6,6 @@ var API_URL = "http://localhost:5000/api";
 document.addEventListener('DOMContentLoaded', async () => {
     console.log('Employee Panel Initializing...');
 
-
     // 1. Load Core Layout Components
     await loadComponent('employee-header-placeholder', '/frontend/employee/html/employee_components/employee-header.html');
     await loadComponent('duty-status-placeholder', '/frontend/employee/html/employee_components/duty-status.html');

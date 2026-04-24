@@ -3,7 +3,7 @@
     <div class="action-bar">
         <div class="search-wrapper">
             <i class="fas fa-search"></i>
-            <input type="text" class="search-input" placeholder="Search services or packages...">
+            <input type="text" class="search-input" id="service-search" placeholder="Search services or packages...">
         </div>
         <button class="btn-add-user" id="add-service-btn">
             <i class="fas fa-plus"></i>
@@ -11,105 +11,11 @@
         </button>
     </div>
 
-    <div class="service-card-grid">
-        <!-- Service Card 1 -->
-        <div class="service-card">
-            <div class="card-header">
-                <h3>Hydro-Dynamic<br>Exterior</h3>
-                <span class="price-tag">RS. 1500</span>
-            </div>
-            <div class="card-body">
-                <p>High-pressure foam wash, wheel cleaning, and spray wax protection for a brilliant shine.</p>
-                <div class="package-tags">
-                    <span class="package-tag">Starter</span>
-                    <span class="package-tag">Pro</span>
-                </div>
-            </div>
-            <div class="card-footer">
-                <label class="switch">
-                    <input type="checkbox" checked>
-                    <span class="slider"></span>
-                </label>
-                <div class="action-btns">
-                    <button class="action-btn btn-edit" title="Edit Service"><i class="fas fa-edit"></i></button>
-                    <button class="action-btn btn-delete" title="Delete Service"><i class="fas fa-trash"></i></button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Service Card 2 -->
-        <div class="service-card">
-            <div class="card-header">
-                <h3>Interior Master<br>Deep Clean</h3>
-                <span class="price-tag">RS. 2500</span>
-            </div>
-            <div class="card-body">
-                <p>Full vacuum, steam cleaning, leather conditioning, and odor elimination treatment.</p>
-                <div class="package-tags">
-                    <span class="package-tag">Elite</span>
-                </div>
-            </div>
-            <div class="card-footer">
-                <label class="switch">
-                    <input type="checkbox" checked>
-                    <span class="slider"></span>
-                </label>
-                <div class="action-btns">
-                    <button class="action-btn btn-edit" title="Edit Service"><i class="fas fa-edit"></i></button>
-                    <button class="action-btn btn-delete" title="Delete Service"><i class="fas fa-trash"></i></button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Service Card 3 -->
-        <div class="service-card">
-            <div class="card-header">
-                <h3>Ceramic Shield<br>Coating</h3>
-                <span class="price-tag">RS. 8500</span>
-            </div>
-            <div class="card-body">
-                <p>Premium nano-ceramic coating providing 12-month surface protection and hydrophobic properties.</p>
-                <div class="package-tags">
-                    <span class="package-tag">Elite</span>
-                </div>
-            </div>
-            <div class="card-footer">
-                <label class="switch">
-                    <input type="checkbox">
-                    <span class="slider"></span>
-                </label>
-                <div class="action-btns">
-                    <button class="action-btn btn-edit" title="Edit Service"><i class="fas fa-edit"></i></button>
-                    <button class="action-btn btn-delete" title="Delete Service"><i class="fas fa-trash"></i></button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Package Subsection -->
-    <div class="package-management">
-        <h2 style="margin-bottom: 20px; font-size: 1.5rem; color: var(--accent-green);">Service Packages</h2>
-        <div class="service-card-grid">
-            <div class="service-card" style="border-left: 5px solid var(--accent-green);">
-                <div class="card-header">
-                    <h3>Starter Bundle</h3>
-                    <span class="price-tag">RS. 1200</span>
-                </div>
-                <div class="card-body">
-                    <p>Essential cleaning package for routine maintenance.</p>
-                    <div class="package-tags">
-                        <span class="package-tag">Exterior Wash</span>
-                        <span class="package-tag">Basic Vacuum</span>
-                    </div>
-                </div>
-                <div class="card-footer">
-                    <span style="font-size: 0.8rem; color: var(--accent-green);">ACTIVE PACKAGE</span>
-                    <div class="action-btns">
-                        <button class="action-btn btn-edit" title="Edit Package"><i class="fas fa-edit"></i></button>
-                        <button class="action-btn btn-delete" title="Delete Package"><i class="fas fa-trash"></i></button>
-                    </div>
-                </div>
-            </div>
+    <div class="service-card-grid" id="service-grid">
+        <!-- Dynamic Content Injected by service-handler.js -->
+        <div style="grid-column: 1/-1; text-align: center; padding: 50px;">
+            <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: var(--accent-green);"></i>
+            <p style="margin-top: 15px; color: var(--text-dim);">Fetching services from database...</p>
         </div>
     </div>
 </div>

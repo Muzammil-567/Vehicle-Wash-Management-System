@@ -11,10 +11,9 @@ function initModalLogic() {
 
     if (addServiceBtn) {
         addServiceBtn.addEventListener('click', () => {
-            const titleEl = document.getElementById('modal-title');
-            if (titleEl) titleEl.textContent = 'Add New Service';
-            if (serviceForm) serviceForm.reset();
-            toggleModal(true);
+            if (typeof window.openAddServiceModal === 'function') {
+                window.openAddServiceModal();
+            }
         });
     }
 }

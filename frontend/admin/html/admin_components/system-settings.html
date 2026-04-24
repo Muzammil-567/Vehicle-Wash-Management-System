@@ -40,18 +40,26 @@
                     <span class="settings-label">Update Business Logo</span>
                 </div>
 
-                <form class="settings-form-grid">
+                <form class="settings-form-grid" id="profile-form">
                     <div class="form-group">
+                        <input type="text" id="admin-full-name" class="settings-input" placeholder=" ">
                         <label class="settings-label">Admin Full Name</label>
-                        <input type="text" class="settings-input" value="Aftab Ur Rehman">
                     </div>
                     <div class="form-group">
+                        <input type="email" id="admin-email" class="settings-input" placeholder=" ">
                         <label class="settings-label">Contact Email</label>
-                        <input type="email" class="settings-input" value="admin@glossflow.com">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="admin-phone" class="settings-input" placeholder=" ">
+                        <label class="settings-label">Contact Phone</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="business-name" class="settings-input" placeholder=" ">
+                        <label class="settings-label">Business Name</label>
                     </div>
                     <div class="form-group-full">
+                        <textarea id="business-address" class="settings-input" rows="2" placeholder=" "></textarea>
                         <label class="settings-label">Business Physical Address</label>
-                        <textarea class="settings-input" rows="2">Gulberg III, Main Boulevard, Lahore, Pakistan</textarea>
                     </div>
                     <div class="form-group-full">
                         <button type="submit" class="btn-save" style="width: auto; padding: 12px 30px;">Save General Settings</button>
@@ -63,29 +71,29 @@
             <section class="settings-panel" id="panel-business">
                 <h3 style="color: white; margin-bottom: 25px;">Operational Configuration</h3>
                 
-                <div class="settings-form-grid">
+                <form class="settings-form-grid" id="rules-form">
                     <div class="form-group">
-                        <label class="settings-label">Base Currency Symbol</label>
-                        <select class="settings-input">
-                            <option value="RS" selected>Pakistani Rupee (RS)</option>
+                        <select id="setting-currency" class="settings-input">
+                            <option value="RS">Pakistani Rupee (RS)</option>
                             <option value="USD">US Dollar ($)</option>
                             <option value="AED">UAE Dirham (AED)</option>
                         </select>
+                        <label class="settings-label">Base Currency Symbol</label>
                     </div>
                     <div class="form-group">
+                        <input type="number" id="setting-lead-time" class="settings-input" value="4" placeholder=" ">
                         <label class="settings-label">Booking Lead Time (Hours)</label>
-                        <input type="number" class="settings-input" value="4">
                     </div>
 
                     <div class="form-group-full">
                         <label class="settings-label">Notification Channels</label>
                         <div class="toggle-wrapper">
                             <span>Enable Real-time Email Alerts</span>
-                            <input type="checkbox" class="high-tech-toggle" checked>
+                            <input type="checkbox" id="setting-email-alerts" class="high-tech-toggle">
                         </div>
                         <div class="toggle-wrapper">
                             <span>Enable SMS Gateway Notifications</span>
-                            <input type="checkbox" class="high-tech-toggle">
+                            <input type="checkbox" id="setting-sms-alerts" class="high-tech-toggle">
                         </div>
                     </div>
 
@@ -93,37 +101,35 @@
                         <label class="settings-label" style="margin-top: 15px;">Weekly Working Hours</label>
                         <div class="hour-row">
                             <span class="day-name">MON - FRI</span>
-                            <input type="time" class="settings-input" value="09:00">
-                            <input type="time" class="settings-input" value="21:00">
+                            <input type="text" id="setting-hours-weekday" class="settings-input" placeholder="09:00 AM - 09:00 PM">
                         </div>
                         <div class="hour-row">
                             <span class="day-name">SAT - SUN</span>
-                            <input type="time" class="settings-input" value="10:00">
-                            <input type="time" class="settings-input" value="18:00">
+                            <input type="text" id="setting-hours-weekend" class="settings-input" placeholder="10:00 AM - 06:00 PM">
                         </div>
                     </div>
 
                     <div class="form-group-full" style="margin-top: 20px;">
                         <button type="submit" class="btn-save" style="width: auto; padding: 12px 30px;">Apply Rules</button>
                     </div>
-                </div>
+                </form>
             </section>
 
             <!-- 3. Security Panel -->
             <section class="settings-panel" id="panel-security">
                 <h3 style="color: white; margin-bottom: 25px;">Change Admin Password</h3>
-                <form class="settings-form-grid">
+                <form class="settings-form-grid" id="security-form">
                     <div class="form-group-full">
+                        <input type="password" id="current-password" class="settings-input" placeholder=" " required>
                         <label class="settings-label">Current Password</label>
-                        <input type="password" class="settings-input" placeholder="••••••••">
                     </div>
                     <div class="form-group">
+                        <input type="password" id="new-password" class="settings-input" placeholder=" " required>
                         <label class="settings-label">New Secure Password</label>
-                        <input type="password" class="settings-input">
                     </div>
                     <div class="form-group">
+                        <input type="password" id="confirm-password" class="settings-input" placeholder=" " required>
                         <label class="settings-label">Confirm New Password</label>
-                        <input type="password" class="settings-input">
                     </div>
                     <div class="form-group-full">
                         <button type="submit" class="btn-save" style="width: auto; padding: 12px 30px;">Update Credentials</button>
@@ -137,7 +143,7 @@
                             <span style="display: block; font-weight: 600;">Two-Factor Authentication</span>
                             <small style="color: var(--text-dim);">Secure admin login with 2FA email codes</small>
                         </div>
-                        <input type="checkbox" class="high-tech-toggle">
+                        <input type="checkbox" id="setting-2fa" class="high-tech-toggle">
                     </div>
                 </div>
             </section>
@@ -165,7 +171,7 @@
                     <div style="background: rgba(255, 75, 43, 0.05); padding: 25px; border-radius: 12px; border: 1px solid rgba(255,75,43,0.1);">
                         <h3 style="color: #ff4b2b; margin-bottom: 10px;">Factory Reset</h3>
                         <p style="font-size: 0.9rem; color: var(--text-dim); margin-bottom: 15px;">Warning: This will clear all bookings, customer data, and restore settings to default.</p>
-                        <button class="btn-cancel" style="background: #ff4b2b; color: white;">Purge All System Data</button>
+                        <button class="btn-cancel" id="factory-reset-btn" style="background: #ff4b2b; color: white;">Purge All System Data</button>
                     </div>
                 </div>
             </section>

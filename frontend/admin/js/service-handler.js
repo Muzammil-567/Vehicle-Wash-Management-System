@@ -5,6 +5,21 @@
 function initServiceManagementLogic() {
     console.log('Initializing Service Management Logic...');
     fetchServices();
+    initServiceSearch();
+}
+
+function initServiceSearch() {
+    const searchInput = document.getElementById('service-search');
+    if (searchInput) {
+        searchInput.oninput = (e) => {
+            const query = e.target.value.toLowerCase();
+            const cards = document.querySelectorAll('.service-card');
+            cards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                card.style.display = text.includes(query) ? 'block' : 'none';
+            });
+        };
+    }
 }
 
 async function fetchServices() {
@@ -85,18 +100,50 @@ window.toggleServiceStatus = async function(id, isActive) {
     }
 };
 
+window.openAddServiceModal = function() {
+    window.currentEditingServiceId = null;
+    
+    // Reset Form
+    const form = document.getElementById('service-form');
+    if (form) form.reset();
+
+    // UI Updates for "Add" mode
+    document.getElementById('modal-title').textContent = 'Add New Wash Service';
+    const submitBtn = document.getElementById('update-user-btn');
+    if (submitBtn) submitBtn.textContent = 'Create Service';
+
+    // Ensure fields are visible
+    const descGroup = document.getElementById('group-service-description');
+    const previewGroup = document.getElementById('image-preview-container');
+    if (descGroup) descGroup.style.display = 'block';
+    if (previewGroup) previewGroup.style.display = 'flex';
+
+    const modal = document.getElementById('admin-modal-overlay');
+    if (modal) modal.classList.add('active');
+
+    if (form) {
+        form.onsubmit = async (e) => {
+            e.preventDefault();
+            await saveServiceChanges(true); // true means it's a new service
+        };
+    }
+};
+
 window.openEditServiceModal = async function(id) {
     const card = document.querySelector(`.service-card[data-id="${id}"]`);
     if (!card) return;
 
     window.currentEditingServiceId = id;
     
+    // UI Updates for "Edit" mode
     document.getElementById('modal-title').textContent = 'Edit Wash Service';
+    const submitBtn = document.getElementById('update-user-btn');
+    if (submitBtn) submitBtn.textContent = 'Save Changes';
+
     document.getElementById('service-name').value = card.querySelector('h3').textContent;
     document.getElementById('service-price').value = card.querySelector('.price-tag').textContent;
     document.getElementById('service-description').value = card.querySelector('p').textContent;
     
-    // Handle features field if it exists
     const featInput = document.getElementById('service-features');
     if (featInput) {
         featInput.value = Array.from(card.querySelectorAll('.feature-tag')).map(t => t.textContent.trim()).join(', ');
@@ -109,28 +156,31 @@ window.openEditServiceModal = async function(id) {
     if (form) {
         form.onsubmit = async (e) => {
             e.preventDefault();
-            await saveServiceChanges();
+            await saveServiceChanges(false); // false means it's an update
         };
     }
 };
 
-async function saveServiceChanges() {
-    const id = window.currentEditingServiceId;
+async function saveServiceChanges(isNew = false) {
     const token = localStorage.getItem('token');
+    const id = window.currentEditingServiceId;
     
     const featValue = document.getElementById('service-features')?.value || '';
     const data = {
         service_name: document.getElementById('service-name').value,
         price: document.getElementById('service-price').value,
         description: document.getElementById('service-description').value,
-        category: 'Main Service',
+        category: document.getElementById('service-category').value,
         features: featValue.split(',').map(f => f.trim()).filter(f => f !== ''),
         is_active: 1
     };
 
+    const url = isNew ? `${window.API_URL}/admin/services` : `${window.API_URL}/admin/services/${id}`;
+    const method = isNew ? 'POST' : 'PUT';
+
     try {
-        const response = await fetch(`${window.API_URL}/admin/services/${id}`, {
-            method: 'PUT',
+        const response = await fetch(url, {
+            method: method,
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
@@ -138,17 +188,19 @@ async function saveServiceChanges() {
             body: JSON.stringify(data)
         });
 
-        if (response.ok) {
+        const result = await response.json();
+
+        if (response.ok || result.success) {
             const modal = document.getElementById('admin-modal-overlay');
             if (modal) modal.classList.remove('active');
             fetchServices();
-            window.showSuccessToast('Service updated successfully.');
+            window.showSuccessToast(isNew ? 'Service created successfully!' : 'Service updated successfully.');
         } else {
-            const err = await response.json();
-            alert("Error: " + err.message);
+            alert("Error: " + (result.message || 'Operation failed'));
         }
     } catch (err) {
         console.error("Save error:", err);
+        alert("Server error occurred.");
     }
 }
 

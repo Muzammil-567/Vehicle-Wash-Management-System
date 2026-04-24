@@ -33,16 +33,26 @@ async function fetchStaffList() {
     if (!tableBody || !token) return;
 
     try {
+        console.log(`📡 [StaffHandler] Fetching staff from: ${window.API_URL}/admin/employees`);
         const response = await fetch(window.API_URL + "/admin/employees", {
             headers: { 'Authorization': `Bearer ${token}` }
         });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error(`❌ [StaffHandler] API Error (${response.status}):`, errorText);
+            tableBody.innerHTML = `<tr><td colspan="6" style="padding: 20px; text-align: center; color: #ff4757;">Error ${response.status}: Failed to load staff data.</td></tr>`;
+            return;
+        }
+
         const json = await response.json();
+        console.log("✅ [StaffHandler] Staff data received:", json);
 
         if (json.success) {
             if (countEl) countEl.textContent = json.data.length;
             
             if (json.data.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="6" style="padding: 20px; text-align: center; color: var(--text-dim);">No staff members found.</td></tr>';
+                tableBody.innerHTML = '<tr><td colspan="6" style="padding: 20px; text-align: center; color: var(--text-dim);">No staff members found in database.</td></tr>';
                 return;
             }
 
@@ -65,7 +75,8 @@ async function fetchStaffList() {
             `).join('');
         }
     } catch (err) {
-        console.error("Failed to fetch staff:", err);
+        console.error("🔥 [StaffHandler] Critical Fetch Crash:", err);
+        tableBody.innerHTML = `<tr><td colspan="6" style="padding: 20px; text-align: center; color: #ff4757;">Network Error: Could not connect to server.</td></tr>`;
     }
 }
 
