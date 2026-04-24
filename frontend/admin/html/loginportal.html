@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Portal | GlossFlow Login</title>
+    <link rel="stylesheet" href="../../shared/css/global.css">
+    <link rel="stylesheet" href="../css/loginportal.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="login-body">
+
+    <div class="login-card">
+        <div class="login-header">
+            <a href="../../website/html/index.html" class="logo">GLOSS<span>FLOW</span></a>
+            <h1 class="text-glow">Staff Portal</h1>
+            <p style="color: var(--text-dim);">Authorized Administrative & Employee Access Only</p>
+        </div>
+
+        <form id="portal-login-form">
+            <div class="form-group">
+                <label>Staff ID or Email</label>
+                <input type="email" id="portal-email" class="form-control" placeholder="admin@glossflow.com" required>
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="portal-password" class="form-control" placeholder="••••••••" required>
+            </div>
+            
+            <button type="submit" class="btn-primary btn-login">Secure Sign In</button>
+        </form>
+
+        <div class="login-footer">
+            <p><i class="fas fa-shield-alt"></i> Encrypted Session Management</p>
+            <p style="margin-top: 15px;">Forgot your credentials? Contact System Admin</p>
+        </div>
+    </div>
+
+    <script src="../js/loginportal.js"></script>
+</body>
+</html>

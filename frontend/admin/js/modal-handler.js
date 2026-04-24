@@ -6,7 +6,6 @@
  * Service/Package Modal Logic
  */
 function initModalLogic() {
-    const modalOverlay = document.getElementById('admin-modal-overlay');
     const addServiceBtn = document.getElementById('add-service-btn');
     const serviceForm = document.getElementById('service-form');
 
@@ -18,37 +17,6 @@ function initModalLogic() {
             toggleModal(true);
         });
     }
-
-    if (serviceForm) {
-        serviceForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            console.log('Service Data Saved!');
-            toggleModal(false);
-            alert('Service saved successfully!');
-        });
-    }
-
-    // Modal Edit Delegation
-    document.addEventListener('click', (e) => {
-        if (e.target.closest('.btn-edit')) {
-            const card = e.target.closest('.service-card');
-            if (card) {
-                const title = card.querySelector('h3').textContent.replace('\n', ' ');
-                const price = card.querySelector('.price-tag').textContent.replace('RS. ', '');
-                
-                const titleEl = document.getElementById('modal-title');
-                if (titleEl) titleEl.textContent = 'Edit Service';
-                
-                const nameInput = document.getElementById('service-name');
-                const priceInput = document.getElementById('service-price');
-                
-                if (nameInput) nameInput.value = title;
-                if (priceInput) priceInput.value = price;
-                
-                toggleModal(true);
-            }
-        }
-    });
 }
 
 function toggleModal(show) {

@@ -1,8 +1,7 @@
-var API_URL = "http://localhost:5000/api";
-
 /**
  * Admin Dashboard Loader - Component Injection Engine
  */
+
 document.addEventListener('DOMContentLoaded', async () => {
     console.log('Admin Dashboard Loader Initializing...');
 
@@ -10,6 +9,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     await loadComponent('admin-sidebar-placeholder', '/frontend/admin/html/admin_components/sidebar.html');
     await loadComponent('admin-header-placeholder', '/frontend/admin/html/admin_components/admin-header.html');
     await loadComponent('admin-modal-placeholder', '/frontend/admin/html/admin_components/admin-modal.html');
+    await loadComponent('add-user-modal-placeholder', '/frontend/admin/html/admin_components/add-user-modal.html');
 
     // 2. Fetch Employees for Global Use
     await fetchEmployees();
@@ -125,14 +125,13 @@ function updatePageTitle(name) {
  * Global Listeners (Delegation)
  */
 function initGlobalListeners() {
-    // Sidebar link clicks (Handled via delegation for future proofing)
+    // Sidebar link clicks
     document.addEventListener('click', (e) => {
         const link = e.target.closest('.sidebar-link');
         if (link && link.hasAttribute('data-component')) {
             e.preventDefault();
             const component = link.getAttribute('data-component');
             
-            // Update active state
             document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
             link.classList.add('active');
             
@@ -142,7 +141,7 @@ function initGlobalListeners() {
 
     // Close Modal Logic (Delegation)
     document.addEventListener('click', (e) => {
-        if (e.target.id === 'close-modal-btn' || e.target.id === 'cancel-modal-btn' || e.target.id === 'admin-modal-overlay') {
+        if (e.target.closest('#close-modal-btn') || e.target.closest('#cancel-modal-btn') || e.target.id === 'admin-modal-overlay') {
             const modal = document.getElementById('admin-modal-overlay');
             if (modal) {
                 modal.classList.remove('active');
@@ -153,7 +152,6 @@ function initGlobalListeners() {
 }
 
 function initSidebarToggle() {
-    // Move sidebar toggle logic here or keep it in a separate utils file
     document.addEventListener('click', (e) => {
         if (e.target.id === 'menu-toggle' || e.target.closest('#menu-toggle')) {
             const sidebar = document.getElementById('admin-sidebar');
@@ -167,31 +165,31 @@ function initSidebarToggle() {
  */
 async function initDashboardStats() {
     const token = localStorage.getItem('token');
-    if (!token) return window.location.replace('/frontend/auth/html/login.html');
+    const redirectUrl = '/frontend/admin/html/loginportal.html';
+    
+    if (!token) return window.location.replace(redirectUrl);
 
     try {
-        const response = await fetch(API_URL + "/admin/stats", {
+        const response = await fetch(`${window.API_URL}/admin/stats`, {
             method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
+            headers: { 'Authorization': `Bearer ${token}` }
         });
 
         if (response.status === 401 || response.status === 403) {
             localStorage.clear();
-            return window.location.replace('/frontend/auth/html/login.html');
+            return window.location.replace(redirectUrl);
         }
 
         const json = await response.json();
         if (json.success) {
             const data = json.data;
             const revEl = document.getElementById('stat-revenue');
-            const bookEl = document.getElementById('stat-bookings'); // Active Bookings
+            const bookEl = document.getElementById('stat-bookings'); 
             const custEl = document.getElementById('stat-customers');
-            const pendEl = document.getElementById('stat-pending'); // Pending Tasks
+            const pendEl = document.getElementById('stat-pending'); 
 
             if (revEl) revEl.textContent = `Rs. ${data.totalRevenue.toLocaleString()}`;
-            if (bookEl) bookEl.textContent = data.totalPending; // Active/Pending are same in this context
+            if (bookEl) bookEl.textContent = data.totalPending; 
             if (custEl) custEl.textContent = data.totalCustomers;
             if (pendEl) pendEl.textContent = data.totalPending;
         }
@@ -208,7 +206,7 @@ async function fetchEmployees() {
     if (!token) return;
 
     try {
-        const response = await fetch(API_URL + "/admin/employees", {
+        const response = await fetch(`${window.API_URL}/admin/employees`, {
             headers: { 'Authorization': `Bearer ${token}` }
         });
         const json = await response.json();
@@ -228,7 +226,7 @@ async function initRecentBookings() {
     if (!token) return;
 
     try {
-        const response = await fetch(API_URL + "/admin/bookings", {
+        const response = await fetch(`${window.API_URL}/admin/bookings`, {
             headers: { 'Authorization': `Bearer ${token}` }
         });
         const json = await response.json();
@@ -251,7 +249,6 @@ async function initRecentBookings() {
                     badgeStyle += " background: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid rgba(255,255,255,0.3);";
                 }
 
-                // Action Column Content
                 let actionHtml = '';
                 if (booking.status === 'pending') {
                     const options = (window.employeeList || []).map(emp => `<option value="${emp.id}">${emp.full_name}</option>`).join('');
@@ -291,12 +288,9 @@ async function initRecentBookings() {
     }
 }
 
-/**
- * Assign task to an employee
- */
 window.assignTask = async function(bookingId) {
     const empSelect = document.getElementById(`emp-select-${bookingId}`);
-    const employeeId = empSelect.value;
+    const employeeId = empSelect?.value;
     const token = localStorage.getItem('token');
 
     if (!employeeId) {
@@ -305,7 +299,7 @@ window.assignTask = async function(bookingId) {
     }
 
     try {
-        const response = await fetch(`${API_URL}/admin/bookings/${bookingId}/assign`, {
+        const response = await fetch(`${window.API_URL}/admin/bookings/${bookingId}/assign`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -316,8 +310,8 @@ window.assignTask = async function(bookingId) {
 
         const data = await response.json();
         if (data.success) {
-            alert("Task Assigned Successfully!");
-            initRecentBookings(); // Reload table
+            window.showSuccessToast("Task Assigned Successfully!");
+            initRecentBookings(); 
         } else {
             alert(data.message || "Failed to assign task.");
         }
@@ -326,34 +320,3 @@ window.assignTask = async function(bookingId) {
         alert("An error occurred during assignment.");
     }
 }
-
-/**
- * Securely downloads the financial CSV report
- */
-window.downloadFinancialReport = async function() {
-    const token = localStorage.getItem('token');
-    if (!token) return;
-
-    try {
-        const response = await fetch(API_URL + "/admin/export-report", {
-            method: 'GET',
-            headers: { 'Authorization': `Bearer ${token}` }
-        });
-
-        if (!response.ok) throw new Error("Download failed");
-
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `GlossFlow_Financial_Report_${new Date().toLocaleDateString().replace(/\//g, '-')}.csv`;
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-        a.remove();
-    } catch (err) {
-        console.error("Export Error:", err);
-        alert("Failed to generate report. Please try again.");
-    }
-};
-

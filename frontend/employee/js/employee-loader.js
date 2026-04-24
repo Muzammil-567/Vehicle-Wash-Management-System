@@ -6,6 +6,7 @@ var API_URL = "http://localhost:5000/api";
 document.addEventListener('DOMContentLoaded', async () => {
     console.log('Employee Panel Initializing...');
 
+
     // 1. Load Core Layout Components
     await loadComponent('employee-header-placeholder', '/frontend/employee/html/employee_components/employee-header.html');
     await loadComponent('duty-status-placeholder', '/frontend/employee/html/employee_components/duty-status.html');
@@ -13,7 +14,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     await loadComponent('issue-modal-placeholder', '/frontend/employee/html/employee_components/report-issue.html');
     await loadComponent('notif-banner-placeholder', '/frontend/employee/html/employee_components/notif-banner.html');
     await loadComponent('sidebar-stats-placeholder', '/frontend/employee/html/employee_components/performance-stats.html');
-    
+
     // Initial content load
     await initDashboard();
 
@@ -42,7 +43,7 @@ async function loadComponent(placeholderId, filePath) {
 
         const response = await fetch(filePath);
         if (!response.ok) throw new Error(`Failed to load: ${filePath}`);
-        
+
         const html = await response.text();
         placeholder.innerHTML = html;
     } catch (error) {
@@ -59,7 +60,7 @@ function initDutyToggle() {
         toggle.addEventListener('change', (e) => {
             const isOffDuty = !e.target.checked;
             const body = document.body;
-            
+
             if (isOffDuty) {
                 console.log('Employee is now OFF-DUTY');
                 // Dim the UI slightly or show off-duty overlay
@@ -114,7 +115,7 @@ function createTaskCard(task) {
     div.className = `task-card animate-on-scroll ${task.status}`;
     div.id = `task-${task.id}`;
     div.dataset.status = task.status;
-    
+
     div.innerHTML = `
         <!-- Tier 1: Service & Time Slot -->
         <div class="task-tier tier-top">
@@ -176,7 +177,7 @@ function createTaskCard(task) {
 /**
  * Status Update Logic (Legacy Wrapper)
  */
-window.updateTaskStatus = function(taskId, newStatus) {
+window.updateTaskStatus = function (taskId, newStatus) {
     // Redirect to the new StatusEngine
     if (window.updateJobStatus) {
         window.updateJobStatus(taskId, newStatus);
@@ -202,7 +203,7 @@ function initNotificationSim() {
  */
 function initNavigation() {
     const navElements = document.querySelectorAll('.nav-item, .sidebar-link');
-    
+
     navElements.forEach(item => {
         item.addEventListener('click', async (e) => {
             const tab = item.dataset.tab;
@@ -228,7 +229,7 @@ async function switchTab(tabName) {
 
     // Fade out effect
     main.style.opacity = '0';
-    
+
     setTimeout(async () => {
         if (tabName === 'tasks') {
             await loadComponent('task-list-placeholder', '/frontend/employee/html/employee_components/task-list.html');
@@ -241,7 +242,7 @@ async function switchTab(tabName) {
             `;
             await loadComponent('performance-stats-placeholder', '/frontend/employee/html/employee_components/performance-stats.html');
             await loadComponent('job-history-placeholder', '/frontend/employee/html/employee_components/job-history.html');
-            
+
             loadHistoryData();
             checkExcellence();
         } else if (tabName === 'profile') {
@@ -305,10 +306,10 @@ function checkExcellence() {
     }
 }
 
-window.filterHistory = function() {
+window.filterHistory = function () {
     const query = document.getElementById('history-search').value.toLowerCase();
     const cards = document.querySelectorAll('.history-card');
-    
+
     cards.forEach(card => {
         const text = card.textContent.toLowerCase();
         card.style.display = text.includes(query) ? 'flex' : 'none';

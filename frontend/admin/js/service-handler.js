@@ -1,5 +1,3 @@
-var API_URL = "http://localhost:5000/api";
-
 /**
  * Service Management Handler - Logic for Service Cards, Deletion, and Advanced Editing
  */
@@ -15,7 +13,7 @@ async function fetchServices() {
     if (!container || !token) return;
 
     try {
-        const response = await fetch(API_URL + "/admin/services/all", {
+        const response = await fetch(`${window.API_URL}/admin/services/all`, {
             headers: { 'Authorization': `Bearer ${token}` }
         });
         const json = await response.json();
@@ -33,7 +31,9 @@ function renderServices(services) {
     if (!container) return;
 
     container.innerHTML = services.map(service => {
-        const features = JSON.parse(service.features || '[]');
+        let features = [];
+        try { features = JSON.parse(service.features || '[]'); } catch(e) {}
+        
         return `
             <div class="service-card animate-fade-in ${service.is_active ? '' : 'inactive-card'}" data-id="${service.id}">
                 <div class="card-header">
@@ -71,12 +71,14 @@ function renderServices(services) {
 window.toggleServiceStatus = async function(id, isActive) {
     const token = localStorage.getItem('token');
     try {
-        // Get existing service data first or just send partial update if backend supports it
-        // For simplicity, we'll fetch all services again after update
-        const response = await fetch(`${API_URL}/admin/services/${id}/toggle`, { method: "PATCH", headers: { "Authorization": `Bearer ${token}` } });
+        const response = await fetch(`${window.API_URL}/admin/services/${id}/toggle`, { 
+            method: "PATCH", 
+            headers: { "Authorization": `Bearer ${token}` } 
+        });
         
         if (response.ok) {
             fetchServices();
+            window.showSuccessToast('Service status updated.');
         }
     } catch (err) {
         console.error("Toggle error:", err);
@@ -84,42 +86,50 @@ window.toggleServiceStatus = async function(id, isActive) {
 };
 
 window.openEditServiceModal = async function(id) {
-    // Implementation for opening modal and populating fields
-    // Similar to handleServiceEdit but fetching from current data
     const card = document.querySelector(`.service-card[data-id="${id}"]`);
     if (!card) return;
 
     window.currentEditingServiceId = id;
     
+    document.getElementById('modal-title').textContent = 'Edit Wash Service';
     document.getElementById('service-name').value = card.querySelector('h3').textContent;
     document.getElementById('service-price').value = card.querySelector('.price-tag').textContent;
     document.getElementById('service-description').value = card.querySelector('p').textContent;
-    try { document.getElementById('service-features').value = Array.from(card.querySelectorAll('.feature-tag')).map(t => t.textContent.trim()).join(', '); } catch(e){}
+    
+    // Handle features field if it exists
+    const featInput = document.getElementById('service-features');
+    if (featInput) {
+        featInput.value = Array.from(card.querySelectorAll('.feature-tag')).map(t => t.textContent.trim()).join(', ');
+    }
     
     const modal = document.getElementById('admin-modal-overlay');
-    modal.classList.add('active');
+    if (modal) modal.classList.add('active');
     
     const form = document.getElementById('service-form');
-    form.onsubmit = (e) => {
-        e.preventDefault();
-        saveServiceChanges();
-    };
+    if (form) {
+        form.onsubmit = async (e) => {
+            e.preventDefault();
+            await saveServiceChanges();
+        };
+    }
 };
 
 async function saveServiceChanges() {
     const id = window.currentEditingServiceId;
     const token = localStorage.getItem('token');
+    
+    const featValue = document.getElementById('service-features')?.value || '';
     const data = {
         service_name: document.getElementById('service-name').value,
         price: document.getElementById('service-price').value,
         description: document.getElementById('service-description').value,
-        category: 'Main Service', // Default for now
-        features: (document.getElementById('service-features')?.value || '').split(',').map(f => f.trim()).filter(f => f !== ''),
+        category: 'Main Service',
+        features: featValue.split(',').map(f => f.trim()).filter(f => f !== ''),
         is_active: 1
     };
 
     try {
-        const response = await fetch(`${API_URL}/admin/services/${id}`, {
+        const response = await fetch(`${window.API_URL}/admin/services/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -129,9 +139,13 @@ async function saveServiceChanges() {
         });
 
         if (response.ok) {
-            document.getElementById('admin-modal-overlay').classList.remove('active');
+            const modal = document.getElementById('admin-modal-overlay');
+            if (modal) modal.classList.remove('active');
             fetchServices();
-            showSuccessToast('Service updated successfully.');
+            window.showSuccessToast('Service updated successfully.');
+        } else {
+            const err = await response.json();
+            alert("Error: " + err.message);
         }
     } catch (err) {
         console.error("Save error:", err);
@@ -139,21 +153,20 @@ async function saveServiceChanges() {
 }
 
 window.deleteService = async function(id) {
-    if (!confirm("Are you sure?")) return;
+    if (!confirm("Are you sure you want to delete this service?")) return;
     const token = localStorage.getItem('token');
     try {
-        const response = await fetch(`${API_URL}/admin/services/${id}`, {
+        const response = await fetch(`${window.API_URL}/admin/services/${id}`, {
             method: 'DELETE',
             headers: { 'Authorization': `Bearer ${token}` }
         });
-        if (response.ok) fetchServices();
+        if (response.ok) {
+            fetchServices();
+            window.showSuccessToast('Service deleted.');
+        }
     } catch (err) {
         console.error("Delete error:", err);
     }
 };
 
 window.initServiceManagementLogic = initServiceManagementLogic;
-
-
-
-
