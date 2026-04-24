@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+require('dotenv').config({ path: __dirname + '/.env' });
 
 // Initialize the app
 const app = express();
@@ -16,14 +17,18 @@ app.use('/frontend', express.static(frontendPath));
 
 // API Routes Mounting
 app.use('/api/auth', require('./routes/auth'));
+app.use('/api/services', require('./routes/services')); // Public & Admin services
+app.use('/api/admin/services', require('./routes/services')); // Redirect admin services to the same router (or handle in router)
+app.use('/api/staff', require('./routes/staff'));
+app.use('/api/admin/staff', require('./routes/staff'));
 app.use('/api/bookings', require('./routes/bookings'));
 app.use('/api/admin', require('./routes/admin'));
 app.use('/api/employee', require('./routes/employee'));
 app.use('/api/customer', require('./routes/customer'));
 
-// Root endpoint redirect or standard response
+// Root endpoint serves the website landing page
 app.get('/', (req, res) => {
-    res.send('✅ GlossFlow API Server is Running. Frontend is available at /frontend/customer/index.html');
+    res.sendFile(path.join(__dirname, '../frontend/website/html/index.html'));
 });
 
 // 404 Handler for undefined API routes

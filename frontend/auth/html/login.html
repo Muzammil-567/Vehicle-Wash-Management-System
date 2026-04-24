@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | GlossFlow</title>
+    <link rel="stylesheet" href="../../shared/css/global.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0../css/all.min.css">
+    <style>
+        .login-body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle at center, #001C44 0%, #000814 100%);
+        }
+        .login-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 50px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+        .login-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .login-header .logo {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+        .form-group {
+            margin-bottom: 25px;
+        }
+        .form-group label {
+            display: block;
+            color: var(--accent-green);
+            margin-bottom: 10px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .form-control {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            color: white;
+            transition: var(--transition);
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent-green);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .btn-login {
+            width: 100%;
+            margin-top: 20px;
+        }
+        .login-footer {
+            margin-top: 30px;
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+        .login-footer a {
+            color: var(--accent-green);
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body class="login-body">
+    <div class="login-card">
+        <div class="login-header">
+            <a href="../website/index.html" class="logo">GLOSS<span>FLOW</span></a>
+            <p style="color: var(--text-dim);">Administrative & Client Access</p>
+        </div>
+
+        <form id="login-form">
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" class="form-control" placeholder="admin@glossflow.com" required>
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" class="form-control" placeholder="••••••••" required>
+            </div>
+            
+            <button type="submit" class="btn-primary btn-login">Sign In</button>
+        </form>
+
+        <div class="login-footer">
+            <p>Forgot password? <a href="#">Reset here</a></p>
+            <p style="margin-top: 15px;">New client? <a href="#">Create account</a></p>
+        </div>
+    </div>
+
+    <script src="../js/auth-handler.js"></script>
+</body>
+</html>
+

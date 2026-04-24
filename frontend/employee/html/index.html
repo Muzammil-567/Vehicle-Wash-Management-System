@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script>
+        if (!localStorage.getItem('token') || localStorage.getItem('userRole') !== 'employee') { window.location.replace('/frontend/auth/html/login.html'); }
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Employee Panel | GlossFlow Car Wash</title>
+    <meta name="description" content="Manage your daily car wash assignments and update task status in real-time.">
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Core & Section Styles -->
+    <link rel="stylesheet" href="../../shared/css/global.css">
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/task-card.css">
+    <link rel="stylesheet" href="../css/history.css">
+    <link rel="stylesheet" href="../css/profile.css">
+</head>
+
+<body class="employee-dashboard">
+
+    <div class="app-shell">
+        <!-- Sidebar: Desktop Only -->
+        <aside class="sidebar-desktop">
+            <div class="sidebar-logo">
+                <i class="fas fa-soap"></i> Gloss<span>Flow</span>
+            </div>
+            <nav class="sidebar-nav">
+                <a class="sidebar-link active" data-tab="tasks">
+                    <i class="fas fa-tasks"></i> <span>Active Tasks</span>
+                </a>
+                <a class="sidebar-link" data-tab="history">
+                    <i class="fas fa-history"></i> <span>Job History</span>
+                </a>
+                <a class="sidebar-link" data-tab="profile">
+                    <i class="fas fa-user-circle"></i> <span>My Profile</span>
+                </a>
+            </nav>
+            <div class="sidebar-compact-action">
+                <button class="compact-toggle-btn" onclick="document.getElementById('duty-toggle').click()">
+                    <i class="fas fa-power-off"></i> <span>Go Off Duty</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <div class="dashboard-container">
+                <!-- Top Bar (Mobile visible, Desktop minimal) -->
+                <div id="employee-header-placeholder"></div>
+
+                <!-- Content Feed -->
+                <div id="task-list-placeholder"></div>
+
+                <div style="height: 100px;" class="mobile-spacer"></div>
+            </div>
+        </main>
+
+        </aside>
+    </div>
+
+    <!-- Bottom Navigation: Mobile Only -->
+    <nav class="bottom-nav">
+        <a class="nav-item active" data-tab="tasks">
+            <i class="fas fa-tasks"></i>
+            <span>Active Tasks</span>
+        </a>
+        <a class="nav-item" data-tab="history">
+            <i class="fas fa-history"></i>
+            <span>History</span>
+        </a>
+        <a class="nav-item" data-tab="profile">
+            <i class="fas fa-user-circle"></i>
+            <span>Profile</span>
+        </a>
+    </nav>
+
+    <!-- Status & Issue Placeholders -->
+    <div id="issue-modal-placeholder"></div>
+    <div id="notif-banner-placeholder"></div>
+
+    <!-- Employee Logic & Component Loader -->
+    <script src="../js/status-engine.js"></script>
+    <script src="../js/notif-handler.js"></script>
+    <script src="../js/employee-loader.js"></script>
+
+    <!-- Accessibility Logic (Optional but good practice) -->
+    <script>
+        // Ensure buttons have unique IDs if needed for testing, 
+        // though here they are generated dynamically.
+    </script>
+</body>
+
+</html>

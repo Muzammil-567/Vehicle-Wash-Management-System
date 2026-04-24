@@ -1,0 +1,66 @@
+/* Employee Dashboard - Base Styles */
+:root {
+    --pending-glow: rgba(255, 215, 0, 0.3);
+    --progress-glow: rgba(0, 210, 255, 0.3);
+    --complete-glow: rgba(0, 255, 148, 0.3);
+    --off-duty-glow: rgba(107, 114, 128, 0.2);
+    
+    --pending-border: #FFD700;
+    --progress-border: #00D2FF;
+    --complete-border: #00FF94;
+    --accent-blue: #00D2FF;
+    --accent-green: #00ff94;
+    --bg-deep: #000814;
+    --card-surface: #001E46;
+    --glass-border: rgba(255, 255, 255, 0.08);
+
+    --card-bg: rgba(255, 255, 255, 0.05);
+    --text-primary: #ffffff;
+    --text-dim: #a0aec0;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --safe-bottom: env(safe-area-inset-bottom);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', 'Poppins', sans-serif;
+    letter-spacing: 0.5px;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.employee-dashboard {
+    min-height: 100vh;
+    background: var(--bg-deep);
+    background-attachment: fixed;
+    display: flex;
+    justify-content: center;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes card-entry {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Scrollbar Stylings */
+.employee-dashboard::-webkit-scrollbar {
+    width: 6px;
+}
+
+.employee-dashboard::-webkit-scrollbar-thumb {
+    background: var(--accent-green);
+    border-radius: 10px;
+}

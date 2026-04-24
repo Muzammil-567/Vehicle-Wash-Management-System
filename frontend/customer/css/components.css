@@ -1,0 +1,123 @@
+/* 
+ * GlossFlow Customer Dashboard - Components Styles
+ */
+
+.user-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 2px solid var(--neon-green);
+    overflow: hidden;
+}
+
+.user-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.icon-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--neon-blue);
+}
+
+.form-group input, 
+.form-group select {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    padding: 12px 15px;
+    color: white;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: var(--neon-green);
+    box-shadow: 0 0 10px rgba(0, 255, 148, 0.2);
+}
+
+@media (max-width: 768px) {
+    .form-group input, 
+    .form-group select {
+        width: 100% !important; /* Forces 100% on mobile */
+    }
+}
+
+@media (min-width: 769px) {
+    .form-group input, 
+    .form-group select {
+        width: 50% !important; /* Forces 50% on desktop */
+    }
+}
+
+/* Submit Button */
+.btn-submit {
+    width: 100%;
+    background: var(--neon-green);
+    color: #000;
+    border: none;
+    padding: 15px;
+    border-radius: 12px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    margin-top: 20px;
+}
+
+.btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 255, 148, 0.2);
+}
+
+/* Quick Stats */
+.quick-stats-grid {
+    display: flex;
+    gap: 20px;
+}
+
+.stat-card {
+    background: var(--glass-bg);
+    padding: 20px;
+    border-radius: 15px;
+    flex: 1;
+    border: 1px solid var(--glass-border);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.stat-icon {
+    width: 45px;
+    height: 45px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: var(--text-main);
+}
+
+@media (max-width: 768px) {
+    .quick-stats-grid {
+        flex-direction: column;
+    }
+}

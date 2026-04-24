@@ -1,0 +1,292 @@
+/* Employee Dashboard - Layout Styles */
+
+.dashboard-container {
+    width: 100%;
+    min-height: 100vh;
+    position: relative;
+    padding-top: 20px;
+}
+
+/* --- Top Bar --- */
+.employee-top-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--glass-bg);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border-bottom: 1px solid var(--glass-border);
+    padding: 12px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.employee-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.profile-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid var(--accent-green);
+    object-fit: cover;
+}
+
+.profile-info h3 {
+    font-size: 0.85rem;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    margin: 0;
+    color: white;
+}
+
+.profile-info p {
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    margin: 0;
+    font-weight: 500;
+}
+
+.top-bar-actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* --- Bottom Navigation --- */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 8, 20, 0.85);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-top: 1px solid rgba(0, 255, 148, 0.2);
+    display: flex;
+    justify-content: space-around;
+    padding: 12px 0 calc(20px + env(safe-area-inset-bottom)) 0;
+    z-index: 1000;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.7rem;
+    font-weight: 600;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    cursor: pointer;
+    position: relative;
+    padding: 5px 0;
+}
+
+.nav-item i {
+    font-size: 24px;
+    transition: transform 0.3s ease;
+}
+
+.nav-item.active {
+    color: var(--accent-green);
+    text-shadow: 0 0 10px rgba(0, 255, 148, 0.4);
+    transform: translateY(-5px);
+}
+
+.nav-item.active::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    width: 6px;
+    height: 6px;
+    background: var(--accent-green);
+    border-radius: 50%;
+    box-shadow: 0 0 12px var(--accent-green);
+}
+
+/* --- Profile Section Styles --- */
+.profile-container {
+    padding: 10px 0;
+    animation: fadeIn 0.5s ease;
+}
+
+.profile-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.avatar-ring {
+    position: relative;
+    display: inline-block;
+    padding: 5px;
+    background: linear-gradient(45deg, var(--accent-green), transparent);
+    border-radius: 50%;
+    box-shadow: 0 0 20px rgba(0, 255, 148, 0.3);
+    margin-bottom: 15px;
+}
+
+.large-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #000;
+}
+
+.status-indicator-dot {
+    position: absolute;
+    bottom: 5px;
+    right: 15px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 3px solid #000;
+}
+
+.status-indicator-dot.on-duty {
+    background: var(--accent-green);
+    box-shadow: 0 0 10px var(--accent-green);
+}
+
+.profile-role {
+    color: var(--accent-blue);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-top: 5px;
+}
+
+/* Sidebar Compact Action */
+.sidebar-compact-action {
+    margin-top: auto;
+    padding: 20px;
+}
+
+/* --- Main Content --- */
+.employee-content {
+    padding: 20px;
+}
+
+/* --- RESPONSIVE GRID SYSTEM (Desktop & Tablet) --- */
+
+.sidebar-desktop, .stats-sidebar-desktop {
+    display: none;
+}
+
+@media (max-width: 1023px) {
+    .dashboard-container {
+        max-width: 500px;
+        margin: 0 auto;
+        padding-bottom: 120px;
+        border-left: 1px solid var(--glass-border);
+        border-right: 1px solid var(--glass-border);
+        background: rgba(0, 0, 0, 0.2);
+    }
+}
+
+@media (min-width: 1024px) {
+    .employee-dashboard {
+        justify-content: flex-start;
+        overflow-x: hidden;
+    }
+
+    .app-shell {
+        display: grid;
+        grid-template-columns: 250px 1fr 320px;
+        width: 100%;
+        min-height: 100vh;
+    }
+
+    .sidebar-desktop {
+        display: flex;
+        flex-direction: column;
+        background: rgba(0, 12, 29, 0.95);
+        backdrop-filter: blur(20px);
+        border-right: 1px solid var(--glass-border);
+        padding: 30px 20px;
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        z-index: 1000;
+    }
+
+    .sidebar-logo {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: white;
+        margin-bottom: 50px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .sidebar-logo span { color: var(--accent-green); }
+
+    .sidebar-nav {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .sidebar-link {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 14px 18px;
+        color: var(--text-dim);
+        text-decoration: none;
+        border-radius: 12px;
+        font-weight: 600;
+        transition: var(--transition);
+        cursor: pointer;
+    }
+
+    .sidebar-link:hover, .sidebar-link.active {
+        background: rgba(0, 255, 148, 0.1);
+        color: var(--accent-green);
+        box-shadow: inset 4px 0 0 var(--accent-green);
+    }
+
+    .sidebar-link.active {
+        text-shadow: 0 0 10px rgba(0, 255, 148, 0.5);
+        background: radial-gradient(circle at left, rgba(0, 255, 148, 0.15) 0%, transparent 70%);
+    }
+
+    .sidebar-footer {
+        margin-top: auto;
+        padding-top: 20px;
+        border-top: 1px solid var(--glass-border);
+    }
+
+    .main-content {
+        padding: 30px;
+        overflow-y: auto;
+    }
+
+    .dashboard-container {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    .stats-sidebar-desktop {
+        display: block;
+        background: rgba(0, 12, 29, 0.5);
+        border-left: 1px solid var(--glass-border);
+        padding: 30px 25px;
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow-y: auto;
+    }
+
+    /* Hide Mobile UI */
+    .bottom-nav, .mobile-spacer {
+        display: none !important;
+    }
+}

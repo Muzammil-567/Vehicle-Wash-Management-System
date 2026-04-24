@@ -1,0 +1,28 @@
+/* GlossFlow Shared - Utility Classes */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.section-padding {
+    padding: 80px 0;
+}
+
+.selected-card {
+    border-color: var(--accent-green) !important;
+    box-shadow: 0 0 40px rgba(0, 255, 148, 0.4) !important;
+    transform: translateY(-10px) scale(1.02);
+}
+
+.selected-card .btn-pricing {
+    background: #00e082 !important;
+    color: #000 !important;
+    box-shadow: 0 0 20px rgba(0, 255, 148, 0.6);
+}

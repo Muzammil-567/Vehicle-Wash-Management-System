@@ -1,0 +1,12 @@
+/* 
+ * GlossFlow - Global Style Orchestrator
+ * This file imports all modular shared styles.
+ */
+
+@import 'theme.css';
+@import 'reset.css';
+@import 'typography.css';
+@import 'buttons.css';
+@import 'navbar.css';
+@import 'footer.css';
+@import 'utilities.css';

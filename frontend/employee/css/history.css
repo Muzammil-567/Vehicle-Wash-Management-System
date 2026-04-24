@@ -1,0 +1,96 @@
+/* Employee Dashboard - History Styles */
+
+.history-status {
+    width: 100px;
+    text-align: center;
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    padding: 6px 12px;
+    border-radius: 50px;
+    background: rgba(0, 255, 148, 0.1);
+    color: var(--accent-green);
+    border: 1px solid rgba(0, 255, 148, 0.2);
+    text-transform: uppercase;
+}
+
+.history-card {
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: 18px;
+    padding: 20px 25px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: var(--transition);
+}
+
+.history-card:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.15);
+    transform: scale(1.01);
+}
+
+.col-identity { flex: 2; }
+.col-service { flex: 2; }
+.col-meta { flex: 1; text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+
+.history-vehicle {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.history-date {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: white;
+}
+
+.service-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 4px;
+    display: block;
+    font-weight: 700;
+}
+
+
+/* Recently Finished Section */
+.finished-title {
+    margin: 40px 0 20px 0;
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-align: center;
+    position: relative;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+}
+
+.finished-title::after, .finished-title::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 25%;
+    height: 1px;
+    background: var(--glass-border);
+}
+
+.finished-title::before { left: 0; }
+.finished-title::after { right: 0; }
+
+.finished-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    filter: grayscale(0.5);
+    opacity: 0.8;
+}

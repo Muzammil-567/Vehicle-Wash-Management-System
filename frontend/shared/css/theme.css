@@ -1,0 +1,39 @@
+/* GlossFlow Shared - Theme & Variables */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --nav-height: 80px;
+    --accent-green: #00FF94;
+    --deep-blue: #001C44;
+    --card-bg: rgba(255, 255, 255, 0.05);
+    --text-primary: #FFFFFF;
+    --text-dim: #A0C4FF;
+    --transition: all 0.3s ease;
+    --glass-bg: rgba(0, 28, 68, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+/* Professional Dark-Themed Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #1e1e2d;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #4a4a6a;
+    border-radius: 5px;
+    border: 2px solid #1e1e2d;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #6a6a8a;
+}
+
+/* Selection State */
+::selection {
+    background-color: var(--accent-green);
+    color: #000;
+}

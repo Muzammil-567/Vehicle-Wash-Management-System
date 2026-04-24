@@ -1,0 +1,184 @@
+/* Employee Dashboard - Profile Styles */
+
+.profile-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.profile-header-card {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 30px;
+    background: radial-gradient(circle at center, rgba(0, 255, 148, 0.05) 0%, transparent 70%);
+}
+
+.profile-avatar-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 120px;
+    height: 120px;
+    margin-bottom: 15px;
+}
+
+.avatar-ring {
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    border-radius: 50%;
+    border: 2px dashed var(--accent-green);
+    animation: spin 10s linear infinite;
+    opacity: 0.3;
+}
+
+.profile-header-card .profile-avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--card-surface);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.profile-name {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: white;
+    margin: 10px 0 5px 0;
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+.profile-role {
+    color: var(--accent-blue);
+    font-weight: 700;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* Glass Cards Refined */
+.profile-glass-card-refined {
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: var(--transition);
+}
+
+.profile-glass-card-refined:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.card-header-refined {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.card-header-refined i {
+    color: var(--accent-green);
+    font-size: 1.1rem;
+}
+
+.card-header-refined span {
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Detail Rows */
+.detail-rows-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.detail-row .label {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    font-weight: 500;
+}
+
+.detail-row .value {
+    font-size: 0.9rem;
+    color: white;
+    font-weight: 700;
+}
+
+/* Preferences Container */
+.preferences-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.preference-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pref-text h4 {
+    font-size: 0.9rem;
+    margin: 0;
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+.pref-text p {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    margin-top: 2px;
+}
+
+/* Logout Button */
+.profile-actions-bottom {
+    margin-top: 40px;
+    padding: 0 20px;
+}
+
+.btn-logout-premium {
+    width: 100%;
+    background: rgba(255, 59, 48, 0.1);
+    border: 1px solid rgba(255, 59, 48, 0.3);
+    color: #FF3B30;
+    padding: 16px;
+    border-radius: 16px;
+    font-weight: 800;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.btn-logout-premium:hover {
+    background: #FF3B30;
+    color: white;
+    box-shadow: 0 10px 20px rgba(255, 59, 48, 0.3);
+    transform: translateY(-2px);
+}
+
+@media (max-width: 480px) {
+    .profile-container {
+        padding: 10px;
+    }
+}

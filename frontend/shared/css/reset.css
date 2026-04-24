@@ -1,0 +1,19 @@
+/* GlossFlow Shared - Reset & Base Styles */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    overflow-x: hidden;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', 'Poppins', sans-serif;
+    line-height: 1.6;
+    background-color: #000814;
+    color: var(--text-primary);
+}
