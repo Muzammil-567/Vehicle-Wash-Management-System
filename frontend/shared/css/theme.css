@@ -1,8 +1,14 @@
 /* GlossFlow Shared - Theme & Variables */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
 
+html {
+    font-size: 110%; /* Scale up everything globally */
+    scroll-behavior: smooth;
+}
+
 :root {
-    --nav-height: 80px;
+    --ui-scale: 1.1;
+    --nav-height: 90px;
     --accent-green: #00FF94;
     --deep-blue: #001C44;
     --card-bg: rgba(255, 255, 255, 0.05);

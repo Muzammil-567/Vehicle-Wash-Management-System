@@ -10,9 +10,9 @@
     --glass-border: rgba(255, 255, 255, 0.08);
     --text-main: #FFFFFF;
     --text-muted: #E0E0E0;
-    --sidebar-width: 260px;
-    --header-height: 70px;
-    --bottom-nav-height: 70px;
+    --sidebar-width: 300px;
+    --header-height: 85px;
+    --bottom-nav-height: 85px;
 }
 
 /* Scoped Reset to prevent landing page conflicts */

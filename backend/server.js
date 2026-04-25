@@ -10,15 +10,17 @@ const app = express();
 app.use(cors()); // Allow frontend connections
 app.use(express.json()); // Parse JSON bodies
 
-// Static File Serving for Frontend
-// Serve the main frontend directory so UI loads correctly
-const frontendPath = path.join(__dirname, '../frontend');
-app.use('/frontend', express.static(frontendPath));
+// Static File Serving
+// 1. Support legacy links starting with /frontend/
+app.use('/frontend', express.static(path.join(__dirname, '../frontend')));
+
+// 2. Serve the entire frontend folder at root for absolute path support (/shared, /website)
+app.use(express.static(path.join(__dirname, '../frontend')));
 
 // API Routes Mounting
 app.use('/api/auth', require('./routes/auth'));
-app.use('/api/services', require('./routes/services')); // Public & Admin services
-app.use('/api/admin/services', require('./routes/services')); // Redirect admin services to the same router (or handle in router)
+app.use('/api/services', require('./routes/services'));
+app.use('/api/admin/services', require('./routes/services'));
 app.use('/api/staff', require('./routes/staff'));
 app.use('/api/admin/staff', require('./routes/staff'));
 app.use('/api/bookings', require('./routes/bookings'));

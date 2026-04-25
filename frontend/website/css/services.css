@@ -33,15 +33,15 @@
 
 .section-header p {
     color: var(--text-dim);
-    font-size: 1.1rem;
-    max-width: 600px;
+    font-size: 1.3rem;
+    max-width: 800px;
     margin: 0 auto;
 }
 
 .services-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
+    gap: 3rem;
     align-items: stretch;
 }
 
@@ -50,8 +50,8 @@
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(0, 255, 148, 0.1);
-    border-radius: 15px;
-    padding: 40px 30px;
+    border-radius: 20px;
+    padding: 50px 40px;
     transition: var(--transition);
     display: flex;
     flex-direction: column;
@@ -65,22 +65,22 @@
 }
 
 .service-icon {
-    font-size: 2.5rem;
+    font-size: 3.5rem;
     color: var(--accent-green);
-    margin-bottom: 25px;
-    filter: drop-shadow(0 0 8px rgba(0, 255, 148, 0.5));
+    margin-bottom: 30px;
+    filter: drop-shadow(0 0 10px rgba(0, 255, 148, 0.5));
 }
 
 .service-card h3 {
-    font-size: 1.5rem;
-    margin-bottom: 15px;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
     color: var(--text-primary);
 }
 
 .service-card p {
     color: var(--text-dim);
-    font-size: 0.95rem;
-    margin-bottom: 30px;
+    font-size: 1.1rem;
+    margin-bottom: 40px;
     flex-grow: 1;
 }
 

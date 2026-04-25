@@ -1,9 +1,9 @@
 /* Admin Dashboard Base Styles */
 :root {
-    --sidebar-width: 260px;
+    --sidebar-width: 300px;
     --sidebar-bg: #000814;
     --content-bg: radial-gradient(circle at center, #001C44 0%, #000814 100%);
-    --header-height: 70px;
+    --header-height: 85px;
 }
 
 .admin-body {

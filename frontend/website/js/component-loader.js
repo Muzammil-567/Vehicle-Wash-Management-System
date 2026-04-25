@@ -1,19 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Basic Components
-    loadComponent('navbar-placeholder', 'website_components/navbar.html', () => {
+    loadComponent('navbar-placeholder', '/website/html/website_components/navbar.html', () => {
         initNavbar();
         initSmoothScrolling();
         initActiveLinkTracking();
     });
-    loadComponent('footer-placeholder', 'website_components/footer.html');
+    loadComponent('footer-placeholder', '/website/html/website_components/footer.html');
 
     // Section Components
-    loadComponent('hero-placeholder', 'website_components/hero-section.html');
-    loadComponent('services-placeholder', 'website_components/services-section.html');
-    loadComponent('pricing-placeholder', 'website_components/pricing-section.html');
-    loadComponent('about-stats-placeholder', 'website_components/about-stats-section.html');
-    loadComponent('testimonials-placeholder', 'website_components/testimonials-gallery.html');
-    loadComponent('contact-placeholder', 'website_components/contact-section.html', initScrollAnimations);
+    loadComponent('hero-placeholder', '/website/html/website_components/hero-section.html');
+    loadComponent('services-placeholder', '/website/html/website_components/services-section.html');
+    loadComponent('pricing-placeholder', '/website/html/website_components/pricing-section.html');
+    loadComponent('about-stats-placeholder', '/website/html/website_components/about-stats-section.html');
+    loadComponent('testimonials-placeholder', '/website/html/website_components/testimonials-gallery.html');
+    loadComponent('contact-placeholder', '/website/html/website_components/contact-section.html', initScrollAnimations);
 });
 
 /**

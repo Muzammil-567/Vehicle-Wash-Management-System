@@ -12,7 +12,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Robust API URL Detection
             const hostname = window.location.hostname;
-            const API_URL = `http://${hostname}:5000/api/auth/login`;
+            // If on local machine, always prefer localhost to avoid CORS/IP binding issues
+            const apiBase = (hostname === '127.0.0.1' || hostname === 'localhost') 
+                ? 'http://localhost:5000' 
+                : `http://${hostname}:5000`;
+            
+            const API_URL = `${apiBase}/api/auth/login`;
             
             console.log(`🔑 [PortalAuth] Attempting login for ${email} at ${API_URL}`);
 
